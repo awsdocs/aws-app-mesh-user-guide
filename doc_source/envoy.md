@@ -50,58 +50,78 @@ The following are example Amazon ECS task definition and Kubernetes pod specific
 
 ```
 {
-  "name": "envoy",
-  "image": "111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.8.0.2-beta",
-  "essential": true,
-  "environment": [
+  "family": "appmesh-gateway",
+  "memory": "256",
+  "proxyConfiguration": {
+    "type": "APPMESH",
+    "containerName": "envoy",
+    "properties": [
       {
-        "name": "APPMESH_VIRTUAL_NODE_NAME",
-        "value": "mesh/meshName/virtualNode/virtualNodeName"
-      },
-      {
-        "name": "ENVOY_LOG_LEVEL",
-        "value": "info"
-      }
-  ],
-  "user": "1337",
-},
-{
-  "name": "proxyinit",
-  "image": "111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager:latest",
-  "essential": false,
-  "environment": [
-      {
-          "name": "APPMESH_START_ENABLED",
-          "value": "1"
-      },
-      {
-        "name": "APPMESH_IGNORE_UID",
+        "name": "IgnoredUID",
         "value": "1337"
       },
       {
-        "name": "APPMESH_ENVOY_INGRESS_PORT",
+        "name": "ProxyIngressPort",
         "value": "15000"
       },
       {
-        "name": "APPMESH_ENVOY_EGRESS_PORT",
+        "name": "ProxyEgressPort",
         "value": "15001"
       },
       {
-        "name": "APPMESH_APP_PORTS",
-        "value": "application_port_list"
+        "name": "AppPorts",
+        "value": "9080"
       },
       {
-        "name": "APPMESH_EGRESS_IGNORED_IP",
-        "value": "169.254.169.254,169.254.170.2"
+        "name": "EgressIgnoredIPs",
+        "value": "169.254.170.2,169.254.169.254"
       }
-  ],
-  "linuxParameters": {
-      "capabilities": {
-          "add": [
-              "NET_ADMIN"
-          ]
+    ]
+  },
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "image": "application_image",
+      "portMappings": [
+        {
+          "containerPort": 9080,
+          "hostPort": 9080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "dependsOn": [
+        {
+          "containerName": "envoy",
+          "condition": "HEALTHY"
+        }
+      ]
+    },
+    {
+      "name": "envoy",
+      "image": "111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.8.0.2-beta",
+      "essential": true,
+      "environment": [
+        {
+          "name": "APPMESH_VIRTUAL_NODE_NAME",
+          "value": "mesh/meshName/virtualNode/virtualNodeName"
+        }
+      ],
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -s http://localhost:9901/server_info | cut -d' ' -f3 | grep -q live"
+        ],
+        "startPeriod": 10,
+        "interval": 5,
+        "timeout": 2,
+        "retries": 3
       },
-  }
+      "user": "1337"
+    }
+  ],
+  "executionRoleArn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc"
 }
 ```
 

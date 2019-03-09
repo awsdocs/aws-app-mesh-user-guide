@@ -1,7 +1,7 @@
 # AWS App Mesh User Guide
 
 -----
-*****Copyright &copy; 2018 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
+*****Copyright &copy; 2019 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
 
 -----
 Amazon's trademarks and trade dress may not be used in 
@@ -17,6 +17,7 @@ Amazon's trademarks and trade dress may not be used in
 + [What Is AWS App Mesh?](what-is-app-mesh.md)
 + [Getting Started with AWS App Mesh](getting_started.md)
 + [Service Meshes](meshes.md)
++ [Virtual Services](virtual_services.md)
 + [Virtual Nodes](virtual_nodes.md)
 + [Envoy and Proxy Route Manager Images](envoy.md)
 + [Virtual Routers](virtual_routers.md)
