@@ -66,7 +66,7 @@ Your application will vary, but as an example, the following JSON represents a v
 If the above JSON is saved as a file, you can create the virtual service with the following AWS CLI command\.
 
 ```
-aws appmesh create-virtual-router --cli-input-json file://serviceB-virtual-service.json
+aws appmesh create-virtual-service --cli-input-json file://serviceB-virtual-service.json
 ```
 
 For more information about creating virtual services with the AWS CLI, see [create\-virtual\-service](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-service.html) in the *AWS Command Line Interface User Guide*\.
