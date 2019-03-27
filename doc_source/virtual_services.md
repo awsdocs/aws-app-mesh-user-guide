@@ -1,30 +1,53 @@
 # Virtual Services<a name="virtual_services"></a>
 
-A virtual service is an abstraction of a real service that is either provided by a virtual node directly, or indirectly by means of a virtual router\. Dependent services call your virtual service by its `virtualServiceName`, and those requests are routed to the virtual node or virtual router that is specified as the provider for the virtual service\.
+A virtual service is an abstraction of a real service that is provided by a virtual node directly or indirectly by means of a virtual router\. Dependent services call your virtual service by its `virtualServiceName`, and those requests are routed to the virtual node or virtual router that is specified as the provider for the virtual service\.
 
-The following JSON represents a virtual service called `serviceB` that is provided by the virtual router called `serviceB`\.
+## Creating a Virtual Service<a name="create-virtual-service"></a>
 
-```
-{
-    "meshName": "simpleapp",
-    "spec": {
-        "provider": {
-            "virtualRouter": {
-                "virtualRouterName": "serviceB"
-            }
-        }
-    },
-    "virtualServiceName": "serviceB"
-}
-```
+This topic helps you to create a virtual service in your service mesh\.
 
-If the above JSON is saved as a file, you can create the virtual service with the following AWS CLI command\.
+**Creating a virtual service in the AWS Management Console\.**
 
-```
-aws appmesh create-virtual-router --cli-input-json file://serviceB-virtual-service.json
-```
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
+1. Choose the mesh that you want to create the virtual service in\.
+
+1. Choose **Virtual services** in the left navigation\.
+
+1. Choose **Create virtual service**\.
+
+1. For **Virtual service name**, choose a name for your virtual service\. We recommend that you use the service discovery name of the real service that you're targeting \(such as `my-service.default.svc.cluster.local`\)\.
+
+1. For **Provider**, choose the provider type for your virtual service:
+   + If you want the virtual service to spread traffic across multiple virtual nodes, select **Virtual router** and then choose the virtual router to use from the drop\-down menu\.
+   + If you want the virtual service to reach a virtual node directly, without a virtual router, select **Virtual node** and then choose the virtual node to use from the drop\-down menu\.
+   + If you don't want the virtual service to route traffic at this time \(for example, if your virtual nodes or virtual router doesn't exist yet\), choose **None**\. You can update the provider for this virtual service later\.
+
+1. Choose **Create virtual service** to finish\.
+
+**Creating a virtual service in the AWS CLI\.**
++ The following JSON represents a virtual service named `serviceB` that is provided by the virtual router named `serviceB`\.
+
+  ```
+  {
+      "meshName": "simpleapp",
+      "spec": {
+          "provider": {
+              "virtualRouter": {
+                  "virtualRouterName": "serviceB"
+              }
+          }
+      },
+      "virtualServiceName": "serviceB"
+  }
+  ```
+
+  If you save the preceding JSON as a file, you can create the virtual service with the following AWS CLI command\.
+
+  ```
+  aws appmesh create-virtual-service --cli-input-json file://serviceB-virtual-service.json
+  ```
 **Note**  
-You must use at least version 1\.16\.120 of the AWS CLI with App Mesh\. To install the latest version of the AWS CLI, see [Installing the AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/installing.html) in the *AWS Command Line Interface User Guide*\.
+You must use at least version 1\.16\.133 of the AWS CLI with App Mesh\. To install the latest version of the AWS CLI, see [Installing the AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/installing.html) in the *AWS Command Line Interface User Guide*\.
 
-For more information about creating virtual routers with the AWS CLI, see [create\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-router.html) in the *AWS Command Line Interface User Guide*\.
+  For more information about creating virtual services with the AWS CLI, see [create\-virtual\-service](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-service.html) in the *AWS Command Line Interface User Guide*\.

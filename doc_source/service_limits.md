@@ -9,6 +9,5 @@ The following table provides the default limits that can be changed for App Mesh
 | Maximum number of virtual services per mesh | 200 | 
 | Maximum number of virtual nodes per mesh | 20 | 
 | Maximum number of virtual routers per mesh | 20 | 
-| Maximum number of routes per mesh | 20 | 
-| Maximum number of routes per virtual router | 1 | 
-| Maximum number of weighted targets per route | 3 | 
+| Maximum number of routes per virtual router | 20 | 
+| Maximum number of weighted targets per route | 10 | 
