@@ -121,7 +121,7 @@ The following code block shows an Envoy container definition example\.
       "healthCheck": {
         "command": [
           "CMD-SHELL",
-          "curl -s http://localhost:9901/server_info | cut -d' ' -f3 | grep -q live"
+          "curl -s http://localhost:9901/server_info | grep state | grep -q LIVE"
         ],
         "startPeriod": 10,
         "interval": 5,
@@ -200,7 +200,7 @@ The following example Amazon ECS task definition shows in context the snippets t
       "healthCheck": {
         "command": [
           "CMD-SHELL",
-          "curl -s http://localhost:9901/server_info | cut -d' ' -f3 | grep -q live"
+          "curl -s http://localhost:9901/server_info | grep state | grep -q LIVE"
         ],
         "startPeriod": 10,
         "interval": 5,
