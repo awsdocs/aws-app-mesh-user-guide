@@ -6,8 +6,8 @@ This topic helps you to use AWS App Mesh with an existing set of microservice ap
 
 App Mesh supports microservice applications that use service discovery naming for their components\. To use this getting started guide, you must have a microservice application running on Amazon ECS\.
 
-**Note**  
-AWS Fargate support for App Mesh is available today in the following regions \(with many more coming very soon\):  
+**Note**
+AWS Fargate support for App Mesh is available today in the following regions \(with many more coming very soon\):
 **US East \(Ohio\)** \(`us-east-2`\)
 
 For more information about service discovery on Amazon ECS, see [Service Discovery](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-discovery.html) in the *Amazon Elastic Container Service Developer Guide*\.
@@ -26,19 +26,19 @@ App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) prox
 
 To configure your Amazon ECS service to use App Mesh, your service's task definition must have the following proxy configuration section\. Set the proxy configuration `type` to `APPMESH` and the `containerName` to `envoy`\. Set the following property values accordingly\.
 
-`IgnoredUID`  
+`IgnoredUID`
 Envoy doesn't proxy traffic from processes that use this user ID\. You can choose any user ID that you want for this \(our examples use `1337` for historical purposes\), but this ID must be the same as the `user` ID for the Envoy container in your task definition\. This matching allows Envoy to ignore its own traffic without using the proxy\.
 
-`ProxyIngressPort`  
+`ProxyIngressPort`
 This is the ingress port for the Envoy proxy container\. Set this value to `15000`\.
 
-`ProxyEgressPort`  
+`ProxyEgressPort`
 This is the egress port for the Envoy proxy container\. Set this value to `15001`\.
 
-`AppPorts`  
+`AppPorts`
 Specify any ingress ports that your application containers listen on\. In this example, the application container listens on port `9080`\.
 
-`EgressIgnoredIPs`  
+`EgressIgnoredIPs`
 Envoy doesn't proxy traffic to these IP addresses\. Set this value to `169.254.170.2,169.254.169.254`, which ignores the Amazon EC2 metadata server and the Amazon ECS task metadata endpoint \(which provides IAM roles for tasks credentials\)\.
 
 ```
@@ -134,9 +134,9 @@ The following code block shows an Envoy container definition example\.
 
 ### Example Task Definition<a name="mesh-gs-ecs-task-def"></a>
 
-The following example Amazon ECS task definition shows in context the snippets that you can merge with your existing task groups\. Substitute your mesh name and virtual node name for the `APPMESH_VIRTUAL_NODE_NAME` value and a list of ports that your application listens on for the proxy configuration `AppPorts` value\.
+The following example Amazon ECS task definitions shows in context the snippets that you can merge with your existing task groups\. Substitute your mesh name and virtual node name for the `APPMESH_VIRTUAL_NODE_NAME` value and a list of ports that your application listens on for the proxy configuration `AppPorts` value\.
 
-**Example JSON for Amazon ECS task definition**  
+**Example JSON for Amazon ECS task definition**
 
 ```
 {
@@ -208,6 +208,106 @@ The following example Amazon ECS task definition shows in context the snippets t
         "retries": 3
       },
       "user": "1337"
+    }
+  ],
+  "executionRoleArn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc"
+}
+```
+
+**Example JSON for Amazon ECS task definition with X-Ray**
+
+AWS X-Ray allows developers to collect data about requests that your application serves, and provides tools you can use to visualize traffic flow. Using X-Ray driver for Envoy, Envoy can report tracing information to AWS X-Ray. You can enable X-Ray tracing using the [config](envoy.md#envoy-xray-config). With this Envoy sends the tracing data to X-Ray daemon running as a [sidecar](https://docs.aws.amazon.com/xray/latest/devguide/xray-daemon-ecs.html) and the daemon forwards the traces to AWS X-Ray service. Once the traces are published to AWS X-Ray, you can navigate to X-Ray console and visualize the service call graph and request trace details. Below is an example task definition to enable X-Ray integration.
+
+
+```
+{
+  "family": "appmesh-gateway",
+  "memory": "256",
+  "proxyConfiguration": {
+    "type": "APPMESH",
+    "containerName": "envoy",
+    "properties": [
+      {
+        "name": "IgnoredUID",
+        "value": "1337"
+      },
+      {
+        "name": "ProxyIngressPort",
+        "value": "15000"
+      },
+      {
+        "name": "ProxyEgressPort",
+        "value": "15001"
+      },
+      {
+        "name": "AppPorts",
+        "value": "9080"
+      },
+      {
+        "name": "EgressIgnoredIPs",
+        "value": "169.254.170.2,169.254.169.254"
+      }
+    ]
+  },
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "image": "application_image",
+      "portMappings": [
+        {
+          "containerPort": 9080,
+          "hostPort": 9080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "dependsOn": [
+        {
+          "containerName": "envoy",
+          "condition": "HEALTHY"
+        }
+      ]
+    },
+    {
+      "name": "envoy",
+      "image": "111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.9.0.0-prod",
+      "essential": true,
+      "environment": [
+        {
+          "name": "APPMESH_VIRTUAL_NODE_NAME",
+          "value": "mesh/meshName/virtualNode/virtualNodeName"
+        },
+        {
+          "name": "ENABLE_ENVOY_XRAY_TRACING",
+          "value": "1"
+        }
+      ],
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -s http://localhost:9901/server_info | cut -d' ' -f3 | grep -q live"
+        ],
+        "startPeriod": 10,
+        "interval": 5,
+        "timeout": 2,
+        "retries": 3
+      },
+      "user": "1337"
+    },
+    {
+      "name": "xray-daemon",
+      "image": "amazon/aws-xray-daemon",
+      "user": "1337",
+      "essential": true,
+      "cpu": 32,
+      "memoryReservation": 256,
+      "portMappings": [
+        {
+          "containerPort": 2000,
+          "protocol": "udp"
+        }
+      ]
     }
   ],
   "executionRoleArn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
