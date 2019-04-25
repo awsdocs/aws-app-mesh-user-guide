@@ -75,7 +75,7 @@ AWS App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) 
    if [ -z "$APPMESH_EGRESS_IGNORED_PORTS" ]; then
        APPMESH_EGRESS_IGNORED_PORTS="22"
    else
-       APPMESH_EGRESS_IGNORED_PORTS=",22"
+       APPMESH_EGRESS_IGNORED_PORTS="$APPMESH_EGRESS_IGNORED_PORTS,22"
    fi
    
    #
