@@ -34,7 +34,7 @@ AWS App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) 
 
    ```
    sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/meshName/virtualNode/virtualNodeName  \
-   -u 1337 --network host 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.9.0.0-prod
+   -u 1337 --network host 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.9.1.0-prod
    ```
 
 1. Run the following script on your instance to configure the networking policies\. Replace the `APPMESH_APP_PORTS` value with the ports that your application code uses for ingress\.
