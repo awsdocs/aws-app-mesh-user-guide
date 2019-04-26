@@ -1,13 +1,16 @@
 # Envoy Image<a name="envoy"></a>
 
-AWS App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) proxy\. 
+AWS App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) proxy\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/app-mesh/latest/userguide/images/proxy.png)
 
-After you create your service mesh, virtual nodes, virtual routers, routes, and virtual services, you must update your microservices to be compatible with App Mesh\.
+After you create your service mesh, virtual nodes, virtual routers, routes, and virtual services, you add the following App Mesh Envoy container image to the ECS task or Kubernetes pod represented by your App Mesh virtual nodes:
 
-App Mesh vends the following custom envoy container image that you must add to the task groups that represent your virtual nodes:
-+ App Mesh Envoy container image: `111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.9.0.0-prod`
+```
+111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.9.1.0-prod
+```
+
+You must use the App Mesh Envoy container image until the Envoy project team merges changes that support App Mesh\. For additional details, see the [GitHub roadmap issue](https://github.com/aws/aws-app-mesh-roadmap/issues/10)\. 
 
 ## Envoy Configuration Variables<a name="envoy-config"></a>
 
