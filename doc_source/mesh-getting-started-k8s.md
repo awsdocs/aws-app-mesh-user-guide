@@ -16,13 +16,17 @@ This guide also assumes that you have completed the [Getting Started with AWS Ap
 
 ## Updating Your Microservice Pod Specifications<a name="mesh-gs-k8s-update-microservices"></a>
 
-App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) proxy\. After you create your service mesh, virtual nodes, virtual routers, and routes, you must update your microservices to be compatible with App Mesh\.
+App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) proxy\. After you create your service mesh, virtual services, virtual nodes, virtual routers, and routes, you must update your microservices to be compatible with App Mesh\.
 
-App Mesh vends the following custom container images that you must add to your Kubernetes pod specifications\.
-+ App Mesh Envoy container image: `111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.9.1.0-prod`
-+ App Mesh proxy route manager: `111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager:v2`
+App Mesh vends the following custom container images that you must add to your Kubernetes pod specifications:
++ App Mesh Envoy container image – `111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.9.1.0-prod`\. Envoy uses the configuration defined in the App Mesh control plane to determine where to send your application traffic\.
 
-The following is an example Kubernetes pod specification that you can merge with your existing application\. Substitute your mesh name and virtual node name for the `APPMESH_VIRTUAL_NODE_NAME` value, and a list of ports that your application listens on for the `APPMESH_APP_PORTS` value\. Substitute the Amazon EC2 instance AWS Region for the `AWS_REGION` value\.
+  You must use the App Mesh Envoy container image until the Envoy project team merges changes that support App Mesh\. For additional details, see the [GitHub roadmap issue](https://github.com/aws/aws-app-mesh-roadmap/issues/10)\.
++ App Mesh proxy route manager – `111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager:v2`\. The route manager sets up a pod’s network namespace with `iptables` rules that route ingress and egress traffic through Envoy\.
+
+The following text is an example Kubernetes pod specification that you can merge with your existing application\. Substitute your mesh name and virtual node name for the `APPMESH_VIRTUAL_NODE_NAME` value, and a list of ports that your application listens on for the `APPMESH_APP_PORTS` value\. Substitute the Amazon EC2 instance AWS Region for the `AWS_REGION` value\.
+
+Update each microservice pod specification in your application to include these containers, and then deploy the new specifications to update your microservices and start using App Mesh with your Kubernetes application\.
 
 **Example Kubernetes pod spec**  
 

@@ -29,7 +29,7 @@ A service mesh is a logical boundary for network traffic between the services th
 
 1. For **Mesh name**, choose a name for your service mesh\.
 
-1. For **Virtual service name**, choose a name for your virtual service\. We recommend that you use the service discovery name of the real service that you're targeting \(such as `my-service.default.svc.cluster.local`\)\.
+1. For **Virtual service name**, choose a name for your virtual service\. We recommend that you use the service discovery name of the real service that you're targeting \(such as `my-service.default.svc.cluster.local`\)\. The name that you specify must resolve to a non\-loopback IP address\.
 
 1. Choose **Next** to proceed\.
 

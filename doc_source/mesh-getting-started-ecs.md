@@ -116,9 +116,15 @@ The following code block shows an Envoy container definition example\.
 }
 ```
 
+### Credentials<a name="credentials"></a>
+
+The Envoy container requires AWS Identity and Access Management credentials for signing requests that are sent to the App Mesh service\. For Amazon ECS tasks deployed with the Amazon EC2 launch type, the credentials can come from the [instance IAM role ](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/instance_IAM_role.html)or from a [task IAM role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html)\. Amazon ECS tasks deployed with the Fargate launch type do not have access to the Amazon EC2 metadata server that supplies instance IAM profile credentials\. To supply the credentials, you must attach an IAM task role to any tasks deployed with the Fargate launch type\. The role doesn't need to have a policy attached to it, but for a task to work properly with App Mesh, the role must be attached to each task deployed with the Fargate launch type\. If a task is deployed with the Amazon EC2 launch type and access is blocked to the Amazon EC2 metadata server, as described in the *Important* annotation in [IAM Roles for Tasks](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html), then a task IAM role must also be attached to the task\. 
+
 ### Example Task Definitions<a name="mesh-gs-ecs-task-def"></a>
 
 The following example Amazon ECS task definitions show, in context, the snippets that you can merge with your existing task groups\. Substitute your mesh name and virtual node name for the `APPMESH_VIRTUAL_NODE_NAME` value and a list of ports that your application listens on for the proxy configuration `AppPorts` value\.
+
+If you're running an Amazon ECS task as described in [Credentials](#credentials), you need an existing [task IAM role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html)\. You should also add this line of code to the example task definitions that follow: `"taskRoleArn": "arn:aws:iam::123456789012:role/ecsTaskRole"` 
 
 **Example JSON for Amazon ECS task definition**  
 

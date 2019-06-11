@@ -16,7 +16,7 @@ This topic helps you to create a virtual service in your service mesh\.
 
 1. Choose **Create virtual service**\.
 
-1. For **Virtual service name**, choose a name for your virtual service\. We recommend that you use the service discovery name of the real service that you're targeting \(such as `my-service.default.svc.cluster.local`\)\.
+1. For **Virtual service name**, choose a name for your virtual service\. You can choose any name, but the service discovery name of the real service that you're targeting, such as `my-service.default.svc.cluster.local`, is recommended to make it easier to correlate your virtual services to real services\. The name that you specify must resolve to a non\-loopback IP address because the app container must be able to successfully resolve the name before the request is sent to the Envoy proxy\. You can use any non\-loopback IP address because neither the app or proxy containers communicate with this IP address\. The proxy communicates with other virtual services through the names you’ve configured for them in App Mesh, not through IP addresses that the names resolve to\.
 
 1. For **Provider**, choose the provider type for your virtual service:
    + If you want the virtual service to spread traffic across multiple virtual nodes, select **Virtual router** and then choose the virtual router to use from the drop\-down menu\.
