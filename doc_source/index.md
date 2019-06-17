@@ -27,6 +27,7 @@ Amazon's trademarks and trade dress may not be used in
 + [Envoy Image](envoy.md)
 + [Virtual Routers](virtual_routers.md)
 + [Routes](routes.md)
++ [App Mesh Interface VPC Endpoints (AWS PrivateLink)](vpc-endpoints.md)
 + [AWS App Mesh IAM Policies, Roles, and Permissions](IAM_policies.md)
    + [Policy Structure](iam-policy-structure.md)
    + [Creating App Mesh IAM Policies](MESH_IAM_user_policies.md)

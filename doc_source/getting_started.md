@@ -37,7 +37,7 @@ A service mesh is a logical boundary for network traffic between the services th
 
 In this step, you configure a virtual node to be the end destination for requests that are made to the virtual service that you created earlier\.
 
-A virtual node acts as a logical pointer to a particular task group, such as an Amazon ECS service or a Kubernetes deployment\. When you create a virtual node, you must specify the DNS service discovery hostname for your task group\.
+A virtual node acts as a logical pointer to a particular task group, such as an Amazon ECS service or a Kubernetes deployment\. When you create a virtual node, you must specify a service discovery method for your task group\.
 
 Any inbound traffic that your virtual node expects should be specified as a *listener*; you can optionally configure health checks for your virtual node listeners\. Any outbound traffic that your virtual node expects to reach should be specified as a *backend*\.
 
@@ -45,7 +45,10 @@ Any inbound traffic that your virtual node expects should be specified as a *lis
 
 1. For **Virtual node name**, choose a name for your virtual node\.
 
-1. For **Service discovery method**, choose **DNS** for services that use DNS service discovery and then specify the hostname for **DNS hostname**\. Otherwise, choose **None** if your virtual node doesn't expect any ingress traffic\.
+1. For **Service discovery method**, choose one of the following options:
+   + **DNS** – Specify the DNS hostname\.
+   + **AWS Cloud Map** – Specify the service name and namespace\. Optionally, you can also specify attributes that App Mesh can query AWS Cloud Map for\. Only instances that match all of the specified key/value pairs will be returned\.
+   + **None** – Select if your virtual node doesn't expect any inbound traffic\.
 
 1. To specify any backends \(for egress traffic\) for your virtual node, or to configure inbound and outbound access logging information, choose **Additional configuration**\.
 

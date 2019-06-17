@@ -7,7 +7,7 @@ When you use AWS App Mesh with Kubernetes, you manage App Mesh resources, such a
 
 |  | 
 | --- |
-| The features discussed in this topic are available as an open source beta\. This means that these features are well tested and safe to enable, and that support for the features will not be dropped, though details may change\. If the schema or schematics of a feature changes, instructions for migrating to the next version will be provided\. This migration may require deleting, editing, and re\-creating Kubernetes API objects\. | 
+| The features discussed in this topic are available as an open\-source beta\. This means that these features are well tested\. Support for the features will not be dropped, though details may change\. If the schema or schematics of a feature changes, instructions for migrating to the next version will be provided\. This migration may require deleting, editing, and re\-creating Kubernetes API objects\. | 
 
 ## Prerequisites<a name="mesh-k8s-integration-prerequisites"></a>
 
@@ -18,7 +18,7 @@ To use the controller and sidecar injector, you must have the following resource
 
 ## Step 1: Install the Controller and Custom Resources<a name="install-controller"></a>
 
-Complete the following steps to install the controller and Kubernetes custom resource definitions\.
+To install the controller and Kubernetes custom resource definitions, complete the following steps\.
 
 1. The controller requires that your account and your Kubernetes worker nodes are able to work with App Mesh resources\. [Attach](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html) the [AWSAppMeshFullAccess](https://console.aws.amazon.com/iam/home?region=us-west-2#/policies/arn:aws:iam::aws:policy/AWSAppMeshFullAccess$jsonEditor) policy to the role that is attached to your Kubernetes worker nodes\. If you are using a pod identity solution, make sure that the controller pod is bound to the policy\. 
 
@@ -28,7 +28,7 @@ Complete the following steps to install the controller and Kubernetes custom res
    curl https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/v0.1.1/deploy/all.yaml | kubectl apply -f -
    ```
 
-   A Kubernetes namespace named `appmesh-system` was created and a container running the controller was deployed into the namespace\.
+   A Kubernetes namespace named `appmesh-system` is created and a container running the controller is deployed into the namespace\.
 
 1. Confirm that the controller is running with the following command\.
 
@@ -59,9 +59,9 @@ Complete the following steps to install the controller and Kubernetes custom res
 
 ## Step 2: Install the Sidecar Injector<a name="install-injector"></a>
 
-Complete the following steps to install the sidecar injector:
+### <a name="installation"></a>
 
-### Installation<a name="installation"></a>
+To install the sidecar injector, complete the following steps\.
 
 1. Export the name of the mesh you want to create with the following command\.
 
