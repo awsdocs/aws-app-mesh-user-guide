@@ -13,7 +13,7 @@ When you use AWS App Mesh with Kubernetes, you manage App Mesh resources, such a
 
 To use the controller and sidecar injector, you must have the following resources:
 + An existing Kubernetes cluster running version 1\.11 or later\. If you don't have an existing cluster, you can deploy one using the [Getting Started with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html) guide\. 
-+ A `kubectl` client that is configured to communicate with your Kubernetes cluster\. If you're using Amazon Elastic Container Service for Kubernetes, you can use the instructions for installing `[kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)` and configuring a `[kubeconfig](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)` file\.
++ A `kubectl` client that is configured to communicate with your Kubernetes cluster\. If you're using Amazon Elastic Kubernetes Service, you can use the instructions for installing `[kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)` and configuring a `[kubeconfig](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)` file\.
 +  [jq](https://stedolan.github.io/jq/download/) and Open SSL installed\. 
 
 ## Step 1: Install the Controller and Custom Resources<a name="install-controller"></a>
@@ -172,6 +172,7 @@ kubectl label namespace my-namespace appmesh.k8s.aws/sidecarInjectorWebhook=enab
 To override the default behavior of the injector when deploying a pod in a namespace that you've enabled the injector for, add any of the following annotations to your pod spec\.
 + *appmesh\.k8s\.aws/mesh:* mesh\-name** – Add when you want to use a different mesh name than the one that you specified when you installed the injector\.
 + *appmesh\.k8s\.aws/ports: "*ports*"* – Specify particular ports when you don't want all of the container ports defined in a pod spec passed to the sidecars as application ports\.
++ *appmesh\.k8s\.aws/egressIgnoredPorts: *ports** – Specify a comma separated list of port numbers for outbound traffic that you want ignored\. By default all outbound traffic ports will be routed, except port 22 \(SSH\)\.
 + *appmesh\.k8s\.aws/virtualNode: *virtual\-node\-name** – Specify your own name if you don't want the virtual node name passed to the sidecars to be `<deployment name>--<namespace>`\.
 +  *appmesh\.k8s\.aws/sidecarInjectorWebhook: disabled* – Add when you don't want the injector enabled for a pod\.
 
@@ -183,6 +184,7 @@ spec:
       annotations:
         appmesh.k8s.aws/mesh: my-mesh2
         appmesh.k8s.aws/ports: "8079,8080"
+        appmesh.k8s.aws/egressIgnoredPorts: "3306"
         appmesh.k8s.aws/virtualNode: my-app
         appmesh.k8s.aws/sidecarInjectorWebhook: disabled
 ```
