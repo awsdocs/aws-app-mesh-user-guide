@@ -5,27 +5,27 @@ When you use AWS App Mesh with Kubernetes, you manage App Mesh resources, such a
 +  **App Mesh sidecar injector for Kubernetes** – The injector installs as a webhook and injects the [App Mesh sidecar container images](https://docs.aws.amazon.com/eks/latest/userguide/mesh-gs-k8s.html#mesh-gs-k8s-update-microservices) into Kubernetes pods running in specific, labeled namespaces\. To learn more or contribute, see the [GitHub project](https://github.com/aws/aws-app-mesh-inject)\.
 
 
-|  | 
+|  |
 | --- |
-| The features discussed in this topic are available as an open\-source beta\. This means that these features are well tested\. Support for the features will not be dropped, though details may change\. If the schema or schematics of a feature changes, instructions for migrating to the next version will be provided\. This migration may require deleting, editing, and re\-creating Kubernetes API objects\. | 
+| The features discussed in this topic are available as an open\-source beta\. This means that these features are well tested\. Support for the features will not be dropped, though details may change\. If the schema or schematics of a feature changes, instructions for migrating to the next version will be provided\. This migration may require deleting, editing, and re\-creating Kubernetes API objects\. |
 
 ## Prerequisites<a name="mesh-k8s-integration-prerequisites"></a>
 
 To use the controller and sidecar injector, you must have the following resources:
-+ An existing Kubernetes cluster running version 1\.11 or later\. If you don't have an existing cluster, you can deploy one using the [Getting Started with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html) guide\. 
++ An existing Kubernetes cluster running version 1\.11 or later\. If you don't have an existing cluster, you can deploy one using the [Getting Started with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html) guide\.
 + A `kubectl` client that is configured to communicate with your Kubernetes cluster\. If you're using Amazon Elastic Kubernetes Service, you can use the instructions for installing `[kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)` and configuring a `[kubeconfig](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)` file\.
-+  [jq](https://stedolan.github.io/jq/download/) and Open SSL installed\. 
++  [jq](https://stedolan.github.io/jq/download/) and Open SSL installed\.
 
 ## Step 1: Install the Controller and Custom Resources<a name="install-controller"></a>
 
 To install the controller and Kubernetes custom resource definitions, complete the following steps\.
 
-1. The controller requires that your account and your Kubernetes worker nodes are able to work with App Mesh resources\. [Attach](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html) the [AWSAppMeshFullAccess](https://console.aws.amazon.com/iam/home?region=us-west-2#/policies/arn:aws:iam::aws:policy/AWSAppMeshFullAccess$jsonEditor) policy to the role that is attached to your Kubernetes worker nodes\. If you are using a pod identity solution, make sure that the controller pod is bound to the policy\. 
+1. The controller requires that your account and your Kubernetes worker nodes are able to work with App Mesh resources\. [Attach](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html) the [AWSAppMeshFullAccess](https://console.aws.amazon.com/iam/home?region=us-west-2#/policies/arn:aws:iam::aws:policy/AWSAppMeshFullAccess$jsonEditor) policy to the role that is attached to your Kubernetes worker nodes\. If you are using a pod identity solution, make sure that the controller pod is bound to the policy\.
 
 1. To create the Kubernetes custom resources and launch the controller, download the following yaml file and apply it to your cluster with the following command\.
 
    ```
-   curl https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/v0.1.1/deploy/all.yaml | kubectl apply -f -
+   curl https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/deploy/all.yaml | kubectl apply -f -
    ```
 
    A Kubernetes namespace named `appmesh-system` is created and a container running the controller is deployed into the namespace\.
@@ -72,7 +72,7 @@ To install the sidecar injector, complete the following steps\.
 1. Download and execute the sidecar injector installation script with the following command\.
 
    ```
-   curl https://raw.githubusercontent.com/aws/aws-app-mesh-inject/v0.1.4/scripts/install.sh | bash
+   curl https://raw.githubusercontent.com/aws/aws-app-mesh-inject/master/scripts/install.sh | bash
    ```
 
    A Kubernetes namespace named `appmesh-inject` was created and a container running the injector was deployed into the namespace\. If the injector successfully installed, the last several lines of the output returned are similar to the following text\.
@@ -125,7 +125,7 @@ spec:
           prefix: /
         action:
           weightedTargets:
-            - virtualNodeName: my-app-a 
+            - virtualNodeName: my-app-a
               weight: 1
 ```
 
@@ -147,7 +147,7 @@ spec:
         protocol: http
   serviceDiscovery:
     dns:
-      hostName: my-app-a.my-namespace.svc.cluster.local 
+      hostName: my-app-a.my-namespace.svc.cluster.local
   backends:
     - virtualService:
         virtualServiceName: my-svc-a
@@ -155,7 +155,7 @@ spec:
 
 ### Sidecar Injection<a name="sidecar-injection"></a>
 
-You enable sidecar injection for a Kubernetes namespace\. When necessary, you can override the injector's default behavior for each pod you deploy in a Kubernetes namespace that you've enabled the injector for\. 
+You enable sidecar injection for a Kubernetes namespace\. When necessary, you can override the injector's default behavior for each pod you deploy in a Kubernetes namespace that you've enabled the injector for\.
 
 #### Enable Sidecar Injection for a Namespace<a name="enable-sidecar"></a>
 
