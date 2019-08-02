@@ -28,7 +28,7 @@ Create a JSON file with a route configuration\. The following example JSON will 
                   "name" : "clientRequestId"
                }
             ],
-            "method" : "post",
+            "method" : "POST",
             "prefix" : "/",
             "scheme" : "https"
          }

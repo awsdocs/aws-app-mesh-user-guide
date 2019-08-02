@@ -71,7 +71,7 @@ You can use the AWS Management Console or the AWS CLI to create a route\. Select
 
 \([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) If you want to assign a priority to the route, add `"priority": value-between-1-1000` to a JSON file for a route\. Routes are matched based on the specified value, where 0 is the highest priority\. If no value is specified, then the route with the longest prefix is selected\. [Download](https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json) the service model for use with this feature\. For instructions on how to use features in the Preview Channel, see [How can I use features in the Preview Channel?](preview.md#try-out)\.
 
-For JSON examples of different routing options, see [Path\-based Routing](route-path.md) and [HTTP Headers](route-http-headers.md)\.  
+For JSON examples of different routing options, see [Path\-based Routing](route-path.md), [HTTP Headers](route-http-headers.md), and [Retry Policy](route-retry-policy.md)\. 
 
 You can always find the latest options that you can specify in an input JSON file by running the `aws appmesh create-route --generate-cli-skeleton` command\. 
 

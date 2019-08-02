@@ -9,19 +9,19 @@ App Mesh supports microservice applications that use service discovery naming fo
 To use this getting started guide, you must have a microservice application running on Amazon ECS\. You must also have the following App Mesh resources, that you can create by completing the steps in the [Getting Started with AWS App Mesh](getting_started.md) guide:
 + A service mesh
 + Virtual nodes for each microservice in your application
-+ Virtual routers and routes for each microservice in your application \(except for virtual services that are provided by a virtual node directly\)
++ Virtual routers and routes for each microservice in your application, except for virtual services that are provided by a virtual node directly
 + Virtual services for each microservice in your application
 
 ## Update Your Microservice Task Definitions<a name="mesh-gs-ecs-update-microservices"></a>
 
-App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) proxy\. After you create your service mesh, virtual nodes, virtual routers, routes, and virtual services, you must update the Amazon ECS task definitions for your microservices to be compatible with App Mesh\. Complete the steps in the following sections to update your services' task definitions to work with App Mesh\.
+App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) proxy\. After you create your service mesh, virtual nodes, virtual routers, routes, and virtual services, you must update the Amazon ECS task definitions for your microservices to be compatible with App Mesh\. Complete the steps in the following sections to update your services' task definitions to work with App Mesh\. Alternately, you can update your task definitions using the AWS Management Console\. For more information, see [Updating a Task Definition](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/update-task-definition.html)\.
 
 ### Proxy Configuration<a name="mesh-gs-ecs-proxyconfig"></a>
 
-To configure your Amazon ECS service to use App Mesh, your service's task definition must have the following proxy configuration section\. Set the proxy configuration `type` to `APPMESH` and the `containerName` to `envoy`\. Set the following property values accordingly\.
+To configure your Amazon ECS service to use App Mesh, your service's task definition must have the following proxy configuration section\. All of the properties in the following example are required\. Some of the property values are also required, but some are *replaceable*\. Set the proxy configuration `type` to `APPMESH` and the `containerName` to `envoy`\. Set the following property values accordingly\.
 
 `IgnoredUID`  
-Envoy doesn't proxy traffic from processes that use this user ID\. You can choose any user ID that you want for this \(our examples use `1337` for historical purposes\), but this ID must be the same as the `user` ID for the Envoy container in your task definition\. This matching allows Envoy to ignore its own traffic without using the proxy\.
+Envoy doesn't proxy traffic from processes that use this user ID\. You can choose any user ID that you want for this, but this ID must be the same as the `user` ID for the Envoy container in your task definition\. This matching allows Envoy to ignore its own traffic without using the proxy\. Our examples use `1337` for historical purposes\.
 
 `ProxyIngressPort`  
 This is the ingress port for the Envoy proxy container\. Set this value to `15000`\.
@@ -30,10 +30,10 @@ This is the ingress port for the Envoy proxy container\. Set this value to `1500
 This is the egress port for the Envoy proxy container\. Set this value to `15001`\.
 
 `AppPorts`  
-Specify any ingress ports that your application containers listen on\. In this example, the application container listens on port `9080`\.
+Specify any ingress ports that your application containers listen on\. In this example, the application container listens on port `9080`\. The port that you specify must match the port configured on the virtual node listener\.
 
 `EgressIgnoredIPs`  
-Envoy doesn't proxy traffic to these IP addresses\. Set this value to `169.254.170.2,169.254.169.254`, which ignores the Amazon EC2 metadata server and the Amazon ECS task metadata endpoint \(which provides IAM roles for tasks credentials\)\.
+Envoy doesn't proxy traffic to these IP addresses\. Set this value to `169.254.170.2,169.254.169.254`, which ignores the Amazon EC2 metadata server and the Amazon ECS task metadata endpoint\. The metadata endpoint provides IAM roles for tasks credentials\. You can add additional addresses\.
 
 ```
 "proxyConfiguration": {
@@ -65,12 +65,12 @@ Envoy doesn't proxy traffic to these IP addresses\. Set this value to `169.254.1
 
 ### Application Container Envoy Dependency<a name="mesh-gs-ecs-envoy-dep"></a>
 
-The application containers in your task definitions must wait for the Envoy proxy to bootstrap and start before they can start\. To ensure that this happens, you set a `dependsOn` section in each application container definition to wait for the Envoy container to report as `HEALTHY`\. The following code block shows an application container definition example with this dependency\.
+The application containers in your task definitions must wait for the Envoy proxy to bootstrap and start before they can start\. To ensure that this happens, you set a `dependsOn` section in each application container definition to wait for the Envoy container to report as `HEALTHY`\. The following code block shows an application container definition example with this dependency\. All of the properties in the following example are required\. Some of the property values are also required, but some are *replaceable*\.
 
 ```
 {
-	"name": "app",
-	"image": "application_image",
+	"name": "appName",
+	"image": "appImage",
 	"portMappings": [{
 		"containerPort": 9080,
 		"hostPort": 9080,
@@ -89,7 +89,7 @@ The application containers in your task definitions must wait for the Envoy prox
 Your Amazon ECS task definitions or Kubernetes pod specs must contain the [App Mesh Envoy container image](envoy.md):
 + `111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.9.1.0-prod`
 
-The Envoy container definition must be marked as `essential`\. The virtual node name for the Amazon ECS service should be set to the `APPMESH_VIRTUAL_NODE_NAME`, and the `user` ID value should match the `IgnoredUID` value from the task definition proxy configuration \(in this example, we use `1337`\)\. The health check shown here waits for the Envoy container to bootstrap properly before reporting to Amazon ECS that it is healthy and ready for the application containers to start\.
+All of the properties in the following example are required\. Some of the property values are also required, but some are *replaceable*\. The Envoy container definition must be marked as `essential`\. The virtual node name for the Amazon ECS service must be set to the value of the `APPMESH_VIRTUAL_NODE_NAME` property\. The value for the `user` setting must match the `IgnoredUID` value from the task definition proxy configuration\. In this example, we use `1337`\. The health check shown here waits for the Envoy container to bootstrap properly before reporting to Amazon ECS that the Envoy container is healthy and ready for the application containers to start\.
 
 The following code block shows an Envoy container definition example\.
 
@@ -122,9 +122,202 @@ The Envoy container requires AWS Identity and Access Management credentials for 
 
 ### Example Task Definitions<a name="mesh-gs-ecs-task-def"></a>
 
-The following example Amazon ECS task definitions show, in context, the snippets that you can merge with your existing task groups\. Substitute your mesh name and virtual node name for the `APPMESH_VIRTUAL_NODE_NAME` value and a list of ports that your application listens on for the proxy configuration `AppPorts` value\.
+The following example Amazon ECS task definitions show, in context, the snippets that you can merge with your existing task groups\. Substitute your mesh name and virtual node name for the `APPMESH_VIRTUAL_NODE_NAME` value and a list of ports that your application listens on for the proxy configuration `AppPorts` value\. All of the properties in the following examples are required\. Some of the property values are also required, but some are *replaceable*\. 
 
-If you're running an Amazon ECS task as described in [Credentials](#credentials), you need an existing [task IAM role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html)\. You should also add this line of code to the example task definitions that follow: `"taskRoleArn": "arn:aws:iam::123456789012:role/ecsTaskRole"` 
+If you're running an Amazon ECS task as described in [Credentials](#credentials), you need an existing [task IAM role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html), as defined in the examples\. Select your Amazon ECS task launch type\.
+
+------
+#### [ Fargate launch type ]
+
+**Example JSON for Amazon ECS task definition**  
+
+```
+{
+   
+   "family" : "appmesh-gateway",
+   "memory" : "1024",
+   "cpu" : "0.5 vCPU",
+   "proxyConfiguration" : {
+      "containerName" : "envoy",
+      "properties" : [
+         {
+            "name" : "ProxyIngressPort",
+            "value" : "15000"
+         },
+         {
+            "name" : "AppPorts",
+            "value" : "9080"
+         },
+         {
+            "name" : "EgressIgnoredIPs",
+            "value" : "169.254.170.2,169.254.169.254"
+         },
+         {
+            "name" : "IgnoredUID",
+            "value" : "1337"
+         },
+         {
+            "name" : "ProxyEgressPort",
+            "value" : "15001"
+         }
+      ],
+      "type" : "APPMESH"
+   },
+   "containerDefinitions" : [
+      {
+         "name" : "appName",
+         "image" : "appImage",
+         "portMappings" : [
+            {
+               "containerPort" : 9080,
+               "protocol" : "tcp"
+            }
+         ],
+         "essential" : true,
+         "dependsOn" : [
+            {
+               "containerName" : "envoy",
+               "condition" : "HEALTHY"
+            }
+         ]
+      },
+      {         
+         "name" : "envoy",
+         "image" : "111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.9.1.0-prod",
+         "essential" : true,
+         "environment" : [
+            {
+               "name" : "APPMESH_VIRTUAL_NODE_NAME",
+               "value" : "mesh/meshName/virtualNode/virtualNodeName"
+            }
+         ],
+         "healthCheck" : {
+            "command" : [
+               "CMD-SHELL",
+               "curl -s http://localhost:9901/server_info | grep state | grep -q LIVE"
+            ],
+            "interval" : 5,
+            "retries" : 3,
+            "startPeriod" : 10,
+            "timeout" : 2
+         },
+         "memory" : "500",
+         "user" : "1337"
+      }
+   ],
+   "requiresCompatibilities" : [ "FARGATE" ],
+   "taskRoleArn" : "arn:aws:iam::123456789012:role/ecsTaskRole",
+   "executionRoleArn" : "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
+   "networkMode" : "awsvpc"
+}
+```
+
+**Example JSON for Amazon ECS task definition with AWS X\-Ray**  
+X\-Ray allows you to collect data about requests that an application serves and provides tools that you can use to visualize traffic flow\. Using the X\-Ray driver for Envoy enables Envoy to report tracing information to X\-Ray\. You can enable X\-Ray tracing using the [Envoy configuration](envoy.md)\. Based on the configuration, Envoy sends tracing data to the X\-Ray daemon running as a [sidecar](https://docs.aws.amazon.com/xray/latest/devguide/xray-daemon-ecs.html) container and the daemon forwards the traces to the X\-Ray service\. Once the traces are published to X\-Ray, you can use the X\-Ray console to visualize the service call graph and request trace details\. The following JSON represents a task definition to enable X\-Ray integration\.  
+
+```
+{
+   
+   
+   "family" : "appmesh-gateway",
+   "memory" : "1024",
+   "cpu" : "0.5 vCPU",
+   "proxyConfiguration" : {
+      "containerName" : "envoy",
+      "properties" : [
+         {
+            "name" : "ProxyIngressPort",
+            "value" : "15000"
+         },
+         {
+            "name" : "AppPorts",
+            "value" : "9080"
+         },
+         {
+            "name" : "EgressIgnoredIPs",
+            "value" : "169.254.170.2,169.254.169.254"
+         },
+         {
+            "name" : "IgnoredUID",
+            "value" : "1337"
+         },
+         {
+            "name" : "ProxyEgressPort",
+            "value" : "15001"
+         }
+      ],
+      "type" : "APPMESH"
+   },
+   "containerDefinitions" : [
+      {
+         "name" : "appName",
+         "image" : "appImage",
+         "portMappings" : [
+            {
+               "containerPort" : 9080,
+               "protocol" : "tcp"
+            }
+         ],
+         "essential" : true,
+         "dependsOn" : [
+            {
+               "containerName" : "envoy",
+               "condition" : "HEALTHY"
+            }
+         ]
+      },
+      {
+         
+         "name" : "envoy",
+         "image" : "111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.9.1.0-prod",
+         "essential" : true,
+         "environment" : [
+            {
+               "name" : "APPMESH_VIRTUAL_NODE_NAME",
+               "value" : "mesh/meshName/virtualNode/virtualNodeName"
+            },
+            {
+               "name": "ENABLE_ENVOY_XRAY_TRACING",
+               "value": "1"
+            }
+         ],
+         "healthCheck" : {
+            "command" : [
+               "CMD-SHELL",
+               "curl -s http://localhost:9901/server_info | grep state | grep -q LIVE"
+            ],
+            "interval" : 5,
+            "retries" : 3,
+            "startPeriod" : 10,
+            "timeout" : 2
+         },
+         "memory" : "500",
+         "user" : "1337"
+      },
+      {
+         "name" : "xray-daemon",
+         "image" : "amazon/aws-xray-daemon",
+         "user" : "1337",
+         "essential" : true,
+         "cpu" : "32",
+         "memoryReservation" : "256",
+         "portMappings" : [
+            {
+               "containerPort" : 2000,
+               "protocol" : "udp"
+            }
+         ]
+      }
+   ],
+   "requiresCompatibilities" : [ "FARGATE" ],
+   "taskRoleArn" : "arn:aws:iam::123456789012:role/ecsTaskRole",
+   "executionRoleArn" : "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
+   "networkMode" : "awsvpc"
+}
+```
+
+------
+#### [ EC2 launch type ]
 
 **Example JSON for Amazon ECS task definition**  
 
@@ -160,8 +353,8 @@ If you're running an Amazon ECS task as described in [Credentials](#credentials)
   },
   "containerDefinitions": [
     {
-      "name": "app",
-      "image": "application_image",
+      "name": "appName",
+      "image": "appImage",
       "portMappings": [
         {
           "containerPort": 9080,
@@ -200,7 +393,9 @@ If you're running an Amazon ECS task as described in [Credentials](#credentials)
       "user": "1337"
     }
   ],
-  "executionRoleArn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
+  "requiresCompatibilities" : [ "EC2" ],
+  "taskRoleArn" : "arn:aws:iam::123456789012:role/ecsTaskRole",
+  "executionRoleArn" : "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
   "networkMode": "awsvpc"
 }
 ```
@@ -212,6 +407,7 @@ X\-Ray allows you to collect data about requests that an application serves and 
 {
   "family": "appmesh-gateway",
   "memory": "256",
+   "cpu" : "1024",
   "proxyConfiguration": {
     "type": "APPMESH",
     "containerName": "envoy",
@@ -240,8 +436,8 @@ X\-Ray allows you to collect data about requests that an application serves and 
   },
   "containerDefinitions": [
     {
-      "name": "app",
-      "image": "application_image",
+      "name": "appName",
+      "image": "appImage",
       "portMappings": [
         {
           "containerPort": 9080,
@@ -298,7 +494,11 @@ X\-Ray allows you to collect data about requests that an application serves and 
       ]
     }
   ],
-  "executionRoleArn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
+  "requiresCompatibilities" : [ "EC2" ],
+  "taskRoleArn" : "arn:aws:iam::123456789012:role/ecsTaskRole",
+  "executionRoleArn" : "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
   "networkMode": "awsvpc"
 }
 ```
+
+------

@@ -29,6 +29,7 @@ Amazon's trademarks and trade dress may not be used in
 + [Routes](routes.md)
    + [Path-based Routing](route-path.md)
    + [HTTP Headers](route-http-headers.md)
+   + [Retry Policy](route-retry-policy.md)
 + [App Mesh Interface VPC Endpoints (AWS PrivateLink)](vpc-endpoints.md)
 + [AWS App Mesh IAM Policies, Roles, and Permissions](IAM_policies.md)
    + [Policy Structure](iam-policy-structure.md)
