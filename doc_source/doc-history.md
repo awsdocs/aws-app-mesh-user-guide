@@ -4,6 +4,7 @@ The following table describes the major updates and new features for the *AWS Ap
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [TLS encryption](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual-node-tls.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) Encrypt communication between virtual nodes using TLS\. | August 6, 2019 | 
 | [Retry policy](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-retry-policy.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. You can add retry logic to a route\. | August 1, 2019 | 
 | [HTTP header\-based routing](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-http-headers.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) You can route traffic based on the presence and values of HTTP headers in a request\. | July 19, 2019 | 
 | [Availability of the App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) | The App Mesh Preview Channel is a distinct variant of the App Mesh service\. The Preview Channel exposes upcoming features for you to try as they are developed\. As you use features in the Preview Channel, you can provide feedback via GitHub to shape how the features behave\. | July 19, 2019 | 
