@@ -57,6 +57,8 @@ To specify all App Mesh API actions, use the \* wildcard as follows\.
 "Action": "appmesh:*"
 ```
 
+For a complete list of actions, see [Actions Defined by AWS App Mesh](https://docs.aws.amazon.com/IAM/latest/UserGuide/list_awsappmesh.html#awsappmesh-actions-as-permissions)\.
+
 ## Checking That Users Have the Required Permissions<a name="check-required-permissions"></a>
 
 After you have created an IAM policy, we recommend that you check whether it grants users the permissions to use the particular API actions and resources that they need\. Do this before you put the policy into production\.

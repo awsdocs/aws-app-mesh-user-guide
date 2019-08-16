@@ -1,9 +1,6 @@
 # Path\-based Routing<a name="route-path"></a>
 
-You can route traffic based on the path in the request\. You can use the AWS Management Console or the AWS CLI to create a route\. Select the name of the tool that you want to use to create a route\.
-
-------
-#### [ AWS Management Console ]
+ To create a route with path\-based routing using the AWS Management Console, complete the following steps\. To create a route using the AWS CLI version 1\.16\.178 or higher, see the examples in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
@@ -19,50 +16,18 @@ You can route traffic based on the path in the request\. You can use the AWS Man
 
 1. For **Route type**, choose the protocol for your route\.
 
+1. \(Optional\) For **Route priority**, specify a priority from 0\-1000 to use for your route\. Routes are matched based on the specified value, where 0 is the highest priority\. If no value is specified, then the route with the longest prefix is selected\.
+
 1. For **Virtual node name**, choose the virtual node that this route will serve traffic to\. If none are listed, then you need to [create a virtual node](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_nodes.html) first\.
 
 1. For **Weight**, choose a relative weight for the route\. Select **Add target** to add additional virtual nodes\. The total weight for all targets combined must be less than or equal to 100\.
 
-1. To use HTTP path\-based routing, choose **Additional configuration** and then specify the path that the route should match\. For example, if your virtual service name is `service-b.local` and you want the route to match requests to `service-b.local/metrics`, your prefix should be `/metrics`\.
+1. \(Optional\) To use HTTP path\-based routing, choose **Additional configuration** and then specify the **Prefix** that the route should match\. For example, if your virtual service name is `service-b.local` and you want the route to match requests to `service-b.local/metrics`, your prefix should be `/metrics`\.
+
+1. \(Optional\) Select a **Method** to use header\-based routing for your route\. 
+
+1. \(Optional\) Select a **Scheme** to use header\-based routing for your route\. 
+
+1. \(Optional\) Select **Add header**\. Enter the **Header name** that you want to route based on, select a **Match type**, and enter a **Match value**\. Selecting **Invert** will match the opposite\. For additional information about HTTP header\-based routing, see [HTTP Headers](route-http-headers.md)\. 
 
 1. Choose **Create route** to finish\.
-
-------
-#### [ AWS CLI ]
-
-1. Create a JSON file with a route configuration\. The following example JSON will create a route that routes all traffic that has */metrics* in its request path to a virtual node named *serviceB*\.
-
-   ```
-   {
-      "meshName" : "app1",
-      "routeName" : "route-path1",
-      "spec" : {
-         "httpRoute" : {
-            "action" : {
-               "weightedTargets" : [
-                  {
-                     "virtualNode" : "serviceB",
-                     "weight" : 100
-                  }
-               ]
-            },
-            "match" : {
-               "prefix" : "/metrics"
-            }
-         }
-      },
-      "virtualRouterName" : "virtual-router1"
-   }
-   ```
-
-1. Create the route with the following command\.
-
-   ```
-   aws appmesh create-route --cli-input-json file://route.json
-   ```
-
-For more information about creating routes with the AWS CLI, see [create\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) in the *AWS Command Line Interface User Guide*\.
-
-You can always find the latest options that you can specify in an input JSON file by running the `aws appmesh create-route --generate-cli-skeleton` command\. 
-
-------

@@ -11,3 +11,4 @@ The following table provides the default limits that can be changed for App Mesh
 | Maximum number of virtual routers per mesh | 20 | 
 | Maximum number of routes per virtual router | 20 | 
 | Maximum number of weighted targets per route | 10 | 
+| Maximum number of connected Envoys per virtual node | 10 | 
