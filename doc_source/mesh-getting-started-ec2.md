@@ -24,13 +24,13 @@ AWS App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) 
 
 1. Install Docker and the AWS CLI on your instance according to your operating system documentation\.
 
-1. Authenticate to the Envoy Amazon ECR repository so that your Docker client can pull the container image\.
+1. Authenticate to the Envoy Amazon ECR repository so that your Docker client can pull the container image\. You can replace the *Region* with any Region that App Mesh is supported in\. For a list of supported regions, see [AWS Service Endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#appmesh_region)\.
 
    ```
    $(aws ecr get-login --no-include-email --region us-west-2 --registry-ids 111345817488)
    ```
 
-1. Run the following command to start the App Mesh Envoy container on your instance\. Substitute your mesh name and virtual node name\.
+1. Run the following command to start the App Mesh Envoy container on your instance\. You can replace the *Region* with any Region that App Mesh is supported in\. For a list of supported regions, see [AWS Service Endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#appmesh_region)\. Substitute your mesh name and virtual node name\.
 
    ```
    sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/meshName/virtualNode/virtualNodeName  \

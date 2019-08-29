@@ -48,6 +48,6 @@ This topic helps you to create a virtual service in your service mesh\.
   aws appmesh create-virtual-service --cli-input-json file://serviceB-virtual-service.json
   ```
 **Note**  
-You must use at least version 1\.16\.178 of the AWS CLI with App Mesh\. To install the latest version of the AWS CLI, see [Installing the AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/installing.html) in the *AWS Command Line Interface User Guide*\.
+You must use at least version 1\.16\.219 of the AWS CLI with App Mesh\. To install the latest version of the AWS CLI, see [Installing the AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/installing.html) in the *AWS Command Line Interface User Guide*\.
 
   For more information about creating virtual services with the AWS CLI, see [create\-virtual\-service](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-service.html) in the *AWS Command Line Interface User Guide*\.

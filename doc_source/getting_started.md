@@ -27,9 +27,9 @@ A service mesh is a logical boundary for network traffic between the services th
 
 1. Open the App Mesh console first\-run wizard at [https://console\.aws\.amazon\.com/appmesh/get\-started](https://console.aws.amazon.com/appmesh/get-started)\.
 
-1. For **Mesh name**, choose a name for your service mesh\.
+1. For **Mesh name**, specify a name for your service mesh\. 
 
-1. For **Virtual service name**, choose a name for your virtual service\. We recommend that you use the service discovery name of the real service that you're targeting \(such as `my-service.default.svc.cluster.local`\)\. The name that you specify must resolve to a non\-loopback IP address\.
+1. For **Virtual service name**, choose a name for your virtual service\. We recommend that you use the service discovery name of the real service that you're targeting \(such as `service-a.default.svc.cluster.local`\)\. The name that you specify must resolve to a non\-loopback IP address\.
 
 1. Choose **Next** to proceed\.
 
@@ -43,38 +43,38 @@ Any inbound traffic that your virtual node expects should be specified as a *lis
 
 **To configure a virtual node**
 
-1. For **Virtual node name**, choose a name for your virtual node\.
+1. For **Virtual node name**, enter a name for your virtual node\. 
 
 1. For **Service discovery method**, choose one of the following options:
-   + **DNS** – Specify the DNS hostname\.
-   + **AWS Cloud Map** – Specify the service name and namespace\. Optionally, you can also specify attributes that App Mesh can query AWS Cloud Map for\. Only instances that match all of the specified key/value pairs will be returned\.
-   + **None** – Select if your virtual node doesn't expect any inbound traffic\.
+   + **DNS** – Specify the DNS\-registered hostname of the actual service that the virtual node represents\. For additional information about using DNS as a service discovery method, see [Virtual Nodes](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_nodes.html)\. 
+   + **AWS Cloud Map** – Specify the service name and namespace\. Optionally, you can also specify attributes that App Mesh can query AWS Cloud Map for\. Only instances that match all of the specified key/value pairs will be returned\. To use AWS Cloud Map, your account must have the `AWSServiceRoleForAppMesh` [service\-linked role](using-service-linked-roles.md)\. 
+   + **None** – Select if your virtual node doesn't expect any inbound traffic\. 
 
-1. To specify any backends \(for egress traffic\) for your virtual node, or to configure inbound and outbound access logging information, choose **Additional configuration**\.
+1. To specify any backends \(for egress traffic\) for your virtual node, or to configure inbound and outbound access logging information, choose **Additional configuration** 
 
-   1. To specify a backend, choose **Add backend** and enter a virtual service name or full Amazon Resource Name \(ARN\) for the virtual service that your virtual node communicates with\. Repeat this step until all of your virtual node backends are accounted for\.
+   1. To specify a backend, choose **Add backend** and enter a virtual service name or full Amazon Resource Name \(ARN\) for the virtual service that your virtual node communicates with\. Repeat this step until all of your virtual node backends are accounted for\. 
 
-   1. To configure logging, enter the HTTP access logs path that you want Envoy to use\. We recommend the `/dev/stdout` path so that you can use Docker log drivers to export your Envoy logs to a service such as Amazon CloudWatch Logs\.
+   1. To configure logging, enter the HTTP access logs path that you want Envoy to use\. We recommend the `/dev/stdout` path so that you can use Docker log drivers to export your Envoy logs to a service such as Amazon CloudWatch Logs\. 
 **Note**  
-Logs must still be ingested by an agent in your application and sent to a destination\. This file path only instructs Envoy where to send the logs\.
+Logs must still be ingested by an agent in your application and sent to a destination\. This file path only instructs Envoy where to send the logs\. 
 
-1. If your virtual node expects ingress traffic, specify a **Port** and **Protocol** for that **Listener**\.
+1. If your virtual node expects ingress traffic, specify a **Port** and **Protocol** for the **Listener**\. 
 
-1. If you want to configure health checks for your listener, ensure that **Health check enabled** is selected and then complete the following substeps\. If not, clear this check box\.
+1. If you want to configure health checks for your listener, ensure that **Health check enabled** is selected and then complete the following substeps\. If not, clear this check box\. 
 
-   1. For **Health check protocol**, choose to use an HTTP or TCP health check\.
+   1. For **Health check protocol**, choose to use an HTTP or TCP health check\. 
 
-   1. For **Health check port**, specify the port that the health check should run on\.
+   1. For **Health check port**, specify the port that the health check should run on\. 
 
-   1. For **Healthy threshold**, specify the number of consecutive successful health checks that must occur before declaring the listener healthy\.
+   1. For **Healthy threshold**, specify the number of consecutive successful health checks that must occur before declaring the listener healthy\. 
 
-   1. For **Health check interval**, specify the time period in milliseconds between each health check execution\.
+   1. For **Health check interval**, specify the time period in milliseconds between each health check execution\. 
 
-   1. For **Path**, specify the destination path for the health check request\. This is required only if the specified protocol is HTTP\. If the protocol is TCP, this parameter is ignored\.
+   1. For **Path**, specify the destination path for the health check request\. This is required only if the specified protocol is HTTP\. If the protocol is TCP, this parameter is ignored\. 
 
-   1. For **Timeout period**, specify the amount of time to wait when receiving a response from the health check, in milliseconds\.
+   1. For **Timeout period**, specify the amount of time to wait when receiving a response from the health check, in milliseconds\. 
 
-   1. For **Unhealthy threshold**, specify the number of consecutive failed health checks that must occur before declaring the listener unhealthy\.
+   1. For **Unhealthy threshold**, specify the number of consecutive failed health checks that must occur before declaring the listener unhealthy\. 
 
 1. Chose **Next** to continue\.
 
@@ -84,19 +84,31 @@ In this step, you configure a virtual router to handle requests that are made to
 
 **To configure a virtual router and route**
 
-1. For **Virtual router name**, specify a name for your virtual router\.
+1. For **Virtual router name**, specify a name for your virtual router\. Up to 255 letters, numbers, hyphens, and underscores are allowed\. 
 
-1. For **Listener**, specify a **Port** and **Protocol** for your virtual router\.
+1. For **Listener**, specify a **Port** and **Protocol** for your virtual router\. 
 
 1. For **Route name**, specify the name to use for your route\.
 
 1. For **Route type**, choose the protocol for your route\.
 
-1. For **Virtual node name**, choose the virtual node that this route will serve traffic to\.
+1. \(Optional\) For **Route priority**, specify a priority from 0\-1000 to use for your route\. Routes are matched based on the specified value, where 0 is the highest priority\.
 
-1. For **Weight**, choose a relative weight for the route\. The total weight for all routes must be less than 100\.
+1. For **Virtual node name**, choose the virtual node that this route will serve traffic to\. 
 
-1. To use HTTP path\-based routing, choose **Additional configuration** and then specify the path that the route should match\. For example, if your virtual service name is `my-service.local` and you want the route to match requests to `my-service.local/metrics`, your prefix should be `/metrics`\.
+1. For **Weight**, choose a relative weight for the route\. Select **Add target** to add additional virtual nodes\. The total weight for all targets combined must be less than or equal to 100\.
+
+1. \(Optional\) To use HTTP path and header\-based routing, choose **Additional configuration**\. 
+
+1. \(Optional\) To use HTTP path\-based routing, specify the **Prefix** that the route should match\. For additional information about path\-based routing, see [Path\-based Routing](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-path.html)\. 
+
+1. \(Optional\) Select a **Method** to use header\-based routing for your route\. For additional information about HTTP header\-based routing, see [HTTP Headers](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-http-headers.html)\. 
+
+1. \(Optional\) Select a **Scheme** to use header\-based routing for your route\. 
+
+1. \(Optional\) Select **Add header**\. Enter the **Header name** that you want to route based on, select a **Match type**, and enter a **Match value**\. Selecting **Invert** will match the opposite\. 
+
+1. \(Optional\) Select **Add header** to add up to ten headers\. 
 
 1. Choose **Next** to proceed\.
 

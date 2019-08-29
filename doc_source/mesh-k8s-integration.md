@@ -72,7 +72,7 @@ To install the sidecar injector, complete the following steps\. If you'd like to
 1. Download and execute the sidecar injector installation script with the following command\.
 
    ```
-   curl https://raw.githubusercontent.com/aws/aws-app-mesh-inject/v0.1.4/scripts/install.sh | bash
+   curl https://raw.githubusercontent.com/aws/aws-app-mesh-inject/v0.1.6/scripts/install.sh | bash
    ```
 
    A Kubernetes namespace named `appmesh-inject` was created and a container running the injector was deployed into the namespace\. If the injector successfully installed, the last several lines of the output returned are similar to the following text\.
