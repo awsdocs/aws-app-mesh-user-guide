@@ -1,22 +1,58 @@
-# Retry Policy<a name="route-retry-policy"></a>
+# Retry policy<a name="route-retry-policy"></a>
 
-\([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. You can add retry logic to a route\. You can view the [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/7) that this feature is based on\. 
+A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. You can add retry logic to a route\. You can create a route with a retry policy using the AWS Management Console or the AWS CLI\. Select the name of the tool that you want to create a route with\. 
 
-1. Download the Preview Channel service model with the following command:
+------
+#### [ AWS Management Console ]
 
-   ```
-   curl -o appmesh-preview-channel-service-model.json https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
-   ```
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
-1. Add the Preview Channel service model to the AWS CLI with the following command\.
+1. Choose the mesh that you want to create the route in\.
 
-   ```
-   aws configure add-model \
-       --service-name appmesh-preview \
-       --service-model file://appmesh-preview-channel-service-model.json
-   ```
+1. Choose **Virtual routers** in the left navigation\.
 
-1. Create a JSON file named *create\-route\-retry\-policy\.json* with a route configuration\. In the following JSON example, a route is created that attempts to route traffic *3* times when it receives a TCP `connection error` or an HTTP `server-error` or `gateway-error`\. Each retry attempt waits *15* *seconds* before timing out\. 
+1. Choose the virtual router that you want to associate a new route with\. 
+
+1. In the **Routes** table, choose **Create route**\.
+
+1. For **Route name**, specify the name to use for your route\.
+
+1. For **Route type**, choose the protocol for your route\.
+
+1. \(Optional\) For **Route priority**, specify a priority from 0\-1000 to use for your route\. Routes are matched based on the specified value, where 0 is the highest priority\.
+
+1. For **Virtual node name**, choose the virtual node that this route will serve traffic to\. If none are listed, then you need to [create a virtual node](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_nodes.html) first\.
+
+1. For **Weight**, choose a relative weight for the route\. Select **Add target** to add additional virtual nodes\. The total weight for all targets combined must be less than or equal to 100\.
+
+1. \(Optional\) To use HTTP path and header\-based routing, choose **Additional configuration**\. 
+
+1. \(Optional\) To use HTTP path\-based routing, specify the **Prefix** that the route should match\. For additional information about path\-based routing, see [Path\-based Routing](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-path.html)\. 
+
+1. \(Optional\) Select a **Method** to use header\-based routing for your route\. 
+
+1. \(Optional\) Select a **Scheme** to use header\-based routing for your route\. 
+
+1. \(Optional\) Select **Add header**\. Enter the **Header name** that you want to route based on, select a **Match type**, and enter a **Match value**\. Selecting **Invert** will match the opposite\. For additional information about HTTP header\-based routing, see [HTTP Headers](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-http-headers.html)\. 
+
+1. \(Optional\) Select **Add header** to add up to ten headers\. 
+
+1. \(Optional\) For **Retry timeout**, enter the number of units for the timeout duration\. For example, you can can define a retry policy that attempts to route traffic three times when the routing attempt receives a TCP connection error or an HTTP server\-error or gateway\-error\. You might specify a duration of 15 seconds between retry attempts\.
+
+1. \(Optional\) For **Retry timeout unit**, select a unit\.
+
+1. \(Optional\) For **Max retries**, enter the number of times to retry the route when an attempt fails\.
+
+1. \(Optional\) Select one or more **HTTP retry events**\.
+
+1. \(Optional\) Select a **TCP retry event**\.
+
+1. Choose **Create route** to finish\.
+
+------
+#### [ AWS CLI ]
+
+1. Create a JSON file named *create\-route\-retry\-policy\.json* with a route configuration\. In the following JSON example, a route with a retry policy is created\. The retry policy attempts to route traffic *3* times when it receives a TCP `connection error` or an HTTP `server-error` or `gateway-error`\. Each retry attempt waits *15* *seconds* before timing out\. For the route to create successfully, a mesh and virtual node with the names specified must exist \.
 
    ```
    {
@@ -63,5 +99,7 @@
 1. Create the route using the following command:
 
    ```
-   aws appmesh-preview create-route --cli-input-json file://create-route-retry-policy.json
+   aws appmesh create-route --cli-input-json file://create-route-retry-policy.json
    ```
+
+------

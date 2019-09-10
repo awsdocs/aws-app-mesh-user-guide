@@ -4,7 +4,7 @@ A route is associated with a virtual router\. It is used to match requests for t
 
 ## Creating a Route<a name="create-route"></a>
 
-To create a route using the AWS Management Console, complete the following steps\. To create a route using the AWS CLI version 1\.16\.219 or higher, see the examples in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
+To create a route using the AWS Management Console, complete the following steps\. To create a route using the AWS CLI version 1\.16\.235 or higher, see the examples in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
@@ -38,11 +38,21 @@ To create a route using the AWS Management Console, complete the following steps
 
 1. \(Optional\) Select **Add header** to add up to ten headers\. 
 
+1. \(Optional\) For **Retry timeout**, enter the number of units for the timeout duration\. For additional information about retry policy, see [Retry Policy](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-retry-policy.html)\. 
+
+1. \(Optional\) For **Retry timeout unit**, select a unit\.
+
+1. \(Optional\) For **Max retries**, enter the number of times to retry the route when an attempt fails\.
+
+1. \(Optional\) Select one or more **HTTP retry events**\.
+
+1. \(Optional\) Select a **TCP retry event**\.
+
 1. Choose **Create route** to finish\.
 
 ## Deleting a Route<a name="delete-route"></a>
 
-To delete a route using the AWS Management Console, complete the following steps\. To delete a route using the AWS CLI version 1\.16\.219 or higher, see the examples in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html) command\.
+To delete a route using the AWS Management Console, complete the following steps\. To delete a route using the AWS CLI version 1\.16\.235 or higher, see the examples in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 

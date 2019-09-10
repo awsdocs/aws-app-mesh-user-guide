@@ -1,6 +1,6 @@
 # HTTP Headers<a name="route-http-headers"></a>
 
-To create a route that routes traffic based on the presence and values of headers in a request, complete the following steps\. To create a route using the AWS CLI version 1\.16\.219 or higher, see the examples in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
+To create a route that routes traffic based on the presence and values of headers in a request, complete the following steps\. To create a route using the AWS CLI version 1\.16\.235 or higher, see the examples in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
@@ -33,5 +33,15 @@ To create a route that routes traffic based on the presence and values of header
 1. \(Optional\) Select **Add header**\. Enter the **Header name** that you want to route based on, select a **Match type**, and enter a **Match value**\. Selecting **Invert** will match the opposite\. For example, if you specified a header named `clientRequestId` with a **Prefix** of `123`, and selected **Invert**, then the route would be matched for any request that had a header that started with anything other than `123`\.
 
 1. \(Optional\) Select **Add header** to add up to ten headers\. 
+
+1. \(Optional\) For **Retry timeout**, enter the number of units for the timeout duration\. For additional information about retry policy, see [Retry Policy](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-retry-policy.html)\. 
+
+1. \(Optional\) For **Retry timeout unit**, select a unit\.
+
+1. \(Optional\) For **Max retries**, enter the number of times to retry the route when an attempt fails\.
+
+1. \(Optional\) Select one or more **HTTP retry events**\.
+
+1. \(Optional\) Select a **TCP retry event**\.
 
 1. Choose **Create route** to finish\.
