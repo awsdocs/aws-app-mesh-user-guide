@@ -1,6 +1,6 @@
 # Path\-based Routing<a name="route-path"></a>
 
- To create a route with path\-based routing using the AWS Management Console, complete the following steps\. To create a route using the AWS CLI version 1\.16\.235 or higher, see the examples in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
+ To create a route with path\-based routing using the AWS Management Console, complete the following steps\. To create a route using the AWS CLI version 1\.16\.235 or higher, see the example in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
@@ -14,7 +14,7 @@
 
 1. For **Route name**, specify the name to use for your route\.
 
-1. For **Route type**, choose the protocol for your route\.
+1. For **Route type**, choose the protocol for your route\. The protocol that you select must match the listener protocol that you selected for your virtual router and the virtual node that you're routing traffic to\.
 
 1. \(Optional\) For **Route priority**, specify a priority from 0\-1000 to use for your route\. Routes are matched based on the specified value, where 0 is the highest priority\.
 

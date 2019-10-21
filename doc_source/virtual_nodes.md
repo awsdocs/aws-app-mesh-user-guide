@@ -4,16 +4,18 @@ A virtual node acts as a logical pointer to a particular task group, such as an 
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/app-mesh/latest/userguide/images/virtual_node.png)
 
-When you create a virtual node, you must specify a service discovery method for your task group\. Any inbound traffic that your virtual node expects should be specified as a *listener*\. Any outbound traffic that your virtual node expects to reach should be specified as a *backend*\.
+Any When you create a virtual node, you must specify a service discovery method for your task group\. Any inbound traffic that your virtual node expects is specified as a *listener*\. Any virtual service that a virtual node sends outbound traffic to is specified as a *backend*\.
 
-The response metadata for your new virtual node contains the Amazon Resource Name \(ARN\) that is associated with the virtual node\. Set this value \(either the full ARN or the truncated resource name\) as the `APPMESH_VIRTUAL_NODE_NAME` environment variable for your task group's Envoy proxy container in your task definition or pod spec\. For example, the value could be `mesh/default/virtualNode/simpleapp`\. This is then mapped to the `node.id` and `node.cluster` Envoy parameters\.
+The response metadata for your new virtual node contains the Amazon Resource Name \(ARN\) that is associated with the virtual node\. Set this value \(either the full ARN or the truncated resource name\) as the `APPMESH_VIRTUAL_NODE_NAME` environment variable for your task group's Envoy proxy container in your Amazon ECS task definition or Kubernetes pod spec\. For example, the value could be `mesh/default/virtualNode/simpleapp`\. This is then mapped to the `node.id` and `node.cluster` Envoy parameters\.
 
 **Note**  
 If you require your Envoy stats or tracing to use a different name, you can override the `node.cluster` value that is set by `APPMESH_VIRTUAL_NODE_NAME` with the `APPMESH_VIRTUAL_NODE_CLUSTER` environment variable\.
 
 ## Creating a Virtual Node<a name="create-virtual-node"></a>
 
-To create a virtual node using the AWS Management Console complete the following steps\. To create a virtual node using the AWS CLI, use the `aws appmesh create-virtual-node` command\. For CLI examples of creating virtual nodes with different settings, see [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html)\.
+To create a virtual node, select the tool that you want to use to create it\.
+
+### AWS Management Console<a name="console"></a>
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
@@ -55,6 +57,65 @@ Logs must still be ingested by an agent in your application and sent to a destin
    1. For **Unhealthy threshold**, specify the number of consecutive failed health checks that must occur before declaring the listener unhealthy\. 
 
 1. Choose **Create virtual node** to finish\. 
+
+### AWS CLI<a name="cli"></a>
+
+To create a virtual node with released features using the AWS CLI version 1\.16\.235 or higher, see the example in the AWS CLI reference for the [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) command\.
+
+ \([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) You can create a virtual node with an HTTP2 or GRPC listener\. To create a virtual node with an HTTP2 listener and health check, complete the following steps\.
+
+1. Download the Preview Channel service model with the following command\.
+
+   ```
+   curl -o appmesh-preview-channel-service-model.json https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   ```
+
+1. Add the Preview Channel service model to the AWS CLI with the following command\.
+
+   ```
+   aws configure add-model \
+       --service-name appmesh-preview \
+       --service-model file://appmesh-preview-channel-service-model.json
+   ```
+
+1. Create a JSON file named `create-virtual-node.json` with a virtual node configuration\. In the following example JSON file, a virtual node is created with an HTTP2 listener in a mesh named *app1*\. A health check is defined using the HTTP2 protocol\. You can replace *http2* under `portMapping` with `grpc` to specify the GRPC protocol for the listener\. If you specify `grpc` for the listener protocol, any specified `path` in a health check is ignored\. GRPC has a standardized health check protocol\. For more information, see [GRPC Health Checking Protocol](https://github.com/grpc/grpc/blob/master/doc/health-checking.md)\.
+
+   ```
+   {
+      "meshName" : "app1",
+      "spec" : {
+         "listeners" : [
+            {
+               "healthCheck" : {
+                  "healthyThreshold" : 3,
+                  "intervalMillis" : 10000,
+                  "path" : "/",
+                  "port" : 8000,
+                  "protocol" : "http2",
+                  "timeoutMillis" : 3000,
+                  "unhealthyThreshold" : 3
+               },
+               "portMapping" : {
+                  "port" : 8000,
+                  "protocol" : "http2"
+               }
+            }
+         ],
+         "serviceDiscovery" : {
+            "dns" : {
+               "hostname" : "serviceB-http2.mesh.local"
+            }
+         }
+      },
+      "virtualNodeName" : "serviceB-http2"
+   }
+   ```
+
+1. Create the virtual node with the following command\.
+
+   ```
+   aws appmesh-preview create-virtual-node --cli-input-json file://create-virtual-node.json
+   ```
 
 ## Deleting a Virtual Node<a name="delete-virtual-node"></a>
 

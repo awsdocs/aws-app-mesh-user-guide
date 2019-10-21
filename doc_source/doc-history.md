@@ -4,6 +4,7 @@ The following table describes the major updates and new features for the *AWS Ap
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [HTTP2 and GRPC support for routes, virtual routers, and virtual nodes](https://docs.aws.amazon.com//app-mesh/latest/userguide/routes.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) You can route traffic that uses the HTTP2 and GRPC protocols\. You can also add listeners for these protocols to [virtual nodes](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_nodes) and [virtual routers](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_routers)\. In all of the linked topics, select the AWS CLI instructions\. | October 1, 2019 | 
 | [Retry policy](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-retry-policy.html) | A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. You can add retry logic to a route\. | September 10, 2019 | 
 | [TLS encryption](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual-node-tls.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) Encrypt communication between virtual nodes using TLS\. | September 6, 2019 | 
 | [HTTP header\-based routing](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-http-headers.html) | Route traffic based on the presence and values of HTTP headers in a request\. | August 15, 2019 | 

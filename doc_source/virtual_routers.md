@@ -8,9 +8,9 @@ Any inbound traffic that your virtual router expects should be specified as a *l
 
 ## Creating a Virtual Router<a name="create-virtual-router"></a>
 
-This topic helps you to create a virtual router in your service mesh\.
+To create a virtual router, select the tool that you want to use to create it\.
 
-**Creating a virtual router in the AWS Management Console\.**
+### AWS Management Console<a name="console"></a>
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
@@ -26,32 +26,47 @@ This topic helps you to create a virtual router in your service mesh\.
 
 1. Choose **Create virtual router** to finish\.
 
-**Creating a virtual router in the AWS CLI\.**
-+ The following JSON represents a virtual router named `serviceB` that listens for HTTP traffic on port 80\.
+### AWS CLI<a name="cli"></a>
 
-  ```
-  {
-    "meshName": "simpleapp",
-    "spec": {
-          "listeners": [
-              {
-                  "portMapping": {
-                      "port": 80,
-                      "protocol": "http"
-                  }
-              }
-          ]
-      },
-    "virtualRouterName": "serviceB"
-  }
-  ```
+To create a virtual router with released features using the AWS CLI version 1\.16\.235 or higher, see the example in the AWS CLI reference for the [create\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-router.html) command\.
 
-  If you save the preceding JSON as a file, you can create the virtual router with the following AWS CLI command\.
+ \([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) To create a virtual router with an HTTP2 or GRPC listener\.
 
-  ```
-  aws appmesh create-virtual-router --cli-input-json file://serviceB-router.json
-  ```
-**Note**  
-You must use at least version 1\.16\.235 of the AWS CLI with App Mesh\. To install the latest version of the AWS CLI, see [Installing the AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/installing.html) in the *AWS Command Line Interface User Guide*\.
+1. Download the Preview Channel service model with the following command\.
 
-  For more information about creating virtual routers with the AWS CLI, see [create\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-router.html) in the *AWS Command Line Interface User Guide*\.
+   ```
+   curl -o appmesh-preview-channel-service-model.json https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   ```
+
+1. Add the Preview Channel service model to the AWS CLI with the following command\.
+
+   ```
+   aws configure add-model \
+       --service-name appmesh-preview \
+       --service-model file://appmesh-preview-channel-service-model.json
+   ```
+
+1. Create a JSON file named `create-virtual-router.json` with a virtual router configuration\. In the following example JSON file, a virtual router with an HTTP2 listener is created in a mesh named *app1*\. Alternately, for `protocol` you can replace *http2* with `grpc`\.
+
+   ```
+   {
+       "meshName": "app1",
+       "spec": {
+           "listeners": [
+               {
+                   "portMapping": {
+                       "port": 80,
+                       "protocol": "http2"
+                   }
+               }
+           ]
+       },
+       "virtualRouterName": "serviceB-http2"
+   }
+   ```
+
+1. Create the virtual router with the following command\.
+
+   ```
+   aws appmesh-preview create-virtual-router --cli-input-json file://create-virtual-router.json
+   ```

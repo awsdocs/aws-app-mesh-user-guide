@@ -37,6 +37,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Creating App Mesh IAM Policies](MESH_IAM_user_policies.md)
    + [Using Service-Linked Roles for App Mesh](using-service-linked-roles.md)
    + [Proxy Authorization](proxy-authorization.md)
++ [Logging App Mesh API Calls with AWS CloudTrail](logging-using-cloudtrail.md)
 + [App Mesh Preview Channel](preview.md)
 + [AWS App Mesh Service Limits](service_limits.md)
 + [Document History for App Mesh](doc-history.md)

@@ -1,9 +1,6 @@
 # Retry policy<a name="route-retry-policy"></a>
 
-A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. You can add retry logic to a route\. You can create a route with a retry policy using the AWS Management Console or the AWS CLI\. Select the name of the tool that you want to create a route with\. 
-
-------
-#### [ AWS Management Console ]
+A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. You can add retry logic to a route\. To create a route using the AWS Management Console, complete the following steps\. To create a route using the AWS CLI version 1\.16\.235 or higher, see the example in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
@@ -17,7 +14,7 @@ A retry policy enables clients to protect themselves from intermittent network f
 
 1. For **Route name**, specify the name to use for your route\.
 
-1. For **Route type**, choose the protocol for your route\.
+1. For **Route type**, choose the protocol for your route\. The protocol that you select must match the listener protocol that you selected for your virtual router and the virtual node that you're routing traffic to\.
 
 1. \(Optional\) For **Route priority**, specify a priority from 0\-1000 to use for your route\. Routes are matched based on the specified value, where 0 is the highest priority\.
 
@@ -48,58 +45,3 @@ A retry policy enables clients to protect themselves from intermittent network f
 1. \(Optional\) Select a **TCP retry event**\.
 
 1. Choose **Create route** to finish\.
-
-------
-#### [ AWS CLI ]
-
-1. Create a JSON file named *create\-route\-retry\-policy\.json* with a route configuration\. In the following JSON example, a route with a retry policy is created\. The retry policy attempts to route traffic *3* times when it receives a TCP `connection error` or an HTTP `server-error` or `gateway-error`\. Each retry attempt waits *15* *seconds* before timing out\. For the route to create successfully, a mesh and virtual node with the names specified must exist \.
-
-   ```
-   {
-      "meshName" : "App1",
-      "routeName" : "Route-retries1",
-      "spec" : {
-         "httpRoute" : {
-            "action" : {
-               "weightedTargets" : [
-                  {
-                     "virtualNode" : "ServiceB",
-                     "weight" : 100
-                  }
-               ]
-            },
-            "match" : {
-               "prefix" : "/"
-            },
-            "retryPolicy" : {
-               "perRetryTimeout" : {
-                  "value": 15,
-                  "unit": "s"
-               },
-               "maxRetries" : 3,
-               "httpRetryEvents" : [ "server-error", "gateway-error" ],
-               "tcpRetryEvents" : [ "connection-error" ]
-            }
-         }
-      },
-      "virtualRouterName" : "Virtual-router1"
-   }
-   ```
-
-   You must specify at least one value for `httpRetryEvents`, or at least one value for `tcpRetryEvents`\. You can also specify at least one value for each setting\. The only valid value for `tcpRetryEvents` is `connection-error`\. Valid values for `httpRetryEvents` include the following: 
-   + `server-error` – HTTP status codes `500`, `501`, `502`, `503`, `504`, `505`, `506`, `507`, `508`, `510`, and `511`
-   + `gateway-error` – HTTP status codes `502`, `503`, and `504`
-   + `client-error` – HTTP status code `409`
-   + `stream-error` – Retry on refused stream
-
-   The `maxRetries` value is optional, and the default is `1`\. The `perRetryTimeout` settings are optional, and the default is `15s`\. Valid values for `unit` include the following:
-   + `ms` – milliseconds
-   + `s` – seconds
-
-1. Create the route using the following command:
-
-   ```
-   aws appmesh create-route --cli-input-json file://create-route-retry-policy.json
-   ```
-
-------
