@@ -8,9 +8,7 @@ Any inbound traffic that your virtual router expects should be specified as a *l
 
 ## Creating a Virtual Router<a name="create-virtual-router"></a>
 
-To create a virtual router, select the tool that you want to use to create it\.
-
-### AWS Management Console<a name="console"></a>
+To create a virtual router using the AWS Management Console, complete the following steps\. To create a virtual router using the AWS CLI version 1\.16\.235 or higher, see the example in the AWS CLI reference for the [create\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-router.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
@@ -26,47 +24,19 @@ To create a virtual router, select the tool that you want to use to create it\.
 
 1. Choose **Create virtual router** to finish\.
 
-### AWS CLI<a name="cli"></a>
+## Deleting a Virtual Router<a name="delete-virtual-router"></a>
 
-To create a virtual router with released features using the AWS CLI version 1\.16\.235 or higher, see the example in the AWS CLI reference for the [create\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-router.html) command\.
+To delete a virtual router using the AWS Management Console complete the following steps\. To delete a virtual router using the AWS CLI, use the `aws appmesh delete-virtual-router` command\. For an example of deleting a virtual router using the AWS CLI, see [delete\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-router.html)\.
 
- \([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) To create a virtual router with an HTTP2 or GRPC listener\.
+**Note**  
+You cannot delete a virtual router if it has any [routes](routes.md) or if it is specified as a provider for any [virtual service](virtual_services.md)\.
 
-1. Download the Preview Channel service model with the following command\.
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
-   ```
-   curl -o appmesh-preview-channel-service-model.json https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
-   ```
+1. Choose the mesh that you want to delete a virtual router from\.
 
-1. Add the Preview Channel service model to the AWS CLI with the following command\.
+1. Choose **Virtual routers** in the left navigation\.
 
-   ```
-   aws configure add-model \
-       --service-name appmesh-preview \
-       --service-model file://appmesh-preview-channel-service-model.json
-   ```
+1. In the **Virtual Routers** table, choose the virtual router that you want to delete and select **Delete**\.
 
-1. Create a JSON file named `create-virtual-router.json` with a virtual router configuration\. In the following example JSON file, a virtual router with an HTTP2 listener is created in a mesh named *app1*\. Alternately, for `protocol` you can replace *http2* with `grpc`\.
-
-   ```
-   {
-       "meshName": "app1",
-       "spec": {
-           "listeners": [
-               {
-                   "portMapping": {
-                       "port": 80,
-                       "protocol": "http2"
-                   }
-               }
-           ]
-       },
-       "virtualRouterName": "serviceB-http2"
-   }
-   ```
-
-1. Create the virtual router with the following command\.
-
-   ```
-   aws appmesh-preview create-virtual-router --cli-input-json file://create-virtual-router.json
-   ```
+1. In the confirmation box, type **delete** and then select **Delete**\.
