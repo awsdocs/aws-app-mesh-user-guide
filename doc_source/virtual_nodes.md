@@ -13,7 +13,7 @@ If you require your Envoy stats or tracing to use a different name, you can over
 
 ## Creating a Virtual Node<a name="create-virtual-node"></a>
 
-To create a virtual node using the AWS Management Console, complete the following steps\. To create a virtual node using the AWS CLI version 1\.16\.235 or higher, see the example in the AWS CLI reference for the [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) command\.
+To create a virtual node using the AWS Management Console, complete the following steps\. To create a virtual node using the AWS CLI version 1\.16\.266 or higher, see the example in the AWS CLI reference for the [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
@@ -28,7 +28,7 @@ To create a virtual node using the AWS Management Console, complete the followin
    + **AWS Cloud Map** – Specify the service name and namespace\. Optionally, you can also specify attributes that App Mesh can query AWS Cloud Map for\. Only instances that match all of the specified key/value pairs will be returned\. To use AWS Cloud Map, your account must have the `AWSServiceRoleForAppMesh` [service\-linked role](using-service-linked-roles.md)\. 
    + **None** – Select if your virtual node doesn't expect any inbound traffic\. 
 
-1. To specify any backends \(for egress traffic\) for your virtual node, or to configure inbound and outbound access logging information, choose **Additional configuration** 
+1. To specify any backends \(for egress traffic\) for your virtual node, or to configure inbound and outbound access logging information, choose **Additional configuration**\.
 
    1. To specify a backend, choose **Add backend** and enter a virtual service name or full Amazon Resource Name \(ARN\) for the virtual service that your virtual node communicates with\. Repeat this step until all of your virtual node backends are accounted for\. 
 
@@ -38,9 +38,9 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. If your virtual node expects ingress traffic, specify a **Port** and **Protocol** for the **Listener**\. 
 
-1. If you want to configure health checks for your listener, ensure that **Health check enabled** is selected and then complete the following substeps\. If not, clear this check box\. 
+1. If you want to configure a health check for your listener, ensure that **Health check enabled** is selected and then complete the following substeps\. If not, clear this check box\. A health check policy is optional, but if you specify any values for a health policy, then you must specify values for **Healthy threshold**, **Health check interval**, **Health check protocol**, **Timeout period**, and **Unhealthy threshold**\.
 
-   1. For **Health check protocol**, choose to use an HTTP or TCP health check\. 
+   1. For **Health check protocol**, choose a protocol\. 
 
    1. For **Health check port**, specify the port that the health check should run on\. 
 
@@ -48,7 +48,7 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
    1. For **Health check interval**, specify the time period in milliseconds between each health check execution\. 
 
-   1. For **Path**, specify the destination path for the health check request\. This is required only if the specified protocol is HTTP\. If the protocol is TCP, this parameter is ignored\. 
+   1. For **Path**, specify the destination path for the health check request\. This value is only used if the **Health check protocol** is `http` or `http2`\. The value is ignored for other protocols\. 
 
    1. For **Timeout period**, specify the amount of time to wait when receiving a response from the health check, in milliseconds\. 
 

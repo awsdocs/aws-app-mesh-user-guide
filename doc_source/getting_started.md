@@ -50,7 +50,7 @@ Any inbound traffic that your virtual node expects should be specified as a *lis
    + **AWS Cloud Map** – Specify the service name and namespace\. Optionally, you can also specify attributes that App Mesh can query AWS Cloud Map for\. Only instances that match all of the specified key/value pairs will be returned\. To use AWS Cloud Map, your account must have the `AWSServiceRoleForAppMesh` [service\-linked role](using-service-linked-roles.md)\. 
    + **None** – Select if your virtual node doesn't expect any inbound traffic\. 
 
-1. To specify any backends \(for egress traffic\) for your virtual node, or to configure inbound and outbound access logging information, choose **Additional configuration** 
+1. To specify any backends \(for egress traffic\) for your virtual node, or to configure inbound and outbound access logging information, choose **Additional configuration**\.
 
    1. To specify a backend, choose **Add backend** and enter a virtual service name or full Amazon Resource Name \(ARN\) for the virtual service that your virtual node communicates with\. Repeat this step until all of your virtual node backends are accounted for\. 
 
@@ -60,9 +60,9 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. If your virtual node expects ingress traffic, specify a **Port** and **Protocol** for the **Listener**\. 
 
-1. If you want to configure health checks for your listener, ensure that **Health check enabled** is selected and then complete the following substeps\. If not, clear this check box\. 
+1. If you want to configure a health check for your listener, ensure that **Health check enabled** is selected and then complete the following substeps\. If not, clear this check box\. A health check policy is optional, but if you specify any values for a health policy, then you must specify values for **Healthy threshold**, **Health check interval**, **Health check protocol**, **Timeout period**, and **Unhealthy threshold**\.
 
-   1. For **Health check protocol**, choose to use an HTTP or TCP health check\. 
+   1. For **Health check protocol**, choose a protocol\. 
 
    1. For **Health check port**, specify the port that the health check should run on\. 
 
@@ -70,7 +70,7 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
    1. For **Health check interval**, specify the time period in milliseconds between each health check execution\. 
 
-   1. For **Path**, specify the destination path for the health check request\. This is required only if the specified protocol is HTTP\. If the protocol is TCP, this parameter is ignored\. 
+   1. For **Path**, specify the destination path for the health check request\. This value is only used if the **Health check protocol** is `http` or `http2`\. The value is ignored for other protocols\. 
 
    1. For **Timeout period**, specify the amount of time to wait when receiving a response from the health check, in milliseconds\. 
 
@@ -90,7 +90,7 @@ In this step, you configure a virtual router to handle requests that are made to
 
 1. For **Route name**, specify the name to use for your route\.
 
-1. For **Route type**, choose the protocol for your route\.
+1. For **Route type**, choose the protocol that you want to route\.
 
 1. \(Optional\) For **Route priority**, specify a priority from 0\-1000 to use for your route\. Routes are matched based on the specified value, where 0 is the highest priority\.
 
@@ -102,13 +102,13 @@ In this step, you configure a virtual router to handle requests that are made to
 
 1. \(Optional\) To use HTTP path\-based routing, specify the **Prefix** that the route should match\. For additional information about path\-based routing, see [Path\-based Routing](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-path.html)\. 
 
-1. \(Optional\) Select a **Method** to use header\-based routing for your route\. For additional information about HTTP header\-based routing, see [HTTP Headers](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-http-headers.html)\. 
+1. \(Optional\) Select a **Method**\. For additional information about HTTP header\-based routing, see [HTTP Headers](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-http-headers.html)\. 
 
-1. \(Optional\) Select a **Scheme** to use header\-based routing for your route\. 
+1. \(Optional\) Select a **Scheme**\. 
 
-1. \(Optional\) Select **Add header**\. Enter the **Header name** that you want to route based on, select a **Match type**, and enter a **Match value**\. Selecting **Invert** will match the opposite\. 
+1. \(Optional\) Select **Add header**\. Enter the **Header name** that you want to route based on, select a **Match type**, and enter a **Match value**\. Selecting **Invert** will match the opposite\.
 
-1. \(Optional\) Select **Add header** to add up to ten headers\. 
+1. \(Optional\) Select **Add header**\. You can add up to ten headers\. 
 
 1. Choose **Next** to proceed\.
 
