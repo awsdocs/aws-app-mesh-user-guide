@@ -55,4 +55,4 @@ Use the IAM console, the AWS CLI, or the AWS API to delete the AWSServiceRoleFor
 
 ## Supported Regions for App Mesh Service\-Linked Roles<a name="slr-regions"></a>
 
-App Mesh supports using service\-linked roles in all of the regions where the service is available\. For more information, see [AWS Regions and Endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#appmesh_region)\.
+App Mesh supports using service\-linked roles in all of the Regions where the service is available\. For more information, see [AWS Regions and Endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#appmesh_region)\.

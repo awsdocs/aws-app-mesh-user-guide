@@ -62,7 +62,7 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. If you want to configure a health check for your listener, ensure that **Health check enabled** is selected and then complete the following substeps\. If not, clear this check box\. A health check policy is optional, but if you specify any values for a health policy, then you must specify values for **Healthy threshold**, **Health check interval**, **Health check protocol**, **Timeout period**, and **Unhealthy threshold**\.
 
-   1. For **Health check protocol**, choose a protocol\. 
+   1. For **Health check protocol**, choose a protocol\. If you select **grpc**, then your service must conform to the [GRPC Health Checking Protocol](https://github.com/grpc/grpc/blob/master/doc/health-checking.md)\. 
 
    1. For **Health check port**, specify the port that the health check should run on\. 
 
