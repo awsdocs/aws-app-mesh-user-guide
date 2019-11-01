@@ -52,7 +52,7 @@ Though the example in the table for the App Mesh production service lists the `u
    aws appmesh-preview create-route --cli-input-json file://route.json
    ```
 
-1. Add `APPMESH_PREVIEW = 1` as a configuration variable for the Envoy container when adding it to your Amazon ECS task definitions, Kubernetes Pod specifications, or Amazon EC2 instances\. This variable enables the Envoy container to communicate with the Preview Channel endpoints\. For more information about adding configuration variables, see [Update Your Microservice Task Definitions](mesh-getting-started-ecs.md#mesh-gs-ecs-update-microservices), [Updating Your Microservice Pod Specifications](mesh-getting-started-k8s.md#mesh-gs-k8s-update-microservices), and [Getting Started with AWS App Mesh and Amazon EC2](mesh-getting-started-ec2.md)\.
+1. Add `APPMESH_PREVIEW = 1` as a configuration variable for the Envoy container when adding it to your Amazon ECS task definitions, Kubernetes Pod specifications, or Amazon EC2 instances\. This variable enables the Envoy container to communicate with the Preview Channel endpoints\. For more information about adding configuration variables, see [Getting Started with App Mesh and Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/userguide/appmesh-getting-started.html#update-microservices), [Getting Started with App Mesh and Kubernetes](https://docs.aws.amazon.com/eks/latest/userguide/appmesh-getting-started.html#update-microservices), and [Updating microservices on Amazon EC2](https://docs.aws.amazon.com//app-mesh/latest/userguide/appmesh-getting-started.html#update-microservices)\.
 
 ## How do I provide feedback?<a name="provide-feedback"></a>
 

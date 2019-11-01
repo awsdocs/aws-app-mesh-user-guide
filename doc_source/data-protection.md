@@ -18,7 +18,7 @@ Your data is encrypted when using App Mesh\.
 
 ### Encryption at Rest<a name="encryption-at-rest"></a>
 
-All of the data and configuration that you create is encrypted at rest\.
+All of the data and configurations that you create are encrypted at rest\.
 
 ### Encryption in Transit<a name="encryption-in-transit"></a>
 

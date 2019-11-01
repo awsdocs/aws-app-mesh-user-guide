@@ -15,7 +15,7 @@ This documentation helps you understand how to apply the shared responsibility m
 **Topics**
 + [Data Protection in AWS App Mesh](data-protection.md)
 + [Identity and Access Management for AWS App Mesh](security-iam.md)
-+ [Logging and Monitoring in AWS App Mesh](logging-monitoring.md)
++ [Logging App Mesh API Calls with AWS CloudTrail](logging-using-cloudtrail.md)
 + [Compliance Validation for AWS App Mesh](compliance.md)
 + [Resilience in AWS App Mesh](disaster-recovery-resiliency.md)
 + [Infrastructure Security in App Mesh](infrastructure-security.md)

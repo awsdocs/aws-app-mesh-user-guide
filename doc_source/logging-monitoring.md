@@ -1,3 +1,0 @@
-# Logging and Monitoring in AWS App Mesh<a name="logging-monitoring"></a>
-
-App Mesh is integrated with AWS CloudTrail, a service that provides a record of actions taken by a user, role, or an AWS service in App Mesh\. CloudTrail captures all API calls for App Mesh as events\. The calls captured include calls from the App Mesh console and code calls to the App Mesh API operations\. For more information, see [Logging App Mesh API Calls with AWS CloudTrail](logging-using-cloudtrail.md)\. 

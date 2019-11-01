@@ -6,4 +6,4 @@ App Mesh runs its control plane instances across multiple Availability Zones to 
 
 ## Disaster Recovery in AWS App Mesh<a name="disaster-recovery"></a>
 
-The App Mesh service manages backups of customer data\. There is nothing that you need to do to manage backups\. The backed up data is stored encrypted\.
+The App Mesh service manages backups of customer data\. There is nothing that you need to do to manage backups\. The backed\-up data is encrypted\.

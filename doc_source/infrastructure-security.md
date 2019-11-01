@@ -8,4 +8,4 @@ Additionally, requests must be signed by using an access key ID and a secret acc
 
 The Envoy proxy is deployed with a microservice application that is running on an AWS compute service\. Each of the compute services are deployed within an Amazon VPC\.
 
-You can improve the security posture of your VPC by configuring App Mesh to use an interface VPC endpoint\. Interface endpoints are powered by AWS PrivateLink, a technology that enables you to privately access App Mesh APIs by using private IP addresses\. PrivateLink restricts all network traffic between your VPC and App Mesh to the Amazon network\. For more information, see [App Mesh Interface VPC Endpoints \(AWS PrivateLink\)](vpc-endpoints.md)\.
+You can improve the security posture of your VPC by configuring App Mesh to use an interface VPC endpoint\. For more information, see [App Mesh Interface VPC Endpoints \(AWS PrivateLink\)](vpc-endpoints.md)\.
