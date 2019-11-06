@@ -4,7 +4,7 @@ This topic helps you use AWS App Mesh with an actual microservice application th
 
 ## Scenario<a name="scenario"></a>
 
-To illustrate how to use App Mesh , assume that have an application with the following characteristics:
+To illustrate how to use App Mesh, assume that you have an application with the following characteristics:
 + Includes two services named `serviceA` and `serviceB`\. 
 + Both services are registered to a namespace named `apps.local`\.
 + `ServiceA` communicates with `serviceB` over HTTP/2, port 80\.

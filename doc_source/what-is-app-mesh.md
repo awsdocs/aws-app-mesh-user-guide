@@ -29,7 +29,7 @@ To get started using the App Mesh console first\-run wizard, see [Getting Starte
 You can work with App Mesh in the following ways:
 
 **AWS Management Console**  
-The console is a browser\-based interface to manage App Mesh resources\. For a tutorial that guides you through the console, see [Getting Started](file://AWSShared/ec2-container-shared/mesh-gs.xml)\.
+The console is a browser\-based interface to manage App Mesh resources\. For a tutorial that guides you through the console, see [Getting Started](https://docs.aws.amazon.com//app-mesh/latest/userguide/appmesh-getting-started.html)\.
 
 **AWS command line tools**  
 You can use the AWS command line tools to issue commands at your system's command line to perform App Mesh and AWS tasks\. This can be faster and more convenient than using the console\. The command line tools are also useful for building scripts that perform AWS tasks\.  
