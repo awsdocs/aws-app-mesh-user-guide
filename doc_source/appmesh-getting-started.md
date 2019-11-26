@@ -481,7 +481,7 @@ After creating your mesh, you need to complete the following tasks:
 1. Authenticate to the Envoy Amazon ECR repository so that your Docker client can pull the container image\. You can replace *us\-west\-2* with any Region that App Mesh is supported in\. For a list of supported regions, see [AWS Service Endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#appmesh_region)\.
 
    ```
-   $(aws ecr get-login --no-include-email --region us-west-2 --registry-ids 111345817488)
+   $(aws ecr get-login --no-include-email --region us-west-2 --registry-ids 840364872350)
    ```
 
 1. Run the following command to start the App Mesh Envoy container on your instance\. You can replace the *us\-west\-2* with any Region that App Mesh is supported in\. The *apps* and *serviceB* values are the mesh and virtual node names defined in the scenario\. To complete the scenario, you also need to complete these steps for the Amazon EC2 instances that host the services represented by the `serviceBv2` and `serviceA` virtual nodes\. For your own application, replace these values with your own\.
