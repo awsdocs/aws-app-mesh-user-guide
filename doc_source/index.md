@@ -39,6 +39,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Infrastructure Security in App Mesh](infrastructure-security.md)
       + [App Mesh Interface VPC Endpoints (AWS PrivateLink)](vpc-endpoints.md)
    + [Configuration and Vulnerability Analysis in AWS App Mesh](configuration-vulnerability-analysis.md)
++ [App Mesh on AWS Outposts](app-mesh-on-outposts.md)
 + [App Mesh Preview Channel](preview.md)
 + [AWS App Mesh Service Limits](service_limits.md)
 + [Document History for App Mesh](doc-history.md)
