@@ -4,7 +4,7 @@ The following table describes the major updates and new features for the *AWS Ap
 
 | Change | Description | Date | 
 | --- |--- |--- |
-| [https://docs.aws.amazon.com//app-mesh/latest/userguide/app-mesh-on-outposts.html](https://docs.aws.amazon.com//app-mesh/latest/userguide/app-mesh-on-outposts.html) | You can create an App Mesh Envoy proxy on an AWS Outpost\. | December 3, 2019 | 
+| [Create an App Mesh proxy on an AWS Outpost](https://docs.aws.amazon.com//app-mesh/latest/userguide/app-mesh-on-outposts.html) | You can create an App Mesh Envoy proxy on an AWS Outpost\. | December 3, 2019 | 
 | [HTTP/2 and gRPC support for routes, virtual routers, and virtual nodes](https://docs.aws.amazon.com//app-mesh/latest/userguide/routes.html) | You can route traffic that uses the HTTP/2 and gRPC protocols\. You can also add a listener for these protocols to [virtual nodes](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_nodes) and [virtual routers](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_routers)\. | October 25, 2019 | 
 | [Retry policy](https://docs.aws.amazon.com//app-mesh/latest/userguide/route-retry-policy.html) | A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. You can add retry logic to a route\. | September 10, 2019 | 
 | [TLS encryption](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual-node-tls.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) Encrypt communication between virtual nodes using TLS\. | September 6, 2019 | 

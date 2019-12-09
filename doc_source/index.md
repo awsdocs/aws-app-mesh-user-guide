@@ -41,6 +41,6 @@ Amazon's trademarks and trade dress may not be used in
    + [Configuration and Vulnerability Analysis in AWS App Mesh](configuration-vulnerability-analysis.md)
 + [App Mesh on AWS Outposts](app-mesh-on-outposts.md)
 + [App Mesh Preview Channel](preview.md)
-+ [AWS App Mesh Service Limits](service_limits.md)
++ [App Mesh Service Quotas](service-quotas.md)
 + [Document History for App Mesh](doc-history.md)
 + [AWS Glossary](glossary.md)
