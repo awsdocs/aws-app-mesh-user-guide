@@ -488,7 +488,7 @@ After creating your mesh, you need to complete the following tasks:
 
    ```
    sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
-   -u 1337 --network host 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.12.1.1-prod
+   -u 1337 --network host 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.12.2.1-prod
    ```
 
 1. Select `more` below and run the script on your instance to configure the networking policies\. Replace the `APPMESH_APP_PORTS` value with the ports that your application code uses for ingress\.

@@ -87,6 +87,134 @@ A retry policy enables clients to protect themselves from intermittent network f
 + For **Virtual node name**, choose the virtual node that this route will serve traffic to\. If none are listed, then you need to [create a virtual node](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_nodes.html) first\.
 + For **Weight**, choose a relative weight for the route\. Select **Add target** to add additional virtual nodes\. The total weight for all targets combined must be less than or equal to 100\.
 
+### App Mesh Preview Channel only \- Route Timeout<a name="route-timeout"></a>
+
+By default, the App Mesh proxy has two timeout value types:
++ **Per request** – The amount of time that a requester will wait for an upstream target to complete a response\. The default value is 15 seconds\.
++ **Idle** – Bounds the amount of time a connection may be idle\. The default value is none\.
+
+If the default timeout values don't meet your requirements, then you can specify your own values\. You can specify a per request timeout for gRPC, HTTP, and HTTP/2 routes and an idle timeout for gRPC, HTTP, HTTP/2, and TCP routes\.
+
+For an end\-to\-end walk through of using a route timeout, see [Timeout Policy Example](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-timeout-policy) on GitHub\.
+
+**To create a route with a timeout**
+
+1. Add the Preview Channel service model to the AWS CLI with the following command\.
+
+   ```
+   aws configure add-model \
+       --service-name appmesh-preview \
+       --service-model https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   ```
+
+1. Create a mesh with the following command\.
+
+   ```
+   aws appmesh-preview create-mesh --mesh-name apps
+   ```
+
+1. Create a JSON file named `create-virtual-node.json` with a virtual node configuration\.
+
+   ```
+   {
+       "meshName": "apps",
+       "spec": {
+           "listeners": [
+               {
+                   "portMapping": {
+                       "port": 80,
+                       "protocol": "http2"
+                   }
+               }
+           ],
+           "serviceDiscovery": {
+               "dns": {
+                   "hostname": "serviceB.svc.cluster.local"
+               }
+           }
+       },
+       "virtualNodeName": "serviceB"
+   }
+   ```
+
+1. Create the virtual node with the following command\.
+
+   ```
+   aws appmesh-preview create-virtual-node --cli-input-json file://create-virtual-node.json
+   ```
+
+1. Create a JSON file named `create-virtual-router.json` with a virtual router configuration\.
+
+   ```
+   {
+       "meshName": "apps",
+       "spec": {
+           "listeners": [
+               {
+                   "portMapping": {
+                       "port": 80,
+                       "protocol": "http2"
+                   }
+               }
+           ]
+       },
+       "virtualRouterName": "serviceB"
+   }
+   ```
+
+1. Create the virtual router with the following command\.
+
+   ```
+   aws appmesh-preview create-virtual-router --cli-input-json file://create-virtual-router.json
+   ```
+
+1. Create a JSON file named `create-route.json` with a route configuration\. In the following configuration, the route has `idle` and `perRequest` timeouts\. 
+
+   ```
+   {
+      "meshName" : "apps",
+      "routeName" : "http2-with-timeout",
+      "spec" : {
+         "http2Route" : {
+            "action" : {
+               "weightedTargets" : [
+                  {
+                     "virtualNode" : "serviceB",
+                     "weight" : 100
+                  }
+               ]
+            },
+            "match" : {
+               "prefix" : "/"
+            },
+            "timeout" : {
+               "idle" : {
+                  "unit" : "s",
+                  "value" : 20
+               },
+               "perRequest" : {
+                  "unit" : "s",
+                  "value" : 20
+               }
+            }
+         }
+      },
+      "virtualRouterName" : "serviceB"
+   }
+   ```
+
+   Valid values for `timeout` are:
+   + `unit` – A time unit\. Valid values are `s` and `ms`\.
+   + `value` – The number of time units\.
+
+   Specifying `0` disables the `perRequest` timeout\. Specifying `0` disables the `idle` timeout\.
+
+1. Create the route with the following command\.
+
+   ```
+   aws appmesh-preview create-route --cli-input-json file://create-route.json
+   ```
+
 ## Deleting a Route<a name="delete-route"></a>
 
 To delete a route using the AWS Management Console, complete the following steps\. To delete a route using the AWS CLI version 1\.16\.266 or higher, see the example in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html) command\.

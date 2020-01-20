@@ -30,18 +30,12 @@ Though the example in the table for the App Mesh production service lists the `u
 
 ## How can I use features in the Preview Channel?<a name="try-out"></a>
 
-1. Download the Preview Channel service model using the URL provided in the App Mesh feature documentation with the following command:
-
-   ```
-   curl -o appmesh-preview-channel-service-model.json https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
-   ```
-
 1. Add the Preview Channel service model that includes the Preview Channel feature to the AWS CLI with the following command\.
 
    ```
    aws configure add-model \
        --service-name appmesh-preview \
-       --service-model file://appmesh-preview-channel-service-model.json
+       --service-model https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
    ```
 
 1. Create a JSON file that includes the feature, based on the JSON example and instructions provided in the [AWS App Mesh User Guide](https://docs.aws.amazon.com//app-mesh/latest/userguide/) for the feature\.

@@ -1,7 +1,7 @@
 # AWS App Mesh User Guide
 
 -----
-*****Copyright &copy; 2019 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
+*****Copyright &copy; 2020 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
 
 -----
 Amazon's trademarks and trade dress may not be used in 
@@ -39,6 +39,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Infrastructure Security in App Mesh](infrastructure-security.md)
       + [App Mesh Interface VPC Endpoints (AWS PrivateLink)](vpc-endpoints.md)
    + [Configuration and Vulnerability Analysis in AWS App Mesh](configuration-vulnerability-analysis.md)
++ [Working with Shared Meshes](sharing.md)
 + [App Mesh on AWS Outposts](app-mesh-on-outposts.md)
 + [App Mesh Preview Channel](preview.md)
 + [App Mesh Service Quotas](service-quotas.md)
