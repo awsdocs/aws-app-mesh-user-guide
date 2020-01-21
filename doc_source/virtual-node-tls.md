@@ -10,7 +10,7 @@ To learn more about using features available in the Preview Channel, see [App Me
 
 ## Prerequisites<a name="virtual-node-tls-prerequisites"></a>
 
-For each virtual node that you want to enable ecnryption for, you must have the following:
+For each virtual node that you want to enable encryption for, you must have the following:
 + An existing certificate\. The Common Name \(CN\) or Subject Alternative Name \(SAN\) of the certificate must match specific criteria, depending on how the actual service represented by a virtual node is discovered\.
   + **DNS** – The certificate Common Name \(CN\) or one of the Subject Alternative Names \(SAN\) must match the value provided in the DNS service discovery settings\. You can also use wild cards, such as `*.apps.local`, in your certificates\. If the certificate CN or SAN does not match the DNS service discovery settings, the connection between Envoys fails with the following error message, as seen from the downstream \(calling\) Envoy\.
 
