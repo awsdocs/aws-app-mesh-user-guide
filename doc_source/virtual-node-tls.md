@@ -18,7 +18,7 @@ For each virtual node that you want to enable ecnryption for, you must have the 
     SSL error: 268435703:SSL routines:OPENSSL_internal:WRONG_VERSION_NUMBER
     ```
   + **AWS Cloud Map** – The certificate Common Name \(CN\) and Subject Alternative Names \(SAN\) are not considered when negotiating TLS\. You can use any names for your certificates when using AWS Cloud Map, but we recommend that you create a name that’s significant to your virtual node, such as `virtual-node-name.apps.local`\. This name can help you identify the certificate in AWS Certificate Manager\.
-+ [Proxy authorization](proxy-authorization.md) enabled for the Envoy proxy depoyed with the application represented by the virtual node\. We recommend that when you enable proxy authorization, you restrict access to only the virtual node that you're enabling encryption for\.
++ [Proxy authorization](proxy-authorization.md) enabled for the Envoy proxy deployed with the application represented by the virtual node\. We recommend that when you enable proxy authorization, you restrict access to only the virtual node that you're enabling encryption for\.
 
 ## Create a Virtual Node<a name="virtual-node-tls-create"></a>
 
