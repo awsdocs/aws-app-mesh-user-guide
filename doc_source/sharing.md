@@ -1,11 +1,13 @@
 # Working with Shared Meshes<a name="sharing"></a>
 
-\([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) A shared mesh allows resources created by different accounts to communicate with each other in the same mesh\. To learn more about using features available in the Preview Channel, see [App Mesh Preview Channel](preview.md)\. 
+\([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) A shared mesh allows resources created by different accounts to communicate with each other in the same mesh\. To learn more about using features available in the Preview Channel, see [App Mesh Preview Channel](preview.md)\. 
 
 An AWS Identity and Access Management account can be a mesh resource owner, a mesh consumer, or both\. Consumers can create resources in a mesh that is shared with their account\. Owners can create resources in any mesh the account owns\. A mesh owner can share a mesh with the following types of mesh consumers:
 + Specific AWS accounts inside or outside its organization in AWS Organizations
 + An organizational unit inside its organization in AWS Organizations
 + Its entire organization in AWS Organizations
+
+For an end\-to\-end walk through of sharing a mesh, see [Cross\-account mesh walk through](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-cross-account) on GitHub\.
 
 ## Shared Mesh Permissions<a name="sharing-permissions"></a>
 

@@ -69,6 +69,12 @@ To install the sidecar injector, complete the following steps\. If you'd like to
    export MESH_NAME=my-mesh
    ```
 
+1. Export the region of the mesh that you want to create with the following command\. Replace *region* with the Region that your Kubernetes cluster is deployed in\.
+
+   ```
+   export MESH_REGION=region
+   ```
+
 1. Download and execute the sidecar injector installation script with the following command\. 
 
    ```

@@ -32,7 +32,7 @@ To use App Mesh you must have an existing service running on AWS Fargate, Amazon
 To get started with App Mesh, see one of the following guides:
 + [Getting Started with App Mesh and Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html)
 + [Getting Started with App Mesh and Kubernetes](https://docs.aws.amazon.com/eks/latest/userguide/appmesh-getting-started.html)
-+ [Getting Started with App Mesh and Amazon EC2](https://docs.aws.amazon.com//app-mesh/latest/userguide/appmesh-getting-started.html)
++ [Getting Started with App Mesh and Amazon EC2](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html)
 
 ## Accessing App Mesh<a name="accessing_app_mesh"></a>
 
@@ -45,7 +45,7 @@ The console is a browser\-based interface that you can use to manage App Mesh re
 Provides commands for a broad set of AWS products, and is supported on Windows, Mac, and Linux\. To get started, see [AWS Command Line Interface User Guide](https://docs.aws.amazon.com/cli/latest/userguide/)\. For more information about the commands for App Mesh, see [appmesh](https://docs.aws.amazon.com/cli/latest/reference/appmesh/) in the [AWS CLI Command Reference](https://docs.aws.amazon.com/cli/latest/reference/)\.
 
 **AWS Tools for Windows PowerShell**  
-Provides commands for a broad set of AWS products for those who script in the PowerShell environment\. To get started, see [AWS Tools for Windows PowerShell User Guide](https://docs.aws.amazon.com/powershell/latest/userguide/)\. For more information about the cmdlets for App Mesh, see [App Mesh](https://docs.aws.amazon.com/powershell/latest/reference//items/AppMesh_cmdlets.html) in the [AWS Tools for PowerShell Cmdlet Reference](https://docs.aws.amazon.com/powershell/latest/reference/)\.
+Provides commands for a broad set of AWS products for those who script in the PowerShell environment\. To get started, see [AWS Tools for Windows PowerShell User Guide](https://docs.aws.amazon.com/powershell/latest/userguide/)\. For more information about the cmdlets for App Mesh, see [App Mesh](https://docs.aws.amazon.com/powershell/latest/reference/items/AppMesh_cmdlets.html) in the [AWS Tools for PowerShell Cmdlet Reference](https://docs.aws.amazon.com/powershell/latest/reference/)\.
 
 **AWS CloudFormation**  
 Enables you to create a template that describes all of the AWS resources that you want\. Using the template, AWS CloudFormation provisions and configures the resources for you\. To get started, see [AWS CloudFormation User Guide](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/)\. For more information about the App Mesh resource types, see [App Mesh Resource Type Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/AWS_AppMesh.html) in the [AWS CloudFormation Template Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-reference.html)\.
@@ -56,4 +56,4 @@ We also provide SDKs that enable you to access App Mesh from a variety of progra
 + Retrying requests
 + Handling error responses
 For more information about available SDKs, see [Tools for Amazon Web Services](https://aws.amazon.com/tools/)\.  
-For more information about the App Mesh APIs, see the [AWS App Mesh API Reference](https://docs.aws.amazon.com//app-mesh/latest/APIReference/)\.
+For more information about the App Mesh APIs, see the [AWS App Mesh API Reference](https://docs.aws.amazon.com/app-mesh/latest/APIReference/)\.

@@ -12,7 +12,7 @@ To create a route using the AWS Management Console, complete the following steps
 
 1. Choose **Virtual routers** in the left navigation\.
 
-1. Choose the virtual router that you want to associate a new route with\. If none are listed, then you need to [create a virtual router](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_routers.html) first\.
+1. Choose the virtual router that you want to associate a new route with\. If none are listed, then you need to [create a virtual router](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html) first\.
 
 1. In the **Routes** table, choose **Create route**\.
 
@@ -28,12 +28,12 @@ To create a route using the AWS Management Console, complete the following steps
 + \(Optional\) For **Route priority**, specify a priority from 0\-1000 to use for your route\. Routes are matched based on the specified value, where 0 is the highest priority\.
 
 ### Targets
-+ For **Virtual node name**, choose the virtual node that this route will serve traffic to\. If none are listed, then you need to [create a virtual node](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_nodes.html) first\.
++ For **Virtual node name**, choose the virtual node that this route will serve traffic to\. If none are listed, then you need to [create a virtual node](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html) first\.
 + For **Weight**, choose a relative weight for the route\. Select **Add target** to add additional virtual nodes\. The total weight for all targets combined must be less than or equal to 100\.
 + Choose **Additional configuration**\.
 
 ### Match
-+ \(Optional\) Enter the **Service name** of the destination service to match the request for\. If you don't specify a name, requests to any service are matched\. 
++ \(Optional\) Enter the **Service name** of the destination service to match the request for\. If you don't specify a name, requests to any service are matched\.
 + \(Optional\) Enter the **Method name** of the destination method to match the request for\. If you don't specify a name, requests to any method are matched\. If you specify a method name, you must specify a service name\.
 
 ### Metadata
@@ -56,7 +56,7 @@ A retry policy enables clients to protect themselves from intermittent network f
 + \(Optional\) For **Route priority**, specify a priority from 0\-1000 to use for your route\. Routes are matched based on the specified value, where 0 is the highest priority\.
 
 ### Targets
-+ For **Virtual node name**, choose the virtual node that this route will serve traffic to\. If none are listed, then you need to [create a virtual node](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_nodes.html) first\.
++ For **Virtual node name**, choose the virtual node that this route will serve traffic to\. If none are listed, then you need to [create a virtual node](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html) first\.
 + For **Weight**, choose a relative weight for the route\. Select **Add target** to add additional virtual nodes\. The total weight for all targets combined must be less than or equal to 100\.
 + Choose **Additional configuration**\.
 
@@ -84,7 +84,7 @@ A retry policy enables clients to protect themselves from intermittent network f
 + \(Optional\) For **Route priority**, specify a priority from 0\-1000 to use for your route\. Routes are matched based on the specified value, where 0 is the highest priority\.
 
 ### Targets
-+ For **Virtual node name**, choose the virtual node that this route will serve traffic to\. If none are listed, then you need to [create a virtual node](https://docs.aws.amazon.com//app-mesh/latest/userguide/virtual_nodes.html) first\.
++ For **Virtual node name**, choose the virtual node that this route will serve traffic to\. If none are listed, then you need to [create a virtual node](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html) first\.
 + For **Weight**, choose a relative weight for the route\. Select **Add target** to add additional virtual nodes\. The total weight for all targets combined must be less than or equal to 100\.
 
 ### App Mesh Preview Channel only \- Route Timeout<a name="route-timeout"></a>

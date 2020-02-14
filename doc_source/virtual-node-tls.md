@@ -1,6 +1,6 @@
 # TLS Encryption<a name="virtual-node-tls"></a>
 
-\([App Mesh Preview Channel](https://docs.aws.amazon.com//app-mesh/latest/userguide/preview.html) only\) In App Mesh, traffic encryption works between the Envoy proxies deployed with your applications that are represented as App Mesh virtual nodes\. Your application code is not responsible for negotiating a TLS\-encrypted session\. The proxy negotiates and terminates TLS on your application's behalf\. App Mesh allows you to provide the TLS certificate to the proxy in the following ways:
+\([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) In App Mesh, traffic encryption works between the Envoy proxies deployed with your applications that are represented as App Mesh virtual nodes\. Your application code is not responsible for negotiating a TLS\-encrypted session\. The proxy negotiates and terminates TLS on your application's behalf\. App Mesh allows you to provide the TLS certificate to the proxy in the following ways:
 + A private certificate from AWS Certificate Manager \(ACM\) that is issued by an AWS Certificate Manager Private Certificate Authority
 + A certificate stored on the local file system of a virtual node that is issued by your own certificate authority \(CA\) 
 

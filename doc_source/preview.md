@@ -38,7 +38,7 @@ Though the example in the table for the App Mesh production service lists the `u
        --service-model https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
    ```
 
-1. Create a JSON file that includes the feature, based on the JSON example and instructions provided in the [AWS App Mesh User Guide](https://docs.aws.amazon.com//app-mesh/latest/userguide/) for the feature\.
+1. Create a JSON file that includes the feature, based on the JSON example and instructions provided in the [AWS App Mesh User Guide](https://docs.aws.amazon.com/app-mesh/latest/userguide/) for the feature\.
 
 1. Implement the feature with the appropriate AWS CLI command and command input file\. For example, the following command creates a route with Preview Channel features using the *route\.json* file\.
 
@@ -46,7 +46,7 @@ Though the example in the table for the App Mesh production service lists the `u
    aws appmesh-preview create-route --cli-input-json file://route.json
    ```
 
-1. Add `APPMESH_PREVIEW = 1` as a configuration variable for the Envoy container when adding it to your Amazon ECS task definitions, Kubernetes Pod specifications, or Amazon EC2 instances\. This variable enables the Envoy container to communicate with the Preview Channel endpoints\. For more information about adding configuration variables, see [Updating services in Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/userguide/appmesh-getting-started.html#update-services), [Updating services in Kubernetes](https://docs.aws.amazon.com/eks/latest/userguide/appmesh-getting-started.html#update-services), and [Updating services on Amazon EC2](https://docs.aws.amazon.com//app-mesh/latest/userguide/appmesh-getting-started.html#update-services)\.
+1. Add `APPMESH_PREVIEW = 1` as a configuration variable for the Envoy container when adding it to your Amazon ECS task definitions, Kubernetes Pod specifications, or Amazon EC2 instances\. This variable enables the Envoy container to communicate with the Preview Channel endpoints\. For more information about adding configuration variables, see [Updating services in Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/userguide/appmesh-getting-started.html#update-services), [Updating services in Kubernetes](https://docs.aws.amazon.com/eks/latest/userguide/appmesh-getting-started.html#update-services), and [Updating services on Amazon EC2](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services)\.
 
 ## How do I provide feedback?<a name="provide-feedback"></a>
 
@@ -86,8 +86,8 @@ Yes\. Documentation for Preview Channel features is included in the production d
 
 ## How will I know when new features are available in the Preview Channel?<a name="new-features"></a>
 
-When new features are introduced in the Preview Channel, an entry is added to the [App Mesh Document History](https://docs.aws.amazon.com//app-mesh/latest/userguide/doc-history.html)\. You can review the page regularly or subscribe to the [App Mesh Document History RSS feed](https://docs.aws.amazon.com//app-mesh/latest/userguide/app-mesh-ug.rss)\. Additionally, you can review the [issues](https://github.com/aws/aws-app-mesh-roadmap/issues) for the aws\-app\-mesh\-roadmap GitHub repo\. A download link for the Preview Channel service model JSON file is added to an issue when it releases to the Preview Channel\. For more information about how to use the model and feature, see [How can I use features in the Preview Channel?](#try-out)\.
+When new features are introduced in the Preview Channel, an entry is added to the [App Mesh Document History](https://docs.aws.amazon.com/app-mesh/latest/userguide/doc-history.html)\. You can review the page regularly or subscribe to the [App Mesh Document History RSS feed](https://docs.aws.amazon.com/app-mesh/latest/userguide/app-mesh-ug.rss)\. Additionally, you can review the [issues](https://github.com/aws/aws-app-mesh-roadmap/issues) for the aws\-app\-mesh\-roadmap GitHub repo\. A download link for the Preview Channel service model JSON file is added to an issue when it releases to the Preview Channel\. For more information about how to use the model and feature, see [How can I use features in the Preview Channel?](#try-out)\.
 
 ## How will I know when a feature has graduated to the production service?<a name="feature-status"></a>
 
-The text in the App Mesh documentation noting that the feature is available only in the Preview Channel is removed, and an entry is added to the [App Mesh Document History](https://docs.aws.amazon.com//app-mesh/latest/userguide/doc-history.html)\. You can review the page regularly or subscribe to the [App Mesh Document History RSS feed](https://docs.aws.amazon.com//app-mesh/latest/userguide/app-mesh-ug.rss)\.
+The text in the App Mesh documentation noting that the feature is available only in the Preview Channel is removed, and an entry is added to the [App Mesh Document History](https://docs.aws.amazon.com/app-mesh/latest/userguide/doc-history.html)\. You can review the page regularly or subscribe to the [App Mesh Document History RSS feed](https://docs.aws.amazon.com/app-mesh/latest/userguide/app-mesh-ug.rss)\.

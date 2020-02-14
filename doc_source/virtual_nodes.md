@@ -52,8 +52,6 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
    1. For **Unhealthy threshold**, specify the number of consecutive failed health checks that must occur before declaring the listener unhealthy\.
 
-1. Choose **Create virtual node** to finish\. 
-
 ## Deleting a Virtual Node<a name="delete-virtual-node"></a>
 
 To delete a virtual node using the AWS Management Console complete the following steps\. To delete a virtual node using the AWS CLI, use the `aws appmesh delete-virtual-node` command\. For an example of deleting a virtual node using the AWS CLI, see [delete\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-node.html)\.

@@ -20,7 +20,7 @@ You must configure permissions to allow an IAM entity \(such as a user, group, o
 
 ## Creating a Service\-Linked Role for App Mesh<a name="create-slr"></a>
 
-If you've created a mesh after June 5, 2019 in the AWS Management Console, the AWS CLI, or the AWS API, App Mesh creates the service\-linked role for you\. If you delete this service\-linked role, and then need to create it again, you can use the same process to recreate the role in your account\. When you create a mesh, App Mesh creates the service\-linked role for you again\. If your account only contains meshes created before June 5, 2019 and you want to use the service\-linked role with those meshes, you can create the role using the IAM console\.
+If you created a mesh after June 5, 2019 in the AWS Management Console, the AWS CLI, or the AWS API, App Mesh created the service\-linked role for you\. For the service\-linked role to have been created for you, the IAM account that you used to create the mesh must have had the [https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/AWSAppMeshFullAccess%24jsonEditor](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/AWSAppMeshFullAccess%24jsonEditor) IAM policy attached to it, or a policy attached to it that contained the `iam:CreateServiceLinkedRole` permission\. If you delete this service\-linked role, and then need to create it again, you can use the same process to recreate the role in your account\. When you create a mesh, App Mesh creates the service\-linked role for you again\. If your account only contains meshes created before June 5, 2019 and you want to use the service\-linked role with those meshes, then you can create the role using the IAM console\.
 
 You can use the IAM console to create a service\-linked role with the **App Mesh** use case\. In the AWS CLI or the AWS API, create a service\-linked role with the `appmesh.amazonaws.com` service name\. For more information, see [Creating a Service\-Linked Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html#create-service-linked-role) in the *IAM User Guide*\. If you delete this service\-linked role, you can use this same process to create the role again\.
 
@@ -55,4 +55,4 @@ Use the IAM console, the AWS CLI, or the AWS API to delete the AWSServiceRoleFor
 
 ## Supported Regions for App Mesh Service\-Linked Roles<a name="slr-regions"></a>
 
-App Mesh supports using service\-linked roles in all of the Regions where the service is available\. For more information, see [AWS Regions and Endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#appmesh_region)\.
+App Mesh supports using service\-linked roles in all of the Regions where the service is available\. For more information, see [App Mesh Endpoints and Quotas](https://docs.aws.amazon.com/general/latest/gr/appmesh.html)\.
