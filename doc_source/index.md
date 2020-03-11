@@ -19,7 +19,7 @@ Amazon's trademarks and trade dress may not be used in
 + [Service Meshes](meshes.md)
 + [Virtual Services](virtual_services.md)
 + [Virtual Nodes](virtual_nodes.md)
-   + [TLS Encryption](virtual-node-tls.md)
+   + [Transport Layer Security (TLS)](virtual-node-tls.md)
 + [Virtual Routers](virtual_routers.md)
 + [Routes](routes.md)
 + [Tutorial: Configure App Mesh Integration with Kubernetes](mesh-k8s-integration.md)

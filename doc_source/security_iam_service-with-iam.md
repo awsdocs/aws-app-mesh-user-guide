@@ -51,16 +51,16 @@ arn:${Partition}:appmesh:${Region}:${Account}:mesh/${MeshName}
 
 For more information about the format of ARNs, see [Amazon Resource Names \(ARNs\) and AWS Service Namespaces](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)\.
 
-For example, to specify the mesh named *apps* in the *us\-west\-2* Region in your statement, use the following ARN\.
+For example, to specify the mesh named *apps* in the *region\-code* Region in your statement, use the following ARN\.
 
 ```
-arn:aws:appmesh:us-west-2:111122223333:mesh/apps
+arn:aws:appmesh:region-code:111122223333:mesh/apps
 ```
 
 To specify all instances that belong to a specific account, use the wildcard \(\*\)\.
 
 ```
-"Resource": "arn:aws:appmesh:us-west-2:111122223333:mesh/*"
+"Resource": "arn:aws:appmesh:region-code:111122223333:mesh/*"
 ```
 
 Some App Mesh actions, such as those for creating resources, cannot be performed on a specific resource\. In those cases, you must use the wildcard \(\*\)\.
@@ -73,8 +73,8 @@ Many App Mesh API actions involve multiple resources\. For example, `CreateRoute
 
 ```
 "Resource": [
-      "arn:aws:appmesh:us-west-2:111122223333:mesh/apps/virtualRouter/serviceB/route/*",
-      "arn:aws:appmesh:us-west-2:111122223333:mesh/apps/virtualNode/serviceB"
+      "arn:aws:appmesh:region-code:111122223333:mesh/apps/virtualRouter/serviceB/route/*",
+      "arn:aws:appmesh:region-code:111122223333:mesh/apps/virtualNode/serviceB"
 ]
 ```
 

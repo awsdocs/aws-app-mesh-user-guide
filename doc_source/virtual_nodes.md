@@ -9,7 +9,7 @@ If you require your Envoy stats or tracing to use a different name, you can over
 
 ## Creating a Virtual Node<a name="vn-create-virtual-node"></a>
 
-To create a virtual node using the AWS Management Console, complete the following steps\. To create a virtual node using the AWS CLI version 1\.16\.266 or higher, see the example in the AWS CLI reference for the [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) command\.
+To create a virtual node using the AWS Management Console, complete the following steps\. To create a virtual node using the AWS CLI version 1\.18\.16 or higher, see the example in the AWS CLI reference for the [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
@@ -34,7 +34,7 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. If your virtual node expects ingress traffic, specify a **Port** and **Protocol** for the **Listener**\.
 
-1. If you want to configure a health check for your listener, ensure that **Health check enabled** is selected and then complete the following substeps\. If not, clear this check box\.
+1. If you want to configure a health check for your listener, ensure that **Health check enabled** is selected and then complete the following sub steps\. If not, clear this check box\.
 
    A health check policy is optional, but if you specify any values for a health policy, then you must specify values for **Healthy threshold**, **Health check interval**, **Health check protocol**, **Timeout period**, and **Unhealthy threshold**\.
 
@@ -51,6 +51,8 @@ Logs must still be ingested by an agent in your application and sent to a destin
    1. For **Timeout period**, specify the amount of time to wait when receiving a response from the health check, in milliseconds\.
 
    1. For **Unhealthy threshold**, specify the number of consecutive failed health checks that must occur before declaring the listener unhealthy\.
+
+1. Choose **Create virtual node** to finish\.
 
 ## Deleting a Virtual Node<a name="delete-virtual-node"></a>
 

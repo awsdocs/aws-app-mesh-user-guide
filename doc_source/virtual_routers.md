@@ -8,7 +8,7 @@ Any inbound traffic that your virtual router expects should be specified as a *l
 
 ## Creating a Virtual Router<a name="create-virtual-router"></a>
 
-To create a virtual router using the AWS Management Console, complete the following steps\. To create a virtual router using the AWS CLI version 1\.16\.266 or higher, see the example in the AWS CLI reference for the [create\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-router.html) command\.
+To create a virtual router using the AWS Management Console, complete the following steps\. To create a virtual router using the AWS CLI version 1\.18\.16 or higher, see the example in the AWS CLI reference for the [create\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-router.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
