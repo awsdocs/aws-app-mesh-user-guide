@@ -8,12 +8,12 @@ After you create your service mesh, virtual nodes, virtual routers, routes, and 
 + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1`\. You can replace *us\-west\-2* with any region other than `me-south-1`\. 
 
   ```
-  840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.13.1.0-prod
+  840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.12.2.1-prod
   ```
 + `me-south-1` Region:
 
   ```
-  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.13.1.0-prod
+  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.12.2.1-prod
   ```
 
 You must use the App Mesh Envoy container image until the Envoy project team merges changes that support App Mesh\. For additional details, see the [GitHub roadmap issue](https://github.com/aws/aws-app-mesh-roadmap/issues/10)\.
@@ -38,32 +38,15 @@ Specifies the log level for the Envoy container\.
 Valid values: `trace`, `debug`, `info`, `warning`, `error`, `critical`, `off`  
 Default: `info`
 
-### Envoy Tracing Variables<a name="envoy-tracing-variables"></a>
+### AWS X\-Ray Variables<a name="envoy-xray-config"></a>
 
-You can use AWS X\-Ray, Datadog, or your own tracing configuration\. AWS X\-Ray Variables
-
-The following environment variables help you to configure App Mesh with AWS X\-Ray\. For more information, see the [AWS X\-Ray Developer Guide](https://docs.aws.amazon.com/xray/latest/devguide/)\. 
+The following environment variables help you to configure App Mesh with AWS X\-Ray\. For more information, see the [AWS X\-Ray Developer Guide](https://docs.aws.amazon.com/xray/latest/devguide/)\.
 
 `ENABLE_ENVOY_XRAY_TRACING`  
-Enables X\-Ray tracing using `127.0.0.1:2000` as the default daemon endpoint\.  
-Default value: `0`
+Enables X\-Ray tracing using `127.0.0.1:2000` as the default daemon endpoint\.
 
 `XRAY_DAEMON_PORT`  
-Specify a port value to override the default X\-Ray daemon port\.  
-Default value: `2000`Datadog Tracer Variables
-
-The following environment variables help you to configure App Mesh with the DataDog agent tracer\. For more information, see [Enable trace collection in Datadog](https://docs.datadoghq.com/tracing/send_traces)\. 
-
-`ENABLE_ENVOY_DATADOG_TRACING```  
-Enables Datadog trace collection\.  
-Default value: `0`
-
-`DATADOG_TRACER_PORT`  
-Specify a port value to override the default Datadog agent port\.  
-Default value: `8126`
-
-**`ENVOY_TRACING_CFG_FILE`**  
-Specify a file path in the Envoy container file system to set your own Envoy tracing configuration\. For more information, see [config\.trace\.v2\.Tracing](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/trace/v2/trace.proto) in the Envoy documentation\.
+Specify a port value to override the default X\-Ray daemon port\.
 
 ### DogStatsD Variables<a name="envoy-dogstatsd-config"></a>
 
