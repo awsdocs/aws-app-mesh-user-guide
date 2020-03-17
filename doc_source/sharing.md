@@ -135,7 +135,7 @@ Your account must be assigned the following IAM permissions:
 
 ## Shared Mesh Tasks<a name="shared-mesh-tasks"></a>
 
-You can use all of the App Mesh AWS CLI commands with resources in a shared mesh, just as you would resources in an unshared mesh\. For more information about App Mesh AWS CLI commands, see the \. You cannot use the AWS Management Console to work with resources in a shared mesh at this time\.
+You can use all of the App Mesh AWS CLI commands with resources in a shared mesh, just as you would resources in an unshared mesh\. For more information about App Mesh AWS CLI commands, see the [AWS App Mesh Command Line Reference](https://docs.aws.amazon.com/cli/latest/reference/appmesh/)\. You cannot use the AWS Management Console to work with resources in a shared mesh at this time\.
 
  When using `create`, `update`, or `delete` commands for resources in a shared mesh, you need to specify the `--mesh-owner account-id` option with the command\. When using any of the App Mesh AWS CLI commands, account IDs for the `meshOwner` and `resourceOwner` properties are returned\.
 

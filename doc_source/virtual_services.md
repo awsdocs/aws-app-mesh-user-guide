@@ -8,7 +8,7 @@ To create a virtual service in your service mesh using the AWS Management Consol
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
-1. Choose the mesh that you want to create the virtual service in\.
+1. Choose the mesh that you want to create the virtual service in\. 
 
 1. Choose **Virtual services** in the left navigation\.
 

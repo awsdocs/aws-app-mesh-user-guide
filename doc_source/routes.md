@@ -8,13 +8,13 @@ To create a route using the AWS Management Console, complete the following steps
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
-1. Choose the mesh that you want to create the route in\.
+1. Choose the mesh that you want to create the route in\. 
 
 1. Choose **Virtual routers** in the left navigation\.
 
 1. Choose the virtual router that you want to associate a new route with\. If none are listed, then you need to [create a virtual router](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html) first\.
 
-1. In the **Routes** table, choose **Create route**\.
+1. In the **Routes** table, choose **Create route**\. 
 
 1. For **Route name**, specify the name to use for your route\.
 
@@ -221,12 +221,12 @@ To delete a route using the AWS Management Console, complete the following steps
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
-1. Choose the mesh that you want to delete a route from\.
+1. Choose the mesh that you want to delete a route from\. 
 
 1. Choose **Virtual routers** in the left navigation\.
 
 1. Choose the router that you want to delete a route from\.
 
-1. In the **Routes** table, choose the route that you want to delete and select **Delete**\.
+1. In the **Routes** table, choose the route that you want to delete and select **Delete**\. To delete a route, your account ID must be listed in either the **Mesh owner** or the **Resource owner** columns of the route\.
 
 1. In the confirmation box, type **delete** and then select **Delete**\.
