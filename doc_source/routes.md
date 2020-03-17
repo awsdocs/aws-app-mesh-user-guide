@@ -227,6 +227,6 @@ To delete a route using the AWS Management Console, complete the following steps
 
 1. Choose the router that you want to delete a route from\.
 
-1. In the **Routes** table, choose the route that you want to delete and select **Delete**\. To delete a route, your account ID must be listed in either the **Mesh owner** or the **Resource owner** columns of the route\.
+1. In the **Routes** table, choose the route that you want to delete and select **Delete**\.
 
 1. In the confirmation box, type **delete** and then select **Delete**\.
