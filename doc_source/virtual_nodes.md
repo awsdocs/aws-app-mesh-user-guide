@@ -13,7 +13,7 @@ To create a virtual node using the AWS Management Console, complete the followin
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
-1. Choose the mesh that you want to create the virtual node in\. 
+1. Choose the mesh that you want to create the virtual node in\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 
 1. Choose **Virtual nodes** in the left navigation\.
 
@@ -79,10 +79,10 @@ You can't delete a virtual node if it is specified as a target in any [route](ro
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
-1. Choose the mesh that you want to delete a virtual node from\. 
+1. Choose the mesh that you want to delete a virtual node from\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 
 1. Choose **Virtual nodes** in the left navigation\.
 
-1. In the **Virtual Nodes** table, choose the virtual node that you want to delete and select **Delete**\. 
+1. In the **Virtual Nodes** table, choose the virtual node that you want to delete and select **Delete**\. To delete a virtual node, your account ID must be listed in either the **Mesh owner** or the **Resource owner** columns of the virtual node\.
 
 1. In the confirmation box, type **delete** and then select **Delete**\.

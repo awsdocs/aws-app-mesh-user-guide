@@ -3,7 +3,7 @@
 A shared mesh allows resources created by different accounts to communicate with each other in the same mesh\.
 
 An AWS Identity and Access Management account can be a mesh resource owner, a mesh consumer, or both\. Consumers can create resources in a mesh that is shared with their account\. Owners can create resources in any mesh the account owns\. A mesh owner can share a mesh with the following types of mesh consumers:
-+ Specific AWS accounts inside or outside its organization in AWS Organizations
++ Specific AWS accounts inside or outside of its organization in AWS Organizations
 + An organizational unit inside its organization in AWS Organizations
 + Its entire organization in AWS Organizations
 
@@ -30,136 +30,55 @@ The following prerequisites must be met in order to share a mesh:
 
 ## Related Services<a name="sharing-related"></a>
 
-Mesh sharing integrates with AWS Resource Access Manager \(AWS RAM\)\. AWS RAM is a service that enables you to share your AWS resources with any AWS account or through AWS Organizations\. With AWS RAM, you share resources that you own by creating a *resource share*\. A resource share specifies the resources to share and the consumers with whom to share them\. Consumers can be individual AWS accounts, or organizational units or an entire organization in AWS Organizations\.
+mesh sharing integrates with AWS Resource Access Manager \(AWS RAM\)\. AWS RAM is a service that enables you to share your AWS resources with any AWS account or through AWS Organizations\. With AWS RAM, you share resources that you own by creating a *resource share*\. A resource share specifies the resources to share, and the consumers with whom to share them\. Consumers can be individual AWS accounts, or organizational units or an entire organization in AWS Organizations\.
 
 For more information about AWS RAM, see the *[AWS RAM User Guide](https://docs.aws.amazon.com/ram/latest/userguide/)*\.
 
-## Share a Mesh<a name="sharing-share"></a>
+## Sharing a Mesh<a name="sharing-share"></a>
 
-Sharing a mesh enables mesh resources created by different accounts to communicate with each other in the same mesh\. You can only share a mesh that you own\. In all of the examples in this topic, an IAM account with the ID *111122223333* is the owner of a mesh that is shared with account ID *444455556666*\. 
+Sharing a mesh enables mesh resources created by different accounts to communicate with each other in the same mesh\. You can only share a mesh that you own\. To share a mesh, you must add it to a resource share\. A resource share is an AWS RAM resource that lets you share your resources across AWS accounts\. A resource share specifies the resources to share, and the consumers with whom they are shared\. When you share a mesh using the App Mesh console, you add it to an existing resource share\. To add the mesh to a new resource share, you must first create the resource share using the [AWS RAM console](https://console.aws.amazon.com/ram)\.
 
-**To share a mesh**
+If you are part of an organization in AWS Organizations and sharing within your organization is enabled, consumers in your organization can be automatically granted access to the shared mesh\. Otherwise, consumers receive an invitation to join the resource share and are granted access to the shared mesh after accepting the invitation\.
 
-Your account must be assigned the following IAM permissions:
-+ `appmesh:GetMeshPolicy`
-+ `appmesh:PutMeshPolicy`
+You can share a mesh that you own using the AWS RAM console or the AWS CLI\.
 
-1. Using the *111122223333* account, create a mesh with the following command\.
+**To share a mesh that you own using the AWS RAM console**  
+See [Creating a Resource Share](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing.html#working-with-sharing-create) in the *AWS RAM User Guide*\. When selecting a resource type, select **Meshes**, and then select the mesh you want to share\. If no meshes are listed, then you need to create a mesh first\. For more information, see [Creating a Service Mesh](meshes.md#create-mesh)\.
 
-   ```
-   aws appmesh create-mesh --region region-code --mesh-name mesh-a
-   ```
+**To share a mesh that you own using the AWS CLI**  
+Use the [create\-resource\-share](https://docs.aws.amazon.com/cli/latest/reference/ram/create-resource-share.html) command\. For the `--resource-arns` option, specify the ARN of the mesh that you want to share\.
 
-   Note the value for `arn` that is returned in the output for use in the next step\.
-
-1. Using the *111122223333* account, share the mesh created in the previous step with the *444455556666* account with the following command\.
-
-   ```
-   aws ram create-resource-share \
-       --region region-code \
-       --name mesh-a \
-       --principals 444455556666 \
-       --resource arn:aws:appmesh:region-code:111122223333:mesh/mesh-a
-   ```
-
-   The output returned is similar to the following example output\.
-
-   ```
-   {
-       "resourceShare": {
-           "resourceShareArn": "arn:aws:ram:region-code:111122223333:resource-share/1cb1da11-011b-1c1c-11e1-11111Example",
-           "name": "mesh-a",
-           "owningAccountId": "111122223333",
-           "allowExternalPrincipals": true,
-           "status": "ACTIVE",
-           "creationTime": 1579284303.988,
-           "lastUpdatedTime": 1579284303.988
-       }
-   }
-   ```
-
-1. Accept the sharing request\. The account that you shared the mesh with must accept the sharing request to use the mesh\.
-
-   1. Using the *444455556666* account, view the account's sharing invitations\.
-
-      ```
-      aws ram --region region-code get-resource-share-invitations
-      ```
-
-      The output returned is similar to the following example output\.
-
-      ```
-      {
-          "resourceShareInvitations": [
-              {
-                  "resourceShareInvitationArn": "arn:aws:ram:region-code:111122223333:resource-share-invitation/11111111-1111-1111-1111-11111111111",
-                  "resourceShareName": "mesh-a",
-                  "resourceShareArn": "arn:aws:ram:region:111122223333:resource-share/1cb1da11-011b-1c1c-11e1-11111Example",
-                  "senderAccountId": "111122223333",
-                  "receiverAccountId": "444455556666",
-                  "invitationTimestamp": 1579145083.23,
-                  "status": "PENDING"
-              }
-          ]
-      }
-      ```
-
-   1. Using the *444455556666* account, accept the sharing invitation\.
-
-      ```
-      aws ram --region region-code accept-resource-share-invitation \
-          --resource-share-invitation-arn arn:aws:ram:region-code:111122223333:resource-share-invitation/11111111-1111-1111-1111-11111111111
-      ```
-
-      The output returned is similar to the following example output\.
-
-      ```
-      {
-          "resourceShareInvitation": {
-              "resourceShareInvitationArn": "arn:aws:ram:region-code:111122223333:resource-share-invitation/11111111-1111-1111-1111-11111111111",
-              "resourceShareName": "mesh-a",
-              "resourceShareArn": "arn:aws:ram:region-code:111122223333:resource-share/1cb1da11-011b-1c1c-11e1-11111Example",
-              "senderAccountId": "111122223333,
-              "receiverAccountId": "444455556666",
-              "invitationTimestamp": 1579287509.04,
-              "status": "ACCEPTED"
-          }
-      }
-      ```
-
-1. Using the *111122223333* account, view the sharing policy for the shared mesh with the following command\.
-
-   ```
-   aws ram get-resource-policies --resource-arns arn:aws:appmesh:region-code:111122223333:mesh/mesh-a
-   ```
-
-## Shared Mesh Tasks<a name="shared-mesh-tasks"></a>
-
-You can use all of the App Mesh AWS CLI commands with resources in a shared mesh, just as you would resources in an unshared mesh\. For more information about App Mesh AWS CLI commands, see the [AWS App Mesh Command Line Reference](https://docs.aws.amazon.com/cli/latest/reference/appmesh/)\. You cannot use the AWS Management Console to work with resources in a shared mesh at this time\.
-
- When using `create`, `update`, or `delete` commands for resources in a shared mesh, you need to specify the `--mesh-owner account-id` option with the command\. When using any of the App Mesh AWS CLI commands, account IDs for the `meshOwner` and `resourceOwner` properties are returned\.
-
-## Unshare a Shared Mesh<a name="sharing-unshare"></a>
+## Unsharing a Shared mesh<a name="sharing-unshare"></a>
 
 When you unshare a mesh, App Mesh disables further access to the mesh by former consumers of the mesh but does not delete the resources created by the consumers\. Once the mesh is unshared, only the mesh owner can access and delete the resources\. App Mesh prevents the account that owned resources in the mesh, and any other accounts with resources in the mesh, from receiving any configuration information after the mesh is unshared\. Only the owner of the mesh can unshare it\.
 
-**To unshare a mesh**
+To unshare a shared mesh that you own, you must remove it from the resource share\. You can do this using the AWS RAM console or the AWS CLI\.
 
-1. View a list of your shared resources with the following command\.
+**To unshare a shared mesh that you own using the AWS RAM console**  
+See [Updating a Resource Share](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing.html#working-with-sharing-update) in the *AWS RAM User Guide*\.
 
-   ```
-   aws ram list-resources --resource-owner SELF
-   ```
+**To unshare a shared mesh that you own using the AWS CLI**  
+Use the [disassociate\-resource\-share](https://docs.aws.amazon.com/cli/latest/reference/ram/disassociate-resource-share.html) command\.
 
-1. The *111122223333* account can unshare a mesh with all accounts by deleting the resource share\.
+## Identifying a Shared mesh<a name="sharing-identify"></a>
 
-   ```
-   aws ram delete-resource-share \
-       --resource-share-arn arn:aws:ram:region-code:111122223333:resource-share/1cb1da11-011b-1c1c-11e1-11111Example
-   ```
+Owners and consumers can identify shared meshes and mesh resources using the App Mesh console and AWS CLI
 
-   Rather than deleting a resource share, you can remove specific principals from it with the [disassociate\-resource\-share](https://docs.aws.amazon.com/cli/latest/reference/ram/disassociate-resource-share.html) command\.
+**To identify a shared mesh using the App Mesh console**
+
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
+
+1. From the left navigation, select **Meshes**\. The account ID of the mesh owner for each mesh is listed in the **Mesh owner** column\.
+
+1. From the left navigation, select **Virtual services**, **Virtual routers**, or **Virtual nodes**\. You see the account ID for the **Mesh owner** and **Resource owner** for each of the resources\.
+
+**To identify a shared mesh using the AWS CLI**  
+Use the `aws appmesh list resource` command, such as `aws appmesh [list\-meshes](https://docs.aws.amazon.com/cli/latest/reference/appmesh/list-meshes.html)`\. The command returns the meshes that you own and the meshes that are shared with you\. The `meshOwner` property shows the AWS account ID of the `meshOwner` and the `resourceOwner` property shows the AWS account ID of the resource owner\. Any command run against any mesh resource returns these properties\.
 
 ## Billing and Metering<a name="sharing-billing"></a>
 
-There are no additional charges for sharing a mesh\.
+There are no charges for sharing a mesh\.
+
+## Instance Quotas<a name="sharing-limits"></a>
+
+All quotas for a mesh also apply to shared meshes, regardless of who created resources in the mesh\. Only a mesh owner can request quota increases\. For more information, see [App Mesh Service Quotas](service-quotas.md)\. The AWS Resource Access Manager service also has quotas\. For more information, see [Service Quotas](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html#what-is-limits)\.

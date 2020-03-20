@@ -13,3 +13,5 @@ To create a service mesh using the AWS Management Console, complete the followin
 1. For **Mesh name**, specify a name for your service mesh\.
 
 1. Choose **Create mesh** to finish\.
+
+1. \(Optional\) Share the mesh with other accounts\. A shared mesh allows resources created by different accounts to communicate with each other in the same mesh\. For more information, see [Working with Shared Meshes](sharing.md)\.

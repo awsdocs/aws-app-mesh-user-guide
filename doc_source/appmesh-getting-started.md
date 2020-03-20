@@ -479,7 +479,7 @@ After creating your mesh, you need to complete the following tasks:
 1. Install Docker and the AWS CLI on your instance according to your operating system documentation\.
 
 1. Authenticate to the Envoy Amazon ECR repository in the region that you want your Docker client to pull the image from:
-   + All regions except `me-south-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1`\.
+   + All regions except `me-south-1` and `ap-east-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1` and `ap-east-1`\.
 
      ```
      $(aws ecr get-login --no-include-email --region us-west-2 --registry-ids 840364872350)
@@ -491,7 +491,7 @@ After creating your mesh, you need to complete the following tasks:
      ```
 
 1. Run one of the following commands to start the App Mesh Envoy container on your instance, depending on which region you want to pull the image from\. The *apps* and *serviceB* values are the mesh and virtual node names defined in the scenario\. To complete the scenario, you also need to complete these steps for the Amazon EC2 instances that host the services represented by the `serviceBv2` and `serviceA` virtual nodes\. For your own application, replace these values with your own\.
-   + All regions except `me-south-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1` Region\.
+   + All regions except `me-south-1` and `ap-east-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1` and `ap-east-1` Region\.
 
      ```
      sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
