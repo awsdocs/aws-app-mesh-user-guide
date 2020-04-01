@@ -15,15 +15,14 @@ Amazon's trademarks and trade dress may not be used in
 -----
 ## Contents
 + [What Is AWS App Mesh?](what-is-app-mesh.md)
-+ [Getting Started with AWS App Mesh](appmesh-getting-started.md)
++ [Getting started with AWS App Mesh](appmesh-getting-started.md)
 + [Service Meshes](meshes.md)
 + [Virtual Services](virtual_services.md)
-+ [Virtual Nodes](virtual_nodes.md)
++ [Virtual nodes](virtual_nodes.md)
    + [Transport Layer Security (TLS)](virtual-node-tls.md)
 + [Virtual Routers](virtual_routers.md)
 + [Routes](routes.md)
-+ [Tutorial: Configure App Mesh Integration with Kubernetes](mesh-k8s-integration.md)
-   + [Deploy a Mesh Connected Service](deploy-mesh-connected-service.md)
++ [Tutorial: Configure App Mesh integration with Kubernetes](mesh-k8s-integration.md)
 + [Envoy Image](envoy.md)
 + [Security in AWS App Mesh](security.md)
    + [Data Protection in AWS App Mesh](data-protection.md)

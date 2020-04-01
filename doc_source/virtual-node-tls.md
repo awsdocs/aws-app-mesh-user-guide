@@ -37,13 +37,7 @@ For a complete, end\-to\-end walk through of deploying a mesh with a sample appl
 
 When using a certificate from your own CA, you'll need a public key, a private key, and a certificate chain from the CA\. The files must all be stored in a location accessible to your application code\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with local files, see [Configuring TLS with File Provided TLS Certificates](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-tls-file-provided) on GitHub\.
 
-## Create a virtual node<a name="tls-create-virtual-node"></a>
-
-Create a virtual node with TLS using the AWS CLI `create-virtual-node` command\. For more information, see [https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) in the [AWS CLI Command Reference](https://docs.aws.amazon.com/cli/latest/reference/)\. You cannot use the AWS Management Console to create a virtual node with TLS at this time\.
-
-If you want to enable TLS for an existing virtual node, we recommend that you create a new virtual node, which represents the same service as the existing virtual node, on which to enable TLS\. Then gradually shift traffic to the new virtual node using a virtual router and route\. For more information about creating a route and adjusting weights for the transition, see [Routes](routes.md)\. If you update an existing, traffic\-serving virtual node with TLS, there is a chance that the downstream client Envoy proxies will receive TLS validation context before the Envoy proxy for the virtual node that you have updated receives the certificate\. This can cause TLS negotiation errors on the downstream Envoy proxies\.
-
-## Verify Encryption<a name="verify-encryption"></a>
+## Verify encryption<a name="verify-encryption"></a>
 
 Once you've enabled TLS, you can query the Envoy proxy to confirm that communication is encrypted\. The Envoy proxy emits statistics on resources that can help you understand if your TLS communication is working properly\. For example, the Envoy proxy records statistics on the number of successful TLS handshakes it has negotiated for a specified virtual node\. Determine how many successful TLS handshakes there were for a virtual node named `serviceA` with the following command\.
 

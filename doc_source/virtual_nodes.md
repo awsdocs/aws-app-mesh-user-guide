@@ -1,4 +1,4 @@
-# Virtual Nodes<a name="virtual_nodes"></a>
+# Virtual nodes<a name="virtual_nodes"></a>
 
 A virtual node acts as a logical pointer to a particular task group, such as an Amazon ECS service or a Kubernetes deployment\. When you create a virtual node, you must specify a service discovery method for your task group\. Any inbound traffic that your virtual node expects is specified as a *listener*\. Any virtual service that a virtual node sends outbound traffic to is specified as a *backend*\.
 
@@ -7,9 +7,11 @@ The response metadata for your new virtual node contains the Amazon Resource Nam
 **Note**  
 If you require your Envoy stats or tracing to use a different name, you can override the `node.cluster` value that is set by `APPMESH_VIRTUAL_NODE_NAME` with the `APPMESH_VIRTUAL_NODE_CLUSTER` environment variable\.
 
-## Creating a Virtual Node<a name="vn-create-virtual-node"></a>
+## Creating a virtual node<a name="vn-create-virtual-node"></a>
 
-To create a virtual node using the AWS Management Console, complete the following steps\. To create a virtual node using the AWS CLI version 1\.18\.16 or higher, see the example in the AWS CLI reference for the [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) command\.
+ To create a virtual node using the AWS CLI version 1\.18\.16 or higher, see the example in the AWS CLI reference for the [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) command\.
+
+**To create a virtual node using the AWS Management Console**
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
@@ -70,12 +72,14 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. Choose **Create virtual node** to finish\.
 
-## Deleting a Virtual Node<a name="delete-virtual-node"></a>
+## Deleting a virtual node<a name="delete-virtual-node"></a>
 
-To delete a virtual node using the AWS Management Console complete the following steps\. To delete a virtual node using the AWS CLI, use the `aws appmesh delete-virtual-node` command\. For an example of deleting a virtual node using the AWS CLI, see [delete\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-node.html)\.
+To delete a virtual node using the AWS CLI, use the `aws appmesh delete-virtual-node` command\. For an example of deleting a virtual node using the AWS CLI, see [delete\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-node.html)\.
 
 **Note**  
 You can't delete a virtual node if it is specified as a target in any [route](routes.md) or as a provider in any [virtual service](virtual_services.md)\.
+
+**To delete a virtual node using the AWS Management Console**
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
 
