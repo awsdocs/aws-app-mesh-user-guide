@@ -4,7 +4,9 @@ AWS App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) 
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/app-mesh/latest/userguide/images/proxy.png)
 
-After you create your service mesh, virtual nodes, virtual routers, routes, and virtual services, you add the following App Mesh Envoy container image to the ECS task or Kubernetes pod represented by your App Mesh virtual nodes\. Specify one of the following images, depending on the region that you want to pull the image from\.
+You must add an Envoy proxy to the ECS task, Kubernetes pod, or EC2 instance represented by your App Mesh virtual nodes\. App Mesh vends an Envoy proxy Docker container image and ensures that this container image is patched with the latest vulnerability and performance patches\. App Mesh tests a new Envoy proxy release against the App Mesh feature set before making a new container image available to you\.
+
+To use the App Mesh container image, specify one of the following, depending on the region that you want to pull the image from\.
 + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`\. You can replace *us\-west\-2* with any region other than `me-south-1` and `ap-east-1`\. 
 
   ```
@@ -21,7 +23,12 @@ After you create your service mesh, virtual nodes, virtual routers, routes, and 
   856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.12.2.1-prod
   ```
 
-You must use the App Mesh Envoy container image until the Envoy project team merges changes that support App Mesh\. For additional details, see the [GitHub roadmap issue](https://github.com/aws/aws-app-mesh-roadmap/issues/10)\.
+Access to this container image in Amazon ECR is controlled via AWS IAM, so you must use IAM to ensure that you have read access to ECR (for example, an Amazon ECS customer can assign an appropriate task execution role to their ECS task)\.
+Further, if you use IAM policies that limit access to specific Amazon ECR Resources, then you must ensure that you allow access to the region-specific Amazon Resource Name (ARN) that identifies the aws-appmesh-envoy repository\; for example, in the `us-west-2` region, you'd allow access to the following resource: `arn:aws:ecr:us-west-2:840364872350:repository/aws-appmesh-envoy`\. For more information, see [Amazon ECR Managed Policies](https://docs.aws.amazon.com/AmazonECR/latest/userguide/ecr_managed_policies.html)\.
+
+Infrequently, we will release new App Mesh features which depend on Envoy changes that have not been merged upstreamed yet\. To use these new App Mesh features before the Envoy changes are merged upstream, you must use the App Mesh Envoy container image\. You can find a list of such changes in our [GithHub roadmap under the Envoy Upstream label](https://github.com/aws/aws-app-mesh-roadmap/labels/Envoy%20Upstream)\.
+
+Otherwise, while we recommend that you use the App Mesh Envoy container image as the best supported option, you may bring your own build of Envoy\.
 
 ## Envoy Configuration Variables<a name="envoy-config"></a>
 
