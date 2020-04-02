@@ -472,7 +472,7 @@ After creating your mesh, you need to complete the following tasks:
 
 **To configure an Amazon EC2 instance as a virtual node member**
 
-1. Launch an Amazon EC2 instance with an IAM role that has read access to Amazon ECR\. This permission allows the instance to pull the App Mesh Envoy container image from Amazon ECR\. For more information, see [Amazon ECR Managed Policies](https://docs.aws.amazon.com/AmazonECR/latest/userguide/ecr_managed_policies.html)\.
+1. Launch an Amazon EC2 instance with an IAM role that has read access to Amazon ECR\. This permissions allows the instance to pull the App Mesh Envoy container image from Amazon Elastic Container Registry\. For more information, see [Amazon ECR Managed Policies](https://docs.aws.amazon.com/AmazonECR/latest/userguide/ecr_managed_policies.html)\.
 
 1. Connect to your instance via SSH\.
 
@@ -489,7 +489,7 @@ After creating your mesh, you need to complete the following tasks:
      ```
      $(aws ecr get-login --no-include-email --region me-south-1 --registry-ids 772975370895)
      ```
-   + `ap-east-1` Region:
+   + `ap-east-1` Region
 
      ```
      $(aws ecr get-login --no-include-email --region ap-east-1 --registry-ids 856666278305)
@@ -508,7 +508,7 @@ After creating your mesh, you need to complete the following tasks:
      sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
      -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.12.2.1-prod
      ```
-   + `ap-east-1` Region:
+   + `ap-east-1` Region
 
      ```
      sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
