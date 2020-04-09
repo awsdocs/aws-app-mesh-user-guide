@@ -2,7 +2,7 @@
 
 The App Mesh Preview Channel is a distinct variant of the App Mesh service provided in the `us-west-2` Region\. The Preview Channel exposes upcoming features for you to try as they are developed\. As you use features in the Preview Channel, you can provide feedback via GitHub to shape how the features behave\. Once a feature has complete functionality in the Preview Channel, with all of the necessary integrations and checks completed, it will graduate to the production App Mesh service\.
 
-The AWS App Mesh Preview Channel is a *Beta Service* and all features are *previews*, as those terms are defined in the [AWS Service Terms](https://aws.amazon.com/service-terms/)\. Your participation in the Preview Channel is governed by your Agreement with AWS and the AWS Service Terms, in particular, the Universal and Beta Service Participation terms, and is confidential\. 
+The AWS App Mesh Preview Channel is a *Beta Service* and all features are *previews*, as those terms are defined in the [AWS Service Terms](http://aws.amazon.com/service-terms)\. Your participation in the Preview Channel is governed by your Agreement with AWS and the AWS Service Terms, in particular, the Universal and Beta Service Participation terms, and is confidential\. 
 
 The following questions are frequently asked about the Preview Channel\.
 
@@ -26,7 +26,7 @@ The following table lists aspects of the App Mesh service that are different fro
 | Service principal | appmesh\.amazonaws\.com | appmesh\-preview\.amazonaws\.com | 
 
 **Note**  
-Though the example in the table for the App Mesh production service lists the `us-west-2` Region, the production service is available in most Regions\. For a list of all Regions that the App Mesh production service is available in, see [AWS Regions and Endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#appmesh_region)\. However, the App Mesh Preview Channel service is available only in the `us-west-2` Region\. 
+Though the example in the table for the App Mesh production service lists the `us-west-2` Region, the production service is available in most Regions\. For a list of all Regions that the App Mesh production service is available in, see [AWS App Mesh Endpoints and Quotas](https://docs.aws.amazon.com/general/latest/gr/appmesh.html)\. However, the App Mesh Preview Channel service is available only in the `us-west-2` Region\. 
 
 ## How can I use features in the Preview Channel?<a name="try-out"></a>
 
@@ -46,7 +46,7 @@ Though the example in the table for the App Mesh production service lists the `u
    aws appmesh-preview create-route --cli-input-json file://route.json
    ```
 
-1. Add `APPMESH_PREVIEW = 1` as a configuration variable for the Envoy container when adding it to your Amazon ECS task definitions, Kubernetes Pod specifications, or Amazon EC2 instances\. This variable enables the Envoy container to communicate with the Preview Channel endpoints\. For more information about adding configuration variables, see [Updating services in Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/userguide/appmesh-getting-started.html#update-services), [Updating services in Kubernetes](https://docs.aws.amazon.com/eks/latest/userguide/appmesh-getting-started.html#update-services), and [Updating services on Amazon EC2](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services)\.
+1. Add `APPMESH_PREVIEW = 1` as a configuration variable for the Envoy container when adding it to your Amazon ECS task definitions, Kubernetes Pod specifications, or Amazon EC2 instances\. This variable enables the Envoy container to communicate with the Preview Channel endpoints\. For more information about adding configuration variables, see [Updating services in Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services), [Updating services in Kubernetes](https://docs.aws.amazon.com/eks/latest/userguide/appmesh-getting-started.html#update-services), and [Updating services on Amazon EC2](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services)\.
 
 ## How do I provide feedback?<a name="provide-feedback"></a>
 

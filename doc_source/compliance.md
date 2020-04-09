@@ -1,4 +1,4 @@
-# Compliance Validation for AWS App Mesh<a name="compliance"></a>
+# Compliance validation for AWS App Mesh<a name="compliance"></a>
 
 Third\-party auditors assess the security and compliance of AWS App Mesh as part of multiple AWS compliance programs, such as the European Union's General Data Protection Regulation \(GDPR\)\.
 

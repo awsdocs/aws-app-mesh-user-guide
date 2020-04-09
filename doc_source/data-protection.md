@@ -1,4 +1,4 @@
-# Data Protection in AWS App Mesh<a name="data-protection"></a>
+# Data protection in AWS App Mesh<a name="data-protection"></a>
 
 AWS App Mesh conforms to the AWS [shared responsibility model](http://aws.amazon.com/compliance/shared-responsibility-model/), which includes regulations and guidelines for data protection\. AWS is responsible for protecting the global infrastructure that runs all the AWS services\. AWS maintains control over data hosted on this infrastructure, including the security configuration controls for handling customer content and personal data\. AWS customers and APN partners, acting either as data controllers or data processors, are responsible for any personal data that they put in the AWS Cloud\. 
 
@@ -12,14 +12,14 @@ We strongly recommend that you never put sensitive identifying information, such
 
 For more information about data protection, see the [AWS Shared Responsibility Model and GDPR](http://aws.amazon.com/blogs/security/the-aws-shared-responsibility-model-and-gdpr/) blog post on the *AWS Security Blog*\.
 
-## Data Encryption<a name="data-encryption"></a>
+## Data encryption<a name="data-encryption"></a>
 
 Your data is encrypted when using App Mesh\.
 
-### Encryption at Rest<a name="encryption-at-rest"></a>
+### Encryption at rest<a name="encryption-at-rest"></a>
 
 All of the data and configurations that you create are encrypted at rest\.
 
-### Encryption in Transit<a name="encryption-in-transit"></a>
+### Encryption in transit<a name="encryption-in-transit"></a>
 
 App Mesh endpoints use the HTTPS protocol\. All communication between the Envoy proxy and the App Mesh Envoy Management Service is encrypted\.  Communication between containers within virtual nodes is not encrypted, but this traffic doesn’t leave the network namespace\.

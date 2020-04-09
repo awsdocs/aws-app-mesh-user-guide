@@ -2,17 +2,19 @@
 
 A route is associated with a virtual router\. The route is used to match requests for the virtual router and to distribute traffic to its associated virtual nodes\. If a route matches a request, it can distribute traffic to one or more target virtual nodes\. You can specify relative weighting for each virtual node\. This topic helps you work with routes in a service mesh\.
 
-## Creating a Route<a name="create-route"></a>
+## Creating a route<a name="create-route"></a>
 
-To create a route using the AWS Management Console, complete the following steps\. To create a route using the AWS CLI version 1\.18\.16 or later, see the examples in the AWS CLI reference for the [create\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
+To create a route using the AWS CLI version 1\.18\.16 or later, see the examples in the AWS CLI reference for the [create\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
 
-1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
+**To create a route using the AWS Management Console**
+
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh)\.
 
 1. Choose the mesh that you want to create the route in\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 
 1. Choose **Virtual routers** in the left navigation\.
 
-1. Choose the virtual router that you want to associate a new route with\. If none are listed, then you need to [create a virtual router](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html) first\.
+1. Choose the virtual router that you want to associate a new route with\. If none are listed, then you need to [create a virtual router](virtual_routers.md#create-virtual-router) first\.
 
 1. In the **Routes** table, choose **Create route**\. To create a route, your account ID must be listed as the **Resource owner** of the route\.
 
@@ -42,13 +44,13 @@ To create a route using the AWS Management Console, complete the following steps
 
 ### **Retry policy**
 
-A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional\. The retry timeout values define the duration of time between retry attempts\.
+A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\.
 + For **Retry timeout**, enter the number of units for the timeout duration\. A value is required if you select any protocol retry event\.
 + For **Retry timeout unit**, select a unit\. A value is required if you select any protocol retry event\.
-+ For **Max retries**, enter the maximum number of retry attempts when the request fails\. A value is required if you select any protocol retry event\.
-+ Select one or more **HTTP retry events**\.
++ For **Max retries**, enter the maximum number of retry attempts when the request fails\. A value is required if you select any protocol retry event\. We recommend a value of at least two\.
++ Select one or more **HTTP retry events**\. We recommend selecting at least **stream\-error** and **gateway\-error**\.
 + Select a **TCP retry event**\.
-+ Select one or more **gRPC retry events**\.
++ Select one or more **gRPC retry events**\. We recommend selecting at least **cancelled** and **unavailable**\.
 
 ### HTTP and HTTP/2<a name="http-http2"></a>
 
@@ -71,11 +73,11 @@ A retry policy enables clients to protect themselves from intermittent network f
 
 ### **Retry policy**
 
-A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional\. The retry timeout values define the duration of time between retry attempts\.
+A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\.
 + For **Retry timeout**, enter the number of units for the timeout duration\. A value is required if you select any protocol retry event\.
 + For **Retry timeout unit**, select a unit\. A value is required if you select any protocol retry event\.
-+ For **Max retries**, enter the maximum number of retry attempts when the request fails\. A value is required if you select any protocol retry event\.
-+ Select one or more **HTTP retry events**\.
++ For **Max retries**, enter the maximum number of retry attempts when the request fails\. A value is required if you select any protocol retry event\. We recommend a value of at least two\.
++ Select one or more **HTTP retry events**\. We recommend selecting at least **stream\-error** and **gateway\-error**\.
 + Select a **TCP retry event**\.
 
 ### TCP<a name="tcp"></a>
@@ -87,7 +89,7 @@ A retry policy enables clients to protect themselves from intermittent network f
 + For **Virtual node name**, choose the virtual node that this route will serve traffic to\. If none are listed, then you need to [create a virtual node](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html) first\.
 + For **Weight**, choose a relative weight for the route\. Select **Add target** to add additional virtual nodes\. The total weight for all targets combined must be less than or equal to 100\.
 
-### App Mesh Preview Channel only \- Route Timeout<a name="route-timeout"></a>
+### App Mesh Preview Channel only \- Route timeout<a name="route-timeout"></a>
 
 By default, the App Mesh proxy has two timeout value types:
 + **Per request** – The amount of time that a requester will wait for an upstream target to complete a response\. The default value is 15 seconds\.
@@ -215,11 +217,13 @@ For an end\-to\-end walk through of using a route timeout, see [Timeout Policy E
    aws appmesh-preview create-route --cli-input-json file://create-route.json
    ```
 
-## Deleting a Route<a name="delete-route"></a>
+## Deleting a route<a name="delete-route"></a>
 
-To delete a route using the AWS Management Console, complete the following steps\. To delete a route using the AWS CLI version 1\.18\.16 or higher, see the example in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html) command\.
+To delete a route using the AWS CLI version 1\.18\.16 or higher, see the example in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html) command\.
 
-1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
+**To delete a route using the AWS Management Console**
+
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh)\.
 
 1. Choose the mesh that you want to delete a route from\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 

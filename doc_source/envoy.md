@@ -1,4 +1,4 @@
-# Envoy Image<a name="envoy"></a>
+# Envoy image<a name="envoy"></a>
 
 AWS App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) proxy\.
 
@@ -27,18 +27,18 @@ Access to this container image in Amazon ECR is controlled by AWS Identity and A
 
 We occassionally release new App Mesh features that depend on Envoy changes that have not been merged to the upstream Envoy images yet\. To use these new App Mesh features before the Envoy changes are merged upstream, you must use the App Mesh\-vended Envoy container image\. For a list of changes, see the [App Mesh GitHub roadmap issues](https://github.com/aws/aws-app-mesh-roadmap/labels/Envoy%20Upstream) with the `Envoy Upstream` label\. Otherwise, while we recommend that you use the App Mesh Envoy container image as the best supported option, you may use your own Envoy image\.
 
-## Envoy Configuration Variables<a name="envoy-config"></a>
+## Envoy configuration variables<a name="envoy-config"></a>
 
 The following environment variables enable you to configure the Envoy containers for your App Mesh virtual node task groups\.
 
-### Required Variables<a name="envoy-required-config"></a>
+### Required variables<a name="envoy-required-config"></a>
 
 The following environment variable is required for all App Mesh Envoy containers\.
 
 `APPMESH_VIRTUAL_NODE_NAME`  
 When you add the Envoy container to a task group, set this environment variable to the name of the virtual node that the task group represents: for example, `mesh/meshName/virtualNode/virtualNodeName`\.
 
-### Optional Variables<a name="envoy-optional-config"></a>
+### Optional variables<a name="envoy-optional-config"></a>
 
 The following environment variable is optional for App Mesh Envoy containers\.
 
@@ -47,7 +47,7 @@ Specifies the log level for the Envoy container\.
 Valid values: `trace`, `debug`, `info`, `warning`, `error`, `critical`, `off`  
 Default: `info`
 
-### AWS X\-Ray Variables<a name="envoy-xray-config"></a>
+### AWS X\-Ray variables<a name="envoy-xray-config"></a>
 
 The following environment variables help you to configure App Mesh with AWS X\-Ray\. For more information, see the [AWS X\-Ray Developer Guide](https://docs.aws.amazon.com/xray/latest/devguide/)\.
 
@@ -57,7 +57,7 @@ Enables X\-Ray tracing using `127.0.0.1:2000` as the default daemon endpoint\.
 `XRAY_DAEMON_PORT`  
 Specify a port value to override the default X\-Ray daemon port\.
 
-### DogStatsD Variables<a name="envoy-dogstatsd-config"></a>
+### DogStatsD variables<a name="envoy-dogstatsd-config"></a>
 
 The following environment variables help you to configure App Mesh with DogStatsD\. For more information, see the [DogStatsD](https://docs.datadoghq.com/developers/dogstatsd/) documentation\.
 
@@ -70,7 +70,7 @@ Specify a port value to override the default DogStatsD daemon port\.
 `ENVOY_STATS_SINKS_CFG_FILE`  
 Specify a file path in the Envoy container file system to override the default DogStatsD configuration with your own\. For more information, see [config\.metrics\.v2\.DogStatsdSink](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/metrics/v2/stats.proto#envoy-api-msg-config-metrics-v2-dogstatsdsink) in the Envoy documentation\.
 
-### Envoy Stats Variables<a name="envoy-stats-config"></a>
+### Envoy stats variables<a name="envoy-stats-config"></a>
 
 The following environment variables help you to configure App Mesh with Envoy Stats\. For more information, see the [Envoy Stats](https://www.envoyproxy.io/docs/envoy/v1.6.0/api-v2/config/metrics/v2/stats.proto) documentation\.
 
@@ -80,7 +80,7 @@ Enables the use of App Mesh defined tags `appmesh.mesh` and `appmesh.virtual_nod
 `ENVOY_STATS_CONFIG_FILE`  
 Specify a file path in the Envoy container file system to override the default Stats tags configuration file with your own\.
 
-## Access Logs<a name="envoy-logs"></a>
+## Access logs<a name="envoy-logs"></a>
 
 When you create your virtual nodes, you have the option to configure Envoy access logs\. In the console, this is in the **Advanced configuration** section of the virtual node create or update workflows\.
 

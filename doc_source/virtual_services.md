@@ -1,12 +1,14 @@
-# Virtual Services<a name="virtual_services"></a>
+# Virtual services<a name="virtual_services"></a>
 
 A virtual service is an abstraction of a real service that is provided by a virtual node directly or indirectly by means of a virtual router\. Dependent services call your virtual service by its `virtualServiceName`, and those requests are routed to the virtual node or virtual router that is specified as the provider for the virtual service\.
 
-## Creating a Virtual Service<a name="create-virtual-service"></a>
+## Creating a virtual service<a name="create-virtual-service"></a>
 
-To create a virtual service in your service mesh using the AWS Management Console, complete the following steps\. To create a virtual service using the AWS CLI version 1\.18\.16 or higher, see the example in the AWS CLI reference for the [create\-virtual\-service](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-service.html) command\. 
+To create a virtual service using the AWS CLI version 1\.18\.16 or higher, see the example in the AWS CLI reference for the [create\-virtual\-service](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-service.html) command\. 
 
-1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
+**To create a virtual service using the AWS Management Console**
+
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh)\.
 
 1. Choose the mesh that you want to create the virtual service in\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 

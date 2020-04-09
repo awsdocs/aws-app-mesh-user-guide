@@ -7,14 +7,14 @@ AWS Outposts enables native AWS services, infrastructure, and operating models i
  The following are the prerequisites for using App Mesh on AWS Outposts:
 + You must have installed and configured an Outpost in your on\-premises data center\.
 + You must have a reliable network connection between your Outpost and its AWS Region\.
-+ The AWS Region for the Outpost must support AWS App Mesh\. For a list of supported Regions, see [AWS App Mesh Service Endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#appmesh_region) in the *AWS General Reference*\.
++ The AWS Region for the Outpost must support AWS App Mesh\. For a list of supported Regions, see [AWS App Mesh Endpoints and Quotas](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) in the *AWS General Reference*\.
 
 ## Limitations<a name="app-mesh-outposts-limit"></a>
 
 The following are the limitations of using App Mesh on AWS Outposts:
 + AWS Identity and Access Management, Application Load Balancer, Network Load Balancer, Classic Load Balancer, and Amazon Route 53 run in the AWS Region, not on Outposts\. This will increase latencies between these services and the containers\.
 
-## Network Connectivity Considerations<a name="app-mesh-outposts-considerations"></a>
+## Network connectivity considerations<a name="app-mesh-outposts-considerations"></a>
 
 The following are network connectivity considerations for Amazon EKS AWS Outposts:
 + If network connectivity between your Outpost and its AWS Region is lost, the App Mesh Envoy proxies will continue to run\. However you will not be able to modify your service mesh until connectivity is restored\.

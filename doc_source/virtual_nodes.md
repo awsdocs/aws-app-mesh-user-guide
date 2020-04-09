@@ -13,7 +13,7 @@ If you require your Envoy stats or tracing to use a different name, you can over
 
 **To create a virtual node using the AWS Management Console**
 
-1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh)\.
 
 1. Choose the mesh that you want to create the virtual node in\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 
@@ -29,20 +29,22 @@ If you require your Envoy stats or tracing to use a different name, you can over
    + **None** – Select if your virtual node doesn't expect any inbound traffic\.
 
 1. Select **Additional configuration**
+**Note**  
+If you want to enable Transport Layer Security \(TLS\) for an existing virtual node, then we recommend that you create a new virtual node, which represents the same service as the existing virtual node, on which to enable TLS\. Then gradually shift traffic to the new virtual node using a virtual router and route\. For more information about creating a route and adjusting weights for the transition, see [Routes](routes.md)\. If you update an existing, traffic\-serving virtual node with TLS, there is a chance that the downstream client Envoy proxies will receive TLS validation context before the Envoy proxy for the virtual node that you have updated receives the certificate\. This can cause TLS negotiation errors on the downstream Envoy proxies\.
    + \(Optional\) To configure default requirements when communicating to backend virtual services, select **Client policy defaults**\.
 
      [Proxy authorization](proxy-authorization.md) must be enabled for the Envoy proxy deployed with the application represented by the backend service's virtual nodes\. We recommend that when you enable proxy authorization, you restrict access to only the virtual nodes that this virtual node is communicating with\.
      + \(Optional\) Select **Enforce TLS** if you want to require the virtual node to communicate with all backends using Transport Layer Security \(TLS\)\.
      + \(Optional\) If you only want to require the use of TLS for one or more specific ports, then enter a number in **Ports**\. To add additional ports, select **Add port**\. If you don't specify any ports, TLS is enforced for all ports\.
-     + For **Certificate discovery method**, select one of the following options\. The certificate that you specify must already exist and meet specific requirements\. For more information, see [Certificate Requirements](virtual-node-tls.md#virtual-node-tls-prerequisites)\.
-       + **AWS Certificate Manager Private Certificate Authority** hosting – Select one or more existing **Certificates**\.
-       + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where the Envoy is deployed\.
+     + For **Certificate discovery method**, select one of the following options\. The certificate that you specify must already exist and meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
+       + **AWS Certificate Manager Private Certificate Authority** hosting – Select one or more existing **Certificates**\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with an ACM certificate, see [Configuring TLS with AWS Certificate Manager](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/tls-with-acm) on GitHub\.
+       + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where the Envoy is deployed\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with local files, see [Configuring TLS with File Provided TLS Certificates](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-tls-file-provided) on GitHub\.
    + To specify a backend virtual service that the virtual node will communicate with, choose **Add backend**\.
      + Enter a virtual service name or full Amazon Resource Name \(ARN\) for the virtual service that your virtual node communicates with\.
      + \(Optional\) If you set **Client policy defaults**, but want to override them with unique TLS settings for a backend, select **TLS settings** and then select **Override defaults**\.
        + \(Optional\) Select **Enforce TLS** if you want to require the virtual node to communicate with all backends using TLS\.
        + \(Optional\) If you only want to require the use of TLS for one or more specific ports, then enter a number in **Ports**\. To add additional ports, select **Add port**\. If you don't specify any ports, TLS is enforced for all ports\.
-       + For **Certificate discovery method**, select one of the following options\. The certificate that you specify must already exist and meet specific requirements\. For more information, see [Certificate Requirements](virtual-node-tls.md#virtual-node-tls-prerequisites)\.
+       + For **Certificate discovery method**, select one of the following options\. The certificate that you specify must already exist and meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
          + **AWS Certificate Manager Private Certificate Authority** hosting – Select one or more existing **Certificates**\.
          + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where the Envoy is deployed\.
 
@@ -66,7 +68,7 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. \(Optional\) If you want to specify whether other virtual nodes communicate with this virtual node using TLS, then select **Enable TLS termination**\.
    + For **Mode**, select the mode you want TLS to be configured for on the listener\.
-   + For **Certificate method**, select one of the following options\. The certificate must meet specific requirements\. For more information, see [Certificate Requirements](virtual-node-tls.md#virtual-node-tls-prerequisites)\.
+   + For **Certificate method**, select one of the following options\. The certificate must meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
      + **AWS Certificate Manager hosting** – Select an existing **Certificate**\.
      + **Local file hosting** – Specify the path to the **Certificate chain** and **Private key** files on the file system where the Envoy proxy is deployed\.
 
@@ -74,14 +76,14 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 ## Deleting a virtual node<a name="delete-virtual-node"></a>
 
-To delete a virtual node using the AWS CLI, use the `aws appmesh delete-virtual-node` command\. For an example of deleting a virtual node using the AWS CLI, see [delete\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-node.html)\.
+To delete a virtual node using the AWS CLI, use the `aws appmesh delete-virtual-node` command\. For an example of deleting a virtual node using the AWS CLI, see [delete\-virtual\-node](cli/latest/reference/appmesh/delete-virtual-node.html)\.
 
 **Note**  
 You can't delete a virtual node if it is specified as a target in any [route](routes.md) or as a provider in any [virtual service](virtual_services.md)\.
 
 **To delete a virtual node using the AWS Management Console**
 
-1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh)\.
 
 1. Choose the mesh that you want to delete a virtual node from\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 

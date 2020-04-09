@@ -1,13 +1,14 @@
-# Document History for App Mesh<a name="doc-history"></a>
+# Document history for App Mesh<a name="doc-history"></a>
 
 The following table describes the major updates and new features for the *AWS App Mesh User Guide*\. We also update the documentation frequently to address the feedback that you send us\. 
 
 | Change | Description | Date | 
 | --- |--- |--- |
-| [TLS encryption](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual-node-tls.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) Use certificates from an AWS Certificate Manager Private Certificate Authority or your own certificate authority to encrypt communication between virtual nodes using TLS\. | January 17, 2020 | 
+| [Create a virtual gateway for mesh ingress](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_gateways.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) Enable resources outside of a mesh to communicate to resources inside of a mesh\. | April 8, 2020 | 
+| [TLS encryption](https://docs.aws.amazon.com/app-mesh/latest/userguide/tls.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) Use certificates from an AWS Certificate Manager Private Certificate Authority or your own certificate authority to encrypt communication between virtual nodes using TLS\. | January 17, 2020 | 
 | [Share a mesh with another account](https://docs.aws.amazon.com/app-mesh/latest/userguide/sharing.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) You can share a mesh with another account\. Resources created by any account can communicate with other resources in the mesh\. | January 17, 2020 | 
 | [Add a timeout value to a route](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) You can add a timeout value to a route\. | January 17, 2020 | 
-| [Create an App Mesh proxy on an AWS Outpost](https://docs.aws.amazon.com/app-mesh/latest/userguide/app-mesh-on-outposts.html) | You can create an App Mesh Envoy proxy on an AWS Outpost\. | December 3, 2019 | 
+| [Create an App Mesh proxy on an AWS Outpost](app-mesh/latest/userguide/app-mesh-on-outposts.html) | You can create an App Mesh Envoy proxy on an AWS Outpost\. | December 3, 2019 | 
 | [HTTP/2 and gRPC support for routes, virtual routers, and virtual nodes](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html) | You can route traffic that uses the HTTP/2 and gRPC protocols\. You can also add a listener for these protocols to [virtual nodes](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes) and [virtual routers](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers)\. | October 25, 2019 | 
 | [Retry policy](https://docs.aws.amazon.com/app-mesh/latest/userguide/route-retry-policy.html) | A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. You can add retry logic to a route\. | September 10, 2019 | 
 | [TLS encryption](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual-node-tls.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) Encrypt communication between virtual nodes using TLS\. | September 6, 2019 | 
