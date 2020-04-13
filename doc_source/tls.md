@@ -34,8 +34,8 @@ You can add these permissions to an existing IAM policy that is attached to a pr
 You pay a monthly fee for the operation of each ACM PCA until you delete it\. You also pay for the private certificates you issue each month and private certificates that you export\. For more information, see [AWS Certificate Manager Pricing](http://aws.amazon.com/certificate-manager/pricing/)\.
 
 When you enable [proxy authorization](proxy-authorization.md) for the Envoy Proxy that a mesh endpoint represents, the IAM role that you use must be assigned the following IAM permissions:
-+ For any certificates configured on a virtual node’s listener, the role must have the `acm:DescribeCertificate` permission\.
-+ For any CAs configured on a TLS client policy, the role must have the `acm-pca:DescribeCertificateAuthority` permission\.
++ For any certificates configured on a virtual node’s listener, the role must have the `acm:ExportCertificate` permission\.
++ For any CAs configured on a TLS client policy, the role must have the `acm-pca:GetCertificateAuthorityCertificate` permission\.
 
 ### Your own CA<a name="certificate-file"></a>
 
