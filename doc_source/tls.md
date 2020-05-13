@@ -22,9 +22,9 @@ For additional requirements, select the issuer of the certificate that you're us
 
 ### ACM PCA<a name="certificate-pca"></a>
 
-The certificate must be stored in ACM in the same Region and AWS Account, as the virtual node that will use the certificate\. If you don't have an ACM Private CA, then you must [create one](https://docs.aws.amazon.com/acm-pca/latest/userguide/PcaCreateCa.html) before you can request a certificate from it\. For more information about requesting a certificate from an existing ACM PCA using ACM, see [Request a Private Certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-private.html)\. The certificate cannot be a public certificate\.
+The certificate or certificate authority must be stored in ACM in the same Region and AWS Account, as the mesh endpoint that will use the certificate\. If you don't have an ACM Private CA, then you must [create one](https://docs.aws.amazon.com/acm-pca/latest/userguide/PcaCreateCa.html) before you can request a certificate from it\. For more information about requesting a certificate from an existing ACM PCA using ACM, see [Request a Private Certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-private.html)\. The certificate cannot be a public certificate\.
 
-The Private CAs you use for TLS client policies must be Root CAs and also stored in the same Region and AWS Account as the virtual node that will use the CA\.
+The Private CAs you use for TLS client policies must be Root CAs\.
 
 To configure a virtual node with certificates and CAs from ACM PCA, the principal \(such as a user or role\) that you use to call App Mesh must have the following IAM permissions: 
 + For any certificates that you add to a listener's TLS configuration, the principal must have the `acm:DescribeCertificate` permission\.
