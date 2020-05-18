@@ -8,7 +8,7 @@ To create a virtual service using the AWS CLI version 1\.18\.16 or higher, see t
 
 **To create a virtual service using the AWS Management Console**
 
-1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh)\.
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\. 
 
 1. Choose the mesh that you want to create the virtual service in\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 

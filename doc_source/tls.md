@@ -10,21 +10,23 @@ App Mesh allows you to provide the TLS certificate to the proxy in the following
 
 ## Certificate requirements<a name="virtual-node-tls-prerequisites"></a>
 
-The Common Name \(CN\) or Subject Alternative Name \(SAN\) of the certificate must match specific criteria, depending on how the actual service represented by a mesh endpoint is discovered\.
-+ **DNS** – The certificate CN or one of the SANs must match the value provided in the DNS service discovery settings\. For an application with the service discovery name `mesh-endpoint.apps.local`, you can create a certificate matching that name, or a certificate with the wild card `*.apps.local`\. If the certificate CN or SAN does not match the DNS service discovery settings, the connection between Envoys fails with the following error message, as seen from the client Envoy\.
+One of the Subject Alternative Names \(SANs\) on the certificate must match specific criteria, depending on how the actual service represented by a mesh endpoint is discovered\. 
++ **DNS** – One of the certificate SANs must match the value provided in the DNS service discovery settings\. For an application with the service discovery name `mesh-endpoint.apps.local`, you can create a certificate matching that name, or a certificate with the wild card `*.apps.local`\.
++ **AWS Cloud Map** – One of the certificate SANs must match the value provided in the AWS Cloud Map service discovery settings using the format `service-name.namespace-name`\. For an application with the AWS Cloud Map service discovery settings of serviceName `mesh-endpoint` and the namespaceName `apps.local`, you can create a certificate matching the name `mesh-endpoint.apps.local`, or a certificate with the wild card `*.apps.local.`
 
-  ```
-  SSL error: 268435703:SSL routines:OPENSSL_internal:WRONG_VERSION_NUMBER
-  ```
-+ **AWS Cloud Map** – The certificate CN and SAN are not considered when negotiating TLS\. You can use any names for your certificates when using AWS Cloud Map, but we recommend that you create a name that’s significant to your mesh endpoint, such as `mesh-endpoint-name.apps.local`\. This name can help you identify the certificate in ACM\.
+For both discovery mechanisms, if none of the certificate SANs match the DNS service discovery settings, the connection between Envoys fails with the following error message, as seen from the client Envoy\. 
+
+```
+TLS error: 268435581:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED
+```
 
 For additional requirements, select the issuer of the certificate that you're using\.
 
 ### ACM PCA<a name="certificate-pca"></a>
 
-The certificate or certificate authority must be stored in ACM in the same Region and AWS Account, as the mesh endpoint that will use the certificate\. If you don't have an ACM Private CA, then you must [create one](https://docs.aws.amazon.com/acm-pca/latest/userguide/PcaCreateCa.html) before you can request a certificate from it\. For more information about requesting a certificate from an existing ACM PCA using ACM, see [Request a Private Certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-private.html)\. The certificate cannot be a public certificate\.
+The certificate or CA's certificate must be stored in ACM in the same Region and AWS account as the mesh endpoint that will use the certificate\. If you don't have an ACM Private CA, then you must [create one](https://docs.aws.amazon.com/acm-pca/latest/userguide/PcaCreateCa.html) before you can request a certificate from it\. For more information about requesting a certificate from an existing ACM PCA using ACM, see [Request a Private Certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-private.html)\. The certificate cannot be a public certificate\.
 
-The Private CAs you use for TLS client policies must be Root CAs\.
+The private CAs that you use for TLS client policies must be root CAs\.
 
 To configure a virtual node with certificates and CAs from ACM PCA, the principal \(such as a user or role\) that you use to call App Mesh must have the following IAM permissions: 
 + For any certificates that you add to a listener's TLS configuration, the principal must have the `acm:DescribeCertificate` permission\.

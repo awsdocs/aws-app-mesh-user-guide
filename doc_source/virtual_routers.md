@@ -12,7 +12,7 @@ To create a virtual router using the AWS CLI version 1\.18\.16 or higher, see th
 
 **To create a virtual router using the AWS Management Console**
 
-1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh)\.
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\. 
 
 1. Choose the mesh that you want to create the virtual router in\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 
@@ -35,7 +35,7 @@ You cannot delete a virtual router if it has any [routes](routes.md) or if it is
 
 **To delete a virtual router using the AWS Management Console**
 
-1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh)\.
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\. 
 
 1. Choose the mesh that you want to delete a virtual router from\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 
