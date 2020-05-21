@@ -13,7 +13,7 @@ This is a known issue\. For more information, see the [Name VirtualServices by a
 + Within the application container's `/etc/hosts` file
 + In a third\-party DNS server that you manage
 
-If your application still can't resolve the DNS name of the virtual service that it is attempting to connect to, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here)\.
+If your application still can't resolve the DNS name of the virtual service that it is attempting to connect to, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
 
 ## Unable to connect to a virtual service backend<a name="ts-connectivity-virtual-service-backend"></a>
 
@@ -36,19 +36,19 @@ If the application fails to connect at all \(no `HTTP 503` response code returne
     + `No cluster match for URL` – This is most likely caused when a request is sent to a virtual service that does not match the criteria defined by any of the routes defined under a virtual router provider\. Make sure that the requests from the application are sent to a supported route by ensuring the path and HTTP request headers are correct\.
     + `No matching filter chain found` – This is most likely caused when a request is sent to a virtual service on an invalid port\. Make sure that the requests from the application are using the same port specified on the virtual router\.
 
-If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here)\.
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
 
 ## Unable to connect to an external service<a name="ts-connectivity-external-service"></a>
 
 **Symptoms**  
-Your application is unable to connect to a service outside of the mesh\.
+Your application is unable to connect to a service outside of the mesh (for example, `amazon.com`)\.
 
 **Resolution**  
 By default, App Mesh does not allow egress traffic from applications within the mesh to any destination outside of the mesh\. To enable communication with an external service, there are two options:
 + Set the [egress filter](https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_EgressFilter.html) on the mesh resource to `ALLOW_ALL`\. This setting will allow any application within the mesh to communicate with any destination IP address inside or outside of the mesh\.
 + Model the external service in the mesh using a virtual service, virtual router, route, and virtual node\. For example, to model the external service `example.com`, you can create a virtual service named `example.com` with a virtual router and route that sends all traffic to a virtual node with a DNS service discovery hostname of `example.com`\.
 
-If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here)\.
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
 
 ## Unable to connect to a MySQL server<a name="ts-connectivity-troubleshooting-mysql"></a>
 
@@ -64,7 +64,7 @@ This is a known issue\. For more information, see the [Unable to connect to MySQ
 
 To work around this issue, add port `3306` to the list of values for the `APPMESH_EGRESS_IGNORED_PORTS` in your services\. For more information, see [Update services](https://docs.aws.amazon.com/eks/latest/userguide/appmesh-getting-started.html#update-services) for Kubernetes , [Update services](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services) for Amazon ECS, or [Update services](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services) for Amazon EC2\. 
 
-IIf your issue is still not resolved, then you can provide us with details on what you're experiencing using the existing [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/62)\.
+IIf your issue is still not resolved, then you can provide us with details on what you're experiencing using the existing [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/62) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
 
 ## Unable to connect to a service modeled as a TCP virtual node or virtual router in App Mesh<a name="ts-connectivity-virtual-node-router"></a>
 
@@ -76,7 +76,7 @@ This is a known issue\. For more information, see [Routing to multiple TCP desti
 + Make sure that all destinations are using a unique port\. If you are using a virtual router provider for the backend virtual service, you can change the virtual router port without changing the port on the virtual nodes that it routes to\. This allows the applications to open connections on the virtual router port while the Envoy proxy continues to use the port defined in the virtual node\.
 + If the destination modeled as TCP is a MySQL server, or any other TCP\-based protocol in which the server sends the first packets after connection, see [Unable to connect to a MySQL server](#ts-connectivity-troubleshooting-mysql)\.
 
-If your issue is still not resolved, then you can provide us with details on what you're experiencing using the existing [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/195)\.
+If your issue is still not resolved, then you can provide us with details on what you're experiencing using the existing [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/195) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
 
 ## Connectivity succeeds to service not listed as a virtual service backend for a virtual node<a name="ts-connectivity-not-virtual-service"></a>
 
@@ -91,7 +91,7 @@ If you want to disallow traffic to destinations not modeled in the mesh, conside
 **Note**  
 Setting the mesh egress filter value affects all virtual nodes within the mesh\.
 
-If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here)\.
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
 
 ## Some requests fail with HTTP status code `503` when a virtual service has a virtual node provider<a name="ts-connectivity-virtual-node-provider"></a>
 
@@ -124,3 +124,5 @@ Because Envoy is managing inbound connections on your application’s behalf and
 + To adjust idle timeouts in DropWizard, adjust your [HTTP idleTimeout](https://www.dropwizard.io/en/latest/manual/configuration.html)
 + To adjust idle timeouts in Rails, use [Rack middleware](https://github.com/ankane/the-ultimate-guide-to-ruby-timeouts#rack-middleware)
 + To adjust idle timeouts in Tomcat, use [connectionTimeout or keepAliveTimeout](http://tomcat.apache.org/tomcat-7.0-doc/config/http.html)
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
