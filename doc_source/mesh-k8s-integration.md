@@ -236,7 +236,7 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
 
 1. Create an App Mesh virtual router
 
-   1. Create a file named `virtual-router.yaml` with the following contents\. The file will be used to create a virtual router to route traffic to the virtual node named `my-service-a` that was created in the previous step\. The value for `name` is the fully qualified domain name \(FQDN\) of the actual Kubernetes service that this virtual service abstracts\. The service is created in [Step 3: Create or update services](#integration-update-services)\. The controller will create the App Mesh virtual router, and route resources\. You can specify many more capabilities for your routes and use protocols other than `http`\. For more information, see [Virtual router](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html), and [Route](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html) \.
+   1. Create a file named `virtual-router.yaml` with the following contents\. The file will be used to create a virtual router to route traffic to the virtual node named `my-service-a` that was created in the previous step\. The controller will create the App Mesh virtual router, and route resources\. You can specify many more capabilities for your routes and use protocols other than `http`\. For more information, see [Virtual router](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html), and [Route](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html) \.
 
       ```
       apiVersion: appmesh.k8s.aws/v1beta2
@@ -414,7 +414,7 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
 
 1. Create an App Mesh virtual service 
 
-   1. Create a file named `virtual-service.yaml` with the following contents\. The file will be used to create a virtual service that uses a virtual router provider to route traffic to the virtual node named `my-service-a` that was created in the previous step\. The value for `name` is the fully qualified domain name \(FQDN\) of the actual Kubernetes service that this virtual service abstracts\. The service is created in [Step 3: Create or update services](#integration-update-services)\. The controller will create the App Mesh virtual service, virtual router, and route resources\. You can specify many more capabilities for your routes and use protocols other than `http`\. For more information, see [Virtual services](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_services.html), [Virtual router](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html), and [Route](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html) \. 
+   1. Create a file named `virtual-service.yaml` with the following contents\. The file will be used to create a virtual service that uses a virtual router provider to route traffic to the virtual node named `my-service-a` that was created in the previous step\. The value for `name` is the fully qualified domain name \(FQDN\) of the actual Kubernetes service that this virtual service abstracts\. The service is created in [Step 3: Create or update services](#integration-update-services)\. The controller will create the App Mesh virtual service \. For more information, see [Virtual services](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_services.html)\.
 
       ```
       apiVersion: appmesh.k8s.aws/v1beta2
@@ -619,7 +619,7 @@ Any pods that you want to use with App Mesh must have the App Mesh sidecar conta
               - containerPort: 80
       ```
 
-      For sidecar injection to work, everypod must have a corresponding virtual node. You will need to add podSelector->matchLabels in your virtual node definition. See the example below:
+      For sidecar injection to work, every pod must have a corresponding virtual node. You will need to add podSelector->matchLabels in your virtual node definition. See the example below:
 
       ```
       apiVersion: appmesh.k8s.aws/v1beta2
