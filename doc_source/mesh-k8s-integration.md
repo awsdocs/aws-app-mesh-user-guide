@@ -4,7 +4,7 @@ When you integrate AWS App Mesh with Kubernetes, you manage App Mesh resources, 
 + **App Mesh manager for Kubernetes** – The manager is accompanied by the deployment of four Kubernetes custom resource definitions: `mesh`, `virtual service`, `virtual node`, and `virtual router` \. The controller watches for creation, modification, and deletion of the custom resources and makes changes to the corresponding App Mesh `[mesh](https://docs.aws.amazon.com/app-mesh/latest/userguide/meshes.html)`, `[virtual service](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_services.html)`, `[virtual router](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html)` (including `[route](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html)`\), and `[virtual node](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html)` resources through the App Mesh API\. To learn more or contribute to the controller, see the [GitHub project](https://github.com/aws/aws-app-mesh-controller-for-k8s)\.
 +  **App Mesh sidecar injector for Kubernetes** – The injector installs as a webhook and injects the following containers into Kubernetes pods that are running in specific, labeled namespaces\. The sidecar injector runs inside the App Mesh manager.
     + **App Mesh Envoy proxy** –Envoy uses the configuration defined in the App Mesh control plane to determine where to send your application traffic\.\.
-    + **App Mesh proxy route manager **– The route manager sets up a pod’s network namespace with `iptables` rules that route ingress and egress traffic through Envoy\. This runs as a Kubernetes init container inside a pod 
+    + **App Mesh proxy route manager **– The route manager updates `iptables` rules in pod's network namespaces that route ingress and egress traffic through Envoy\. This runs as a Kubernetes init container inside a pod
 
 
 |  | 
@@ -778,9 +778,10 @@ Any pods that you want to use with App Mesh must have the App Mesh sidecar conta
 
 ## Step 4: Clean up<a name="remove-integration"></a>
 
-Remove all of the example resources created in this tutorial\. The controller also removes the resources that were created in App Mesh\.
+Remove all of the example resources created in this tutorial\. The controller also removes the resources that were created in App Mesh\. Virtual node, virtual service, virtual router are all namespaced resources so they will be deleted when the namespace is deleted. Mesh deletion does not remove virtual node, virtual service, virtual router but waits for them to be deleted before deleting itself
 
 ```
+kubectl delete mesh my-mesh
 kubectl delete namespace my-app-1
 ```
 
