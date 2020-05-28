@@ -1,6 +1,6 @@
 # Tutorial: Configure App Mesh integration with Kubernetes<a name="mesh-k8s-integration"></a>
 
-When you integrate AWS App Mesh with Kubernetes, you manage App Mesh resources, such as meshs, virtual services, virtual nodes and virtual routers, through Kubernetes\. You also automatically add the App Mesh sidecar container images to Kubernetes pod specifications\. This tutorial guides you through the installation of the following open source components that enable this integration:
+When you integrate AWS App Mesh with Kubernetes, you manage App Mesh resources, such as meshes, virtual services, virtual nodes and virtual routers, through Kubernetes\. You also automatically add the App Mesh sidecar container images to Kubernetes pod specifications\. This tutorial guides you through the installation of the following open source components that enable this integration:
 + **App Mesh manager for Kubernetes** – The manager is accompanied by the deployment of four Kubernetes custom resource definitions: `mesh`, `virtual service`, `virtual node`, and `virtual router` \. The controller watches for creation, modification, and deletion of the custom resources and makes changes to the corresponding App Mesh `[mesh](https://docs.aws.amazon.com/app-mesh/latest/userguide/meshes.html)`, `[virtual service](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_services.html)`, `[virtual router](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html)` (including `[route](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html)`\), and `[virtual node](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html)` resources through the App Mesh API\. To learn more or contribute to the controller, see the [GitHub project](https://github.com/aws/aws-app-mesh-controller-for-k8s)\.
 +  **App Mesh sidecar injector for Kubernetes** – The injector installs as a webhook and injects the following containers into Kubernetes pods that are running in specific, labeled namespaces\. The sidecar injector runs inside the App Mesh manager.
     + **App Mesh Envoy proxy** –Envoy uses the configuration defined in the App Mesh control plane to determine where to send your application traffic\.\.
@@ -200,7 +200,7 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
           "virtualNode": {
               "meshName": "my-mesh",
               "metadata": {
-                  "arn": "arn:aws:appmesh:us-west-2:669977933099:mesh/my-mesh/virtualNode/my-service-a_my-app-1",
+                  "arn": "arn:aws:appmesh:us-west-2:999999999999:mesh/my-mesh/virtualNode/my-service-a_my-app-1",
                   "createdAt": 1590688032.748,
                   "lastUpdatedAt": 1590688032.748,
                   "meshOwner": "889966900099",
@@ -323,8 +323,8 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
           Type:                  VirtualRouterActive
         Observed Generation:     1
         Route AR Ns:
-          My - Service - A - Route:  arn:aws:appmesh:us-west-2:669977933099:mesh/my-mesh/virtualRouter/my-service-a-virtual-router_my-app-1/route/my-service-a-route
-        Virtual Router ARN:          arn:aws:appmesh:us-west-2:669977933099:mesh/my-mesh/virtualRouter/my-service-a-virtual-router_my-app-1
+          My - Service - A - Route:  arn:aws:appmesh:us-west-2:999999999999:mesh/my-mesh/virtualRouter/my-service-a-virtual-router_my-app-1/route/my-service-a-route
+        Virtual Router ARN:          arn:aws:appmesh:us-west-2:999999999999:mesh/my-mesh/virtualRouter/my-service-a-virtual-router_my-app-1
       Events:                        <none>
       ```
 
@@ -341,11 +341,11 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
           "virtualRouter": {
               "meshName": "my-mesh",
               "metadata": {
-                  "arn": "arn:aws:appmesh:us-west-2:669977933099:mesh/my-mesh/virtualRouter/my-service-a-virtual-router_my-app-1",
+                  "arn": "arn:aws:appmesh:us-west-2:999999999999:mesh/my-mesh/virtualRouter/my-service-a-virtual-router_my-app-1",
                   "createdAt": 1590688032.79,
                   "lastUpdatedAt": 1590688032.79,
-                  "meshOwner": "669977933099",
-                  "resourceOwner": "669977933099",
+                  "meshOwner": "999999999999",
+                  "resourceOwner": "999999999999",
                   "uid": "00dd50af-3fd7-41e1-85de-fb38c91ed4a2",
                   "version": 1
               },
@@ -380,11 +380,11 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
           "route": {
               "meshName": "my-mesh",
               "metadata": {
-                  "arn": "arn:aws:appmesh:us-west-2:669977933099:mesh/my-mesh/virtualRouter/my-service-a-virtual-router_my-app-1/route/my-service-a-route",
+                  "arn": "arn:aws:appmesh:us-west-2:999999999999:mesh/my-mesh/virtualRouter/my-service-a-virtual-router_my-app-1/route/my-service-a-route",
                   "createdAt": 1590688032.817,
                   "lastUpdatedAt": 1590688032.817,
-                  "meshOwner": "669977933099",
-                  "resourceOwner": "669977933099",
+                  "meshOwner": "999999999999",
+                  "resourceOwner": "999999999999",
                   "uid": "58ac82cb-c718-45f3-a299-e9432afb6326",
                   "version": 1
               },
@@ -481,7 +481,7 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
           Status:                True
           Type:                  VirtualServiceActive
         Observed Generation:     1
-        Virtual Service ARN:     arn:aws:appmesh:us-west-2:669977933099:mesh/my-mesh/virtualService/my-service-a.my-app-1.svc.cluster.local
+        Virtual Service ARN:     arn:aws:appmesh:us-west-2:999999999999:mesh/my-mesh/virtualService/my-service-a.my-app-1.svc.cluster.local
       Events:                    <none>
       ```
 
@@ -498,11 +498,11 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
           "virtualService": {
               "meshName": "my-mesh",
               "metadata": {
-                  "arn": "arn:aws:appmesh:us-west-2:669977933099:mesh/my-mesh/virtualService/my-service-a.my-app-1.svc.cluster.local",
+                  "arn": "arn:aws:appmesh:us-west-2:999999999999:mesh/my-mesh/virtualService/my-service-a.my-app-1.svc.cluster.local",
                   "createdAt": 1590688349.741,
                   "lastUpdatedAt": 1590688349.741,
-                  "meshOwner": "669977933099",
-                  "resourceOwner": "669977933099",
+                  "meshOwner": "999999999999",
+                  "resourceOwner": "999999999999",
                   "uid": "962a27b4-a6f6-4a2b-b0a1-70967b4ade5f",
                   "version": 1
               },
