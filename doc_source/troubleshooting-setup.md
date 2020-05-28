@@ -93,6 +93,20 @@ The following is a list of remediation steps depending on the status returned by
 
 If your Envoy proxy is still failing health checks, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here)\.
 
+## Health check from the load balancer to the mesh endpoint failing<a name="ts-setup-endpoint-lb-checks"></a>
+
+**Symptoms**
+Your mesh endpoint is considered healthy by the container health check or readiness probe, but the health check from the load balancer to the mesh endpoint is failing.
+
+**Resolution**
++ Make sure the [Security Group](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) associated with your mesh endpoint accepts ingress traffic on the port you've configured for your health check.
++ Make sure the health check is succeeding consistently when requested manually (for example, from a [bastion host within your VPC](https://aws.amazon.com/quickstart/architecture/linux-bastion/))
++ If you are configuring a health check for a Virtual Node, we recommend implementing a health check endpoint in your application (e.g. /ping for HTTP). This ensures that both the Envoy proxy and your application are routable from the load balancer. 
+  + You can use any Elastic Load Balancer type for the Virtual Node, depending on the features you need. See [Elastic Load Balancing features](https://aws.amazon.com/elasticloadbalancing/features/#compare).
++ If you are configuring a health check for a Virtual Gateway, we recommend using a [Network Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancers.html) with a TCP health check on the Virtual Gateway's listener port. This ensures that the Virtual Gateway listener is bootstrapped and ready to accept connections.
+
+If your mesh endpoint is still failing health checks from the load balancer, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
+
 ## HTTP 503 errors during application deployment<a name="ts-setup-503-during-deployment"></a>
 
 **Symptoms**  
