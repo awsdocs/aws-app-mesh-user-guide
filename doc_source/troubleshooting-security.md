@@ -13,14 +13,17 @@ In order to determine the root cause of the issue, we recommend using the Envoy 
 + In the Envoy process logs, look for the following errors \(logged at debug level\)\.
 
   ```
-  TLS error: 268435581:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED: This error has multiple meanings:
+  TLS error: 268435581:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED
   ```
+
+This error has multiple meanings:
+
   + The certificate was not signed by one of the certificate authorities defined in the TLS client policy trust bundle\.
   + The certificate is no longer valid \(expired\)\.
   + The Subject Alternative Name \(SAN\) does not match the requested DNS hostname\.
 + Make sure that the certificate offered by the backend service is valid, that it is signed by one of the certificate authorities in your TLS client policies trust bundle, and that it meets the criteria defined in [Transport Layer Security \(TLS\)](tls.md)\.
 
-If your issue is still not resolved, consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue-bug-report.md&title=Bug%3A+describe+bug+here)\. If you believe that you’ve found a security vulnerability or have questions about App Mesh’s security, then see the [AWS vulnerability reporting guidelines](http://aws.amazon.com/security/vulnerability-reporting/)\.
+If your issue is still not resolved, consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue-bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\. If you believe that you’ve found a security vulnerability or have questions about App Mesh’s security, then see the [AWS vulnerability reporting guidelines](http://aws.amazon.com/security/vulnerability-reporting/)\.
 
 ## Unable to connect to a backend virtual service when application is originating TLS<a name="ts-security-originating-tls"></a>
 
@@ -30,7 +33,7 @@ When originating a TLS session from an application, instead of from the Envoy pr
 **Resolution**  
 This is a known issue\. For more information, see the [Feature Request: TLS negotiation between the downstream application and upstream proxy](https://github.com/aws/aws-app-mesh-roadmap/issues/162) GitHub issue\. In App Mesh, TLS origination is currently supported from the Envoy proxy but not from the application\. To use TLS origination support at the Envoy, disable TLS origination in the application\. This allows the Envoy to read the egress request headers and forward the request to the appropriate destination through a TLS session\. For more information, see [Transport Layer Security \(TLS\)](tls.md)\. 
 
-If your issue is still not resolved, then you can provide us with details on what you're experiencing using the existing [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/162)\. If you believe that you’ve found a security vulnerability or have questions about App Mesh’s security, then see the [AWS vulnerability reporting guidelines](http://aws.amazon.com/security/vulnerability-reporting/)\.
+If your issue is still not resolved, then you can provide us with details on what you're experiencing using the existing [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/162) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\. If you believe that you’ve found a security vulnerability or have questions about App Mesh’s security, then see the [AWS vulnerability reporting guidelines](http://aws.amazon.com/security/vulnerability-reporting/)\.
 
 ## Unable to assert that connectivity between Envoy proxies is using TLS<a name="ts-security-tls-between-proxies"></a>
 
@@ -82,4 +85,4 @@ Steps defined in this resolution make use of the Envoy administration interface 
     # Total CX (11) - SSL Connection Errors (1) == SSL Handshakes (9) + SSL Sessions Re-used (1)
     ```
 
-If your issue is still not resolved, consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue-bug-report.md&title=Bug%3A+describe+bug+here)\. If you believe that you’ve found a security vulnerability or have questions about App Mesh’s security, then see the [AWS vulnerability reporting guidelines](http://aws.amazon.com/security/vulnerability-reporting/)\.
+If your issue is still not resolved, consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue-bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\. If you believe that you’ve found a security vulnerability or have questions about App Mesh’s security, then see the [AWS vulnerability reporting guidelines](http://aws.amazon.com/security/vulnerability-reporting/)\.

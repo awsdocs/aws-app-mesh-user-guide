@@ -31,7 +31,7 @@ This error indicates that the task execution role being used does not have permi
 }
 ```
 
-If you still can't pull the image, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here)\.
+If you still can't pull the image, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
 
 ## Cannot connect to App Mesh Envoy management service<a name="ts-setup-cannot-connect-ems"></a>
 
@@ -52,7 +52,7 @@ appmesh-envoy-management.region-code.amazonaws.com
 appmesh-preview-envoy-management.region-code.amazonaws.com
 ```
 
-If you still can't connect to the App Mesh Envoy management service, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here)\.
+If you still can't connect to the App Mesh Envoy management service, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
 
 ## Envoy disconnected from App Mesh Envoy management service with error text<a name="ts-setup-grpc-error-codes"></a>
 
@@ -75,6 +75,13 @@ In most cases, the message portion of the log should indicate the problem\. The 
 | 8 | The number of Envoy proxies for a given App Mesh resource exceeds the account\-level service quota\. | See [App Mesh service quotas](service-quotas.md) for information on default account quotas and how to request a quota increase\. | 
 | 16 | The Envoy proxy does not have valid authentication credentials for AWS\. | Make sure that the Envoy has appropriate credentials to connect to AWS services through an IAM user or role\. | 
 
+You can observe the status codes and messages from your Envoy Proxy with [CloudWatch Logs Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html) by using the following query:
+
+```
+filter @message like /gRPC config stream closed/
+| parse @message "gRPC config stream closed: *, *" as StatusCode, Message
+```
+
 If the provided error message was not helpful, or your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here)\.
 
 ## Envoy container health check, readiness probe, or liveliness probe failing<a name="ts-setup-envoy-container-checks"></a>
@@ -91,7 +98,7 @@ The following is a list of remediation steps depending on the status returned by
 + `PRE_INITIALIZING` or `INITIALIZING` – The Envoy proxy has yet to receive configuration, or cannot connect and retrieve configuration from App Mesh Envoy management service\. The Envoy may be receiving an error from the Envoy management service when trying to connect\. For more information, see the errors in [Envoy disconnected from App Mesh Envoy management service with error text](#ts-setup-grpc-error-codes)\.
 + `DRAINING` – The Envoy proxy has begun draining connections in response to a `/healthcheck/fail` or `/drain_listeners` request on the Envoy administration interface\. We do not recommend invoking these paths on the administration interface unless you are about to terminate your Amazon ECS task, Amazon EC2 instance, or Kubernetes pod\.
 
-If your Envoy proxy is still failing health checks, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here)\.
+If your Envoy proxy is still failing health checks, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
 
 ## Health check from the load balancer to the mesh endpoint failing<a name="ts-setup-endpoint-lb-checks"></a>
 
@@ -164,3 +171,5 @@ cluster.cds_egress_prod_user_http_3000.upstream_rq_per_try_timeout: 1230
 ```
 
 As you can see in the previous example, every timed out request was categorized as a `504` and sent back to the application as such\. Correcting the units error fixes the issue, and you would no longer see timeouts\.
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
