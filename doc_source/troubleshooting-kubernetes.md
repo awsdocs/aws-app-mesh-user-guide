@@ -15,7 +15,7 @@ kubectl logs -n appmesh-system -f \
     $(kubectl get pods -n appmesh-system -o name | grep controller)
 ```
 
-If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 
 ## Pods are failing readiness and liveliness checks after Envoy sidecar is injected<a name="ts-kubernetes-pods-after-injection"></a>
 
@@ -50,12 +50,12 @@ kubectl logs -n appmesh-system -f \
     | grep "gRPC config stream closed"
 ```
 
-If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 
 ## Pods not registering or deregistering as AWS Cloud Map instances<a name="ts-kubernetes-pods-cmap"></a>
 
 **Symptoms**  
-Your Kubernetes pods are not being registered in or de\-registered from AWS Cloud Map as part of their lifecycle\. A pod may start successfully and be ready to serve traffic, but not receive any\. When a pod is terminated, clients may still retain its IP address and attempt to send traffic to it, failing\.
+Your Kubernetes pods are not being registered in or de\-registered from AWS Cloud Map as part of their life cycle\. A pod may start successfully and be ready to serve traffic, but not receive any\. When a pod is terminated, clients may still retain its IP address and attempt to send traffic to it, failing\.
 
 **Resolution**  
 This is a known issue\. For more information, see the [Pods don't get auto registered/deregistered in kubernetes with AWS Cloud Map](https://github.com/aws/aws-app-mesh-controller-for-k8s/issues/159) GitHub issue\. Due to the relationship between pods, App Mesh virtual nodes, and AWS Cloud Map resources, the [App Mesh controller for Kubernetes](https://github.com/aws/aws-app-mesh-controller-for-k8s) may become desynchronized and lose resources\. For example, this can happen if a virtual node resource is deleted from Kubernetes before terminating its associated pods\. 
@@ -77,7 +77,7 @@ To mitigate this issue:
       $(kubectl get pods -n appmesh-system -o name | grep appmesh-controller)
   ```
 
-If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 
 ## Cannot determine where a pod for an App Mesh resource is running<a name="ts-kubernetes-where-pod-running"></a>
 
@@ -92,7 +92,7 @@ kubectl get pods --all-namespaces -o json | \
     jq '.items[] | { metadata } | select(.metadata.annotations."appmesh.k8s.aws/virtualNode" == "virtual-node-name")'
 ```
 
-If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 
 ## Cannot determine what App Mesh resource a pod is running as<a name="ts-kubernetes-pod-running-as"></a>
 
@@ -107,4 +107,4 @@ kubectl get pod pod-name -n namespace -o json | \
     jq '{ "mesh": .metadata.annotations."appmesh.k8s.aws/mesh", "virtualNode": .metadata.annotations."appmesh.k8s.aws/virtualNode" }'
 ```
 
-If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.

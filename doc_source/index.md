@@ -17,8 +17,6 @@ Amazon's trademarks and trade dress may not be used in
 + [What Is AWS App Mesh?](what-is-app-mesh.md)
 + [Getting started with AWS App Mesh](appmesh-getting-started.md)
 + [App Mesh best practices](best-practices.md)
-   + [Minimizing downtime during planned and unplanned events](bp-minimizing-downtime.md)
-   + [Monitoring and failure resolution](bp-monitoring.md)
 + [Service meshes](meshes.md)
 + [Virtual services](virtual_services.md)
 + [Virtual nodes](virtual_nodes.md)

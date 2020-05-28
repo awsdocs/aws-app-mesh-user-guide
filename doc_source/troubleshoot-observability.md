@@ -14,7 +14,7 @@ To use X\-Ray in App Mesh, you must correctly configure components to enable com
 + If you’ve instrumented X\-Ray in your application code with one of the [language\-specific SDKs ](https://docs.aws.amazon.com/xray/index.html), then make sure that it is configured correctly by following the guides for your language\.
 + If all of the previous items are configured correctly, then review the X\-Ray container logs for errors and follow the guidance in [Troubleshooting AWS X\-Ray](https://docs.aws.amazon.com/xray/latest/devguide/xray-troubleshooting.html)\. A more detailed explanation of X\-Ray integration in App Mesh can be found in [Integrating X\-Ray with App Mesh](http://aws.amazon.com/blogs/compute/integrating-aws-x-ray-with-aws-app-mesh/)\.
 
-If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 
 ## Unable to see Envoy metrics for my applications in Amazon CloudWatch metrics<a name="ts-observability-envoy-metrics"></a>
 
@@ -27,7 +27,7 @@ When you use CloudWatch metrics in App Mesh, you must correctly configure severa
 + Make sure that you have configured the CloudWatch agent for App Mesh appropriately by following the platform\-specific usage instructions\. For more information, see [App Mesh CloudWatch agent](https://github.com/aws-samples/aws-app-mesh-cloudwatch-agent#usage) on GitHub\.
 + If all of the previous items are configured correctly, then review the CloudWatch agent container logs for errors and follow the guidance provided in [Troubleshooting the CloudWatch agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/troubleshooting-CloudWatch-Agent.html)\.
 
-If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](https://aws.amazon.com/premiumsupport/)\.
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 
 ## Unable to configure custom sampling rules for AWS X\-Ray traces<a name="ts-observability-custom-sampling"></a>
 
@@ -37,4 +37,4 @@ Your application is using X\-Ray tracing, but you are unable to configure sampli
 **Resolution**  
 This is a known issue\. For more information, see the [Support Dynamic X\-Ray sampling configuration](https://github.com/aws/aws-app-mesh-roadmap/issues/95) issue on GitHub\. The Envoy proxy allows configuration of sampling rules through static configuration\. For more information, see [AWS X\-Ray Tracer configuration](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/xray.proto.html?highlight=tracing) in the Envoy documentation\. The Envoy proxy cannot currently be configured to dynamically configure sampling rules through the App Mesh service APIs\. 
 
-If your issue is still not resolved, then you can provide us with details on what you're experiencing using the existing [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/95)\.
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.

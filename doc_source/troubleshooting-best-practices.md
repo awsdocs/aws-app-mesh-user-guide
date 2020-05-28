@@ -34,7 +34,7 @@ If you’re using the [App Mesh Envoy image](envoy.md), you can set the log leve
 **Note**  
 We do not recommend using the `debug` level in production environments\. Setting the level to `debug` increases the logging and may affect performance and the overall cost of logs offloaded to solutions like [CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)\. 
 
-When you use Envoy’s default format, you can analyze the the process logs with [CloudWatch Logs Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html) using the following parse statement: 
+When you use Envoy’s default format, you can analyze the process logs with [CloudWatch Logs Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html) using the following parse statement: 
 
 ```
 parse @message "[*][*][*][*] [*] *" as Time, Thread, Level, Name, Source, Message
