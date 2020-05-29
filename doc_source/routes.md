@@ -101,12 +101,19 @@ For an end\-to\-end walk through of using a route timeout, see [Timeout Policy E
 
 **To create a route with a timeout**
 
-1. Add the Preview Channel service model to the AWS CLI with the following command\.
+1. Add the Preview Channel service model to the AWS CLI version 1 with the following command\.
 
    ```
    aws configure add-model \
        --service-name appmesh-preview \
        --service-model https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   ```
+
+   If you're using the AWS CLI version 2, add the service model with the following commands:
+
+   ```
+   curl -o service-model.json https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   aws configure add-model --service-name appmesh-preview --service-model file://service-model.json
    ```
 
 1. Create a mesh with the following command\.
@@ -115,37 +122,101 @@ For an end\-to\-end walk through of using a route timeout, see [Timeout Policy E
    aws appmesh-preview create-mesh --mesh-name apps
    ```
 
-1. Create a JSON file named `create-virtual-node.json` with a virtual node configuration\.
+1. Create a JSON file named `virtual-node-a.json` with a virtual node configuration\.
+**Note**  
+Since the route created in a later step has a `perRequest` timeout that is greater than 15 seconds, the virtual node also has a `perRequest` timeout that is greater than 15 seconds\. Specifying `perRequest` timeouts for virtual nodes is available in preview release\. For more information, see [App Mesh Preview Channel only \- Virtual node listener timeout](virtual_nodes.md#virtual-node-listener-timeout)\.
 
    ```
    {
-       "meshName": "apps",
-       "spec": {
-           "listeners": [
-               {
-                   "portMapping": {
-                       "port": 80,
-                       "protocol": "http2"
-                   }
+      "meshName" : "apps",
+      "spec" : {
+         "backends" : [
+            {
+               "virtualService" : {
+                  "virtualServiceName" : "serviceb.svc.cluster.local"
                }
-           ],
-           "serviceDiscovery": {
-               "dns": {
-                   "hostname": "serviceB.svc.cluster.local"
+            }
+         ],
+         "listeners" : [
+            {
+               "portMapping" : {
+                  "port" : 80,
+                  "protocol" : "http2"
+               },
+               "timeout" : {
+                  "http2" : {
+                     "perRequest" : {
+                        "unit" : "s",
+                        "value" : 20
+                     }
+                  }
                }
-           }
-       },
-       "virtualNodeName": "serviceB"
+            }
+         ],
+         "serviceDiscovery" : {
+            "dns" : {
+               "hostname" : "servicea.svc.cluster.local"
+            }
+         }
+      },
+      "virtualNodeName" : "serviceA"
    }
    ```
 
 1. Create the virtual node with the following command\.
 
    ```
-   aws appmesh-preview create-virtual-node --cli-input-json file://create-virtual-node.json
+   aws appmesh-preview create-virtual-node --cli-input-json file://virtual-node-a.json
    ```
 
-1. Create a JSON file named `create-virtual-router.json` with a virtual router configuration\.
+1. Create a JSON file named `virtual-node-b.json` with a virtual node configuration\.
+**Note**  
+Since the route created in a later step has a `perRequest` timeout that is greater than 15 seconds, the originating virtual node and destination virtual nodes also have a `perRequest` timeout that is greater than 15 seconds\.
+
+   ```
+   {
+      "meshName" : "apps",
+      "spec" : {
+         "backends" : [
+            {
+               "virtualService" : {
+                  "virtualServiceName" : "servicec.svc.cluster.local"
+               }
+            }
+         ],
+         "listeners" : [
+            {
+               "portMapping" : {
+                  "port" : 80,
+                  "protocol" : "http2"
+               },
+               "timeout" : {
+                  "http2" : {
+                     "perRequest" : {
+                        "unit" : "s",
+                        "value" : 20
+                     }
+                  }
+               }
+            }
+         ],
+         "serviceDiscovery" : {
+            "dns" : {
+               "hostname" : "serviceb.svc.cluster.local"
+            }
+         }
+      },
+      "virtualNodeName" : "serviceB"
+   }
+   ```
+
+1. Create the virtual node with the following command\.
+
+   ```
+   aws appmesh-preview create-virtual-node --cli-input-json file://virtual-node-b.json
+   ```
+
+1. Create a JSON file named `virtual-router.json` with a virtual router configuration\.
 
    ```
    {
@@ -167,10 +238,12 @@ For an end\-to\-end walk through of using a route timeout, see [Timeout Policy E
 1. Create the virtual router with the following command\.
 
    ```
-   aws appmesh-preview create-virtual-router --cli-input-json file://create-virtual-router.json
+   aws appmesh-preview create-virtual-router --cli-input-json file://virtual-router.json
    ```
 
-1. Create a JSON file named `create-route.json` with a route configuration\. In the following configuration, the route has `idle` and `perRequest` timeouts\. 
+1. Create a JSON file named `route.json` with a route configuration\. In the following configuration, the route has `idle` and `perRequest` timeouts\.
+**Note**  
+You can specify a shorter `perRequest` timeout than the default of 15 seconds, if required\. If you specify a timeout that is longer than 15 seconds, then make sure that you also define a timeout that is greater than 15 seconds for the [virtual node](virtual_nodes.md#virtual-node-listener-timeout) that uses this route as part of its backend [virtual service](virtual_services.md) and for the route's target virtual node\.
 
    ```
    {
@@ -214,7 +287,29 @@ For an end\-to\-end walk through of using a route timeout, see [Timeout Policy E
 1. Create the route with the following command\.
 
    ```
-   aws appmesh-preview create-route --cli-input-json file://create-route.json
+   aws appmesh-preview create-route --cli-input-json file://route.json
+   ```
+
+1. Create a JSON file named `virtual-service.json` with a virtual service configuration\.
+
+   ```
+   {
+       "meshName": "apps",
+       "spec": {
+           "provider": {
+               "virtualRouter": {
+                   "virtualRouterName": "serviceB"
+               }
+           }
+       },
+       "virtualServiceName": "serviceB.svc.cluster.local"
+   }
+   ```
+
+1. Create the virtual service with the following command\.
+
+   ```
+   aws appmesh-preview create-virtual-service --cli-input-json file://virtual-service.json
    ```
 
 ## Deleting a route<a name="delete-route"></a>

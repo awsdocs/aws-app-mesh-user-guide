@@ -74,6 +74,99 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. Choose **Create virtual node** to finish\.
 
+## App Mesh Preview Channel only \- Virtual node listener timeout<a name="virtual-node-listener-timeout"></a>
+
+By default, the App Mesh proxy has two timeout value types:
++ **Per request** – The amount of time that a requester will wait for an upstream target to complete a response\. The default value is 15 seconds\.
++ **Idle** – Bounds the amount of time a connection may be idle\. The default value is none\.
+
+If the default timeout values don't meet your requirements, then you can specify your own values\. You can specify a per request timeout for gRPC, HTTP, and HTTP/2 listeners and an idle timeout for gRPC, HTTP, HTTP/2, and TCP listeners\.
+
+For an end\-to\-end walk through of using a virtual node listener timeout, see [Timeout Policy Example](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-timeout-policy) on GitHub\.
+
+**To create a virtual node with a listener timeout**
+
+1. Add the Preview Channel service model to the AWS CLI version 1 with the following command\.
+
+   ```
+   aws configure add-model \
+       --service-name appmesh-preview \
+       --service-model https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   ```
+
+   If you're using the AWS CLI version 2, add the service model with the following commands:
+
+   ```
+   curl -o service-model.json https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   aws configure add-model --service-name appmesh-preview --service-model file://service-model.json
+   ```
+
+1. Create a mesh with the following command\.
+
+   ```
+   aws appmesh-preview create-mesh --mesh-name apps
+   ```
+
+1. Create a JSON file named `virtual-node.json` with a virtual node configuration\. In the following configuration, the listener has `idle` and `perRequest` timeouts\. 
+**Note**  
+You can specify a shorter `perRequest` timeout than the default of 15 seconds, if required\. If you specify a timeout that is longer than 15 seconds, then make sure that you also define a timeout that is greater than 15 seconds for the the following resources defined as part of the [virtual service](virtual_services.md) backend that you define:  
+[**Route**](routes.md#route-timeout) – If the backend uses a [virtual router](virtual_routers.md) provider
+**Virtual node** – The target virtual node for a route when using a virtual router provider for the backend or the virtual node itself when using a virtual node provider for the backend\. 
+For an example route configuration that also uses a timeout, see [App Mesh Preview Channel only \- Route timeout](routes.md#route-timeout)\.
+
+   ```
+   {
+      "meshName" : "apps",
+      "spec" : {
+         "backends" : [
+            {
+               "virtualService" : {
+                  "virtualServiceName" : "serviceb.svc.cluster.local"
+               }
+            }
+         ],
+         "listeners" : [
+            {
+               "portMapping" : {
+                  "port" : 80,
+                  "protocol" : "http2"
+               },
+               "timeout" : {
+                  "http2" : {
+                     "idle" : {
+                        "unit" : "s",
+                        "value" : 30
+                     },
+                     "perRequest" : {
+                        "unit" : "s",
+                        "value" : 20
+                     }
+                  }
+               }
+            }
+         ],
+         "serviceDiscovery" : {
+            "dns" : {
+               "hostname" : "servicea.svc.cluster.local"
+            }
+         }
+      },
+      "virtualNodeName" : "serviceA"
+   }
+   ```
+
+   Valid values for `timeout` are:
+   + `unit` – A time unit\. Valid values are `s` and `ms`\.
+   + `value` – The number of time units\.
+
+   Specifying `0` disables the `perRequest` timeout\. Specifying `0` disables the `idle` timeout\.
+
+1. Create the virtual node with the following command\.
+
+   ```
+   aws appmesh-preview create-virtual-node --cli-input-json file://virtual-node.json
+   ```
+
 ## Deleting a virtual node<a name="delete-virtual-node"></a>
 
 To delete a virtual node using the AWS CLI, use the `aws appmesh delete-virtual-node` command\. For an example of deleting a virtual node using the AWS CLI, see [delete\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-node.html)\.

@@ -4,6 +4,7 @@ The following table describes the major updates and new features for the *AWS Ap
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [Add a timeout value to a virtual node listener](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html#virtual-node-listener-timeout) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) You can add a timeout value to a virtual node listener\. | May 29, 2020 | 
 | [Create a virtual gateway for mesh ingress](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_gateways.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) Enable resources outside of a mesh to communicate to resources inside of a mesh\. | April 8, 2020 | 
 | [TLS encryption](https://docs.aws.amazon.com/app-mesh/latest/userguide/tls.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) Use certificates from an AWS Certificate Manager Private Certificate Authority or your own certificate authority to encrypt communication between virtual nodes using TLS\. | January 17, 2020 | 
 | [Share a mesh with another account](https://docs.aws.amazon.com/app-mesh/latest/userguide/sharing.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) You can share a mesh with another account\. Resources created by any account can communicate with other resources in the mesh\. | January 17, 2020 | 
