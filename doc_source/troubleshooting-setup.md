@@ -113,4 +113,14 @@ To resolve the issue, complete the following tasks\.
 + You can use any elastic load balancer type for the virtual node, depending on the features that you need\. For more information, see [Elastic Load Balancing features](http://aws.amazon.com/elasticloadbalancing/features/#compare)\.
 + If you are configuring a health check for a [virtual gateway](virtual_gateways.md), then we recommend using a [network load balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancers.html) with a TCP or TLS health check on the virtual gateway's listener port\. This ensures that the virtual gateway listener is bootstrapped and ready to accept connections\.
 
+**Symptoms**
+Your mesh endpoint is not accepting traffic when you change to port 80 whereas it works for other ports. For example, you query the Evnoy stats with the following command and receive a non-zero value.
+```
+curl -s http://my-app.default.svc.cluster.local:9901/stats | grep "update_rejected"
+```
+
+**Resolution**
+To resolve the issue,
++ Make sure that the Envoy Task is run using a user that is previledged to bind on port 80. If you are using UID 1337, either drop it so that it uses the default user or choose a user who has access to port 80.
+
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
