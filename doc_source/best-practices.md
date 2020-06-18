@@ -27,7 +27,7 @@ When configured with these deployment constraints, container orchestrators may e
 If your service has a desired count of two or three, set `maximumPercent` to 150 percent\. Otherwise, set `maximumPercent` to 125 percent\.
 
 **Kubernetes**  
-Configure your deployment's [update strategy](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.16/#deploymentstrategy-v1beta2-apps), setting `maxUnavailable` to 0 percent and `maxSurge` to 25 percent\. 
+Configure your deployment's [update strategy](https://v1-16.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.16/#deploymentstrategy-v1beta2-apps), setting `maxUnavailable` to 0 percent and `maxSurge` to 25 percent\. 
 
 ## Scale out before scale in<a name="scale-out"></a>
 

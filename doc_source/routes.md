@@ -4,7 +4,7 @@ A route is associated with a virtual router\. The route is used to match request
 
 ## Creating a route<a name="create-route"></a>
 
-To create a route using the AWS CLI version 1\.18\.16 or later, see the examples in the AWS CLI reference for the [create\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
+To create a route using the AWS CLI version 1\.18\.82 or later, see the examples in the AWS CLI reference for the [create\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
 
 **To create a route using the AWS Management Console**
 
@@ -314,7 +314,7 @@ You can specify a shorter `perRequest` timeout than the default of 15 seconds, i
 
 ## Deleting a route<a name="delete-route"></a>
 
-To delete a route using the AWS CLI version 1\.18\.16 or higher, see the example in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html) command\.
+To delete a route using the AWS CLI version 1\.18\.82 or higher, see the example in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html) command\.
 
 **To delete a route using the AWS Management Console**
 
