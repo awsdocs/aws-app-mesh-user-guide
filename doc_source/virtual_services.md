@@ -4,7 +4,7 @@ A virtual service is an abstraction of a real service that is provided by a virt
 
 ## Creating a virtual service<a name="create-virtual-service"></a>
 
-To create a virtual service using the AWS CLI version 1\.18\.82 or higher, see the example in the AWS CLI reference for the [create\-virtual\-service](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-service.html) command\. 
+To create a virtual service using the AWS CLI version 1\.18\.88 or higher, see the example in the AWS CLI reference for the [create\-virtual\-service](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-service.html) command\. 
 
 **To create a virtual service using the AWS Management Console**
 

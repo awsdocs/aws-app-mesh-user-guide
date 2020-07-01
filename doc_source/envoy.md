@@ -6,24 +6,39 @@ AWS App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) 
 
 You must add an Envoy proxy to the Amazon ECS task, Kubernetes pod, or Amazon EC2 instance represented by your App Mesh virtual nodes\. App Mesh vends an Envoy proxy Docker container image and ensures that this container image is patched with the latest vulnerability and performance patches\. App Mesh tests a new Envoy proxy release against the App Mesh feature set before making a new container image available to you\.
 
-To use the App Mesh container image, specify one of the following addresses, depending on the Region that you want to pull the image from\.
-+ All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`\. You can replace *us\-west\-2* with any Region other than `me-south-1` and `ap-east-1`\. 
+You can retrieve the latest version of the container image using the AWS CLI, by replacing *region\-code* in the following command with one of the [App Mesh supported regions\.](https://docs.aws.amazon.com/general/latest/gr/appmesh.html)
 
-  ```
-  840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.12.3.0-prod
-  ```
-+ `me-south-1` Region:
+```
+aws ssm get-parameter --name /aws/service/appmesh/envoy --region region-code --query "Parameter.Value" --output text
+```
 
-  ```
-  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.12.3.0-prod
-  ```
-+ `ap-east-1` Region:
+Output
 
-  ```
-  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.12.3.0-prod
-  ```
+```
+account-id.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:envoy-image-version
+```
 
-Access to this container image in Amazon ECR is controlled by AWS Identity and Access Management, so you must use IAM to ensure that you have read access to Amazon ECR\. For example, when using Amazon ECS, you can assign an appropriate task execution role to an Amazon ECS task\. Further, if you use IAM policies that limit access to specific Amazon ECR resources, then you must ensure that you allow access to the Region\-specific Amazon Resource Name \(ARN\) that identifies the `aws-appmesh-envoy` repository\. For example, in the `us-west-2` region, you'd allow access to the following resource: `arn:aws:ecr:us-west-2:840364872350:repository/aws-appmesh-envoy`\. For more information, see [Amazon ECR Managed Policies](https://docs.aws.amazon.com/AmazonECR/latest/userguide/ecr_managed_policies.html)\. 
+If you prefer to use the AWS Management Console, then select the region that you want to use the Envoy proxy in\. The AWS Management Console will open and show you the latest version of the Envoy container image in the **Value** attribute\.
++ [US East \(Ohio\) \(`us-east-2`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=us-east-2)
++ [US East \(N\. Virginia\) \(`us-east-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=us-east-1)
++ [US West \(N\. California\) \(`us-west-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=us-west-1)
++ [US West \(Oregon\) \(`us-west-2`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=us-west-2)
++ [Asia Pacific \(Hong Kong\) \(`ap-east-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=ap-east-1)
++ [Asia Pacific \(Mumbai\) \(`ap-south-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=ap-south-1)
++ [Asia Pacific \(Seoul\) \(`ap-northeast-2`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=ap-northeast-2)
++ [Asia Pacific \(Singapore\) \(`ap-southeast-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=ap-southeast-1)
++ [Asia Pacific \(Sydney\) \(`ap-southeast-2`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=ap-southeast-2)
++ [Asia Pacific \(Tokyo\) \(`ap-northeast-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=us-ap-northeast-1)
++ [Canada \(Central\) \(`ca-central-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=ca-central-1)
++ [Europe \(Frankfurt\) \(`eu-central-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=eu-central-1)
++ [Europe \(Ireland\) \(`eu-west-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=eu-west-1)
++ [Europe \(London\) \(`eu-west-2`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=eu-west-2)
++ [Europe \(Paris\) \(`eu-west-3`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=eu-west-3)
++ [Europe \(Stockholm\) \(`eu-north-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=eu-north-1)
++ [Middle East \(Bahrain\) \(`me-south-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=me-south-1)
++ [South America \(São Paulo\) \(`sa-east-1`\)](https://console.aws.amazon.com/systems-manager/parameters/aws/service/appmesh/envoy/description?region=sa-east-1)
+
+Access to this container image in Amazon ECR is controlled by AWS Identity and Access Management, so you must use IAM to ensure that you have read access to Amazon ECR\. For example, when using Amazon ECS, you can assign an appropriate task execution role to an Amazon ECS task\. Further, if you use IAM policies that limit access to specific Amazon ECR resources, then you must ensure that you allow access to the Region\-specific Amazon Resource Name \(ARN\) that identifies the `aws-appmesh-envoy` repository\. For example, in the `us-west-2` region, you'd allow access to the following resource: `arn:aws:ecr:us-west-2:840364872350:repository/aws-appmesh-envoy`\. For more information, see [Amazon ECR Managed Policies](https://docs.aws.amazon.com/AmazonECR/latest/userguide/ecr_managed_policies.html)\. If you're using Docker on an Amazon EC2 instance, then you need to authenticate Docker to the repository\. For more information, see [Registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html#registry_auth)\.
 
 We occassionally release new App Mesh features that depend on Envoy changes that have not been merged to the upstream Envoy images yet\. To use these new App Mesh features before the Envoy changes are merged upstream, you must use the App Mesh\-vended Envoy container image\. For a list of changes, see the [App Mesh GitHub roadmap issues](https://github.com/aws/aws-app-mesh-roadmap/labels/Envoy%20Upstream) with the `Envoy Upstream` label\. Otherwise, while we recommend that you use the App Mesh Envoy container image as the best supported option, you may use your own Envoy image\.
 

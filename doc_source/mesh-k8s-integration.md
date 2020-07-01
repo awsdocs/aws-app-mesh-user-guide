@@ -10,8 +10,8 @@ The controller also installs a webhook that injects the following containers int
 
 ## Prerequisites<a name="mesh-k8s-integration-prerequisites"></a>
 + An existing understanding of Kubernetes concepts\. For more information, see [What is Kubernetes](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/)\.
-+ An existing Kubernetes cluster running version 1\.13 or later\. If you don't have an existing cluster, you can deploy one using the [Getting Started with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html) guide\. 
-+ The AWS CLI version 1\.18\.82 or later or or later installed\. To install or upgrade the AWS CLI, see [Installing the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)\. 
++ An existing Kubernetes cluster running version 1\.13 or later\. If you don't have an existing cluster, you can deploy one using the [Getting Started with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html) guide\. If you're running your own Kubernetes cluster on Amazon EC2, then ensure that Docker is authenticated to the Amazon ECR repository that the Envoy image is in\. For more information, see [Envoy image](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy.html) and [Registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html#registry_auth) in the AWS documentation and [Pull an Image from a Private Registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/) in the Kubernetes documentation\.
++ The AWS CLI version 1\.18\.88 or later or 2\.0\.26 or later installed\. To install or upgrade the AWS CLI, see [Installing the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)\. 
 + A `kubectl` client that is configured to communicate with your Kubernetes cluster\. If you're using Amazon Elastic Kubernetes Service, you can use the instructions for installing `[kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)` and configuring a `[kubeconfig](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)` file\.
 + Helm version 3\.0 or later installed\. If you don't have Helm installed, you can install it by completing the instructions in [Using Helm with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/helm.html)\.
 
@@ -39,7 +39,7 @@ Install the integration components one time to each cluster that hosts pods that
 1. Install the App Mesh Kubernetes custom resource definitions \(CRD\)\.
 
    ```
-   kubectl apply -k https://github.com/aws/eks-charts/stable/appmesh-controller/crds?ref=master
+   kubectl apply -k "https://github.com/aws/eks-charts/stable/appmesh-controller/crds?ref=master"
    ```
 
 1. Create a Kubernetes namespace for the controller\.
@@ -58,7 +58,7 @@ Install the integration components one time to each cluster that hosts pods that
 1. \(Optional\) If you want to run the controller on Fargate, then you need to create a Fargate profile\. If you don't have `eksctl` installed, you can install it with the instructions in [Installing or Upgrading `eksctl`](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl)\. If you'd prefer to create the profile using the console, see [Creating a Fargate profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html#create-fargate-profile)\.
 
    ```
-   eksctl create fargateprofile --cluster $CLUSTER_NAME --namespace appmesh-system
+   eksctl create fargateprofile --cluster $CLUSTER_NAME --name appmesh-system --namespace appmesh-system
    ```
 
 1. Create an OpenID Connect \(OIDC\) identity provider for your cluster\. If you don't have `eksctl` installed, you can install it with the instructions in [Installing or upgrading `eksctl`](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl)\. If you'd prefer to create the provider using the console, see [Enabling IAM roles for service accounts on your cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)\.
@@ -96,9 +96,22 @@ The command creates an AWS IAM role with an auto\-generated name\. You are not a
        --set serviceAccount.name=appmesh-controller
    ```
 **Important**  
-If your cluster is in the `me-south-1` or `ap-east-1` Regions, then you need to add the following options to the previous command, replacing *`account`*, *`region-code`*, and `image-version` with values from [Envoy image](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy.html):  
-`--set sidecar.image.repository=account.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy`
-`--set sidecar.image.tag=image-version`
+If your cluster is in the `me-south-1` or `ap-east-1` Regions, then you need to add the following options to the previous command, replacing *`account`*, *`region-code`*, and `envoy-image-version` with the value returned from one of the following commands\.  
+
+   ```
+   aws ssm get-parameter --name "/aws/service/appmesh/envoy" --region me-south-1 --query "Parameter.Value" --output text
+   ```
+
+   ```
+   aws ssm get-parameter --name "/aws/service/appmesh/envoy" --region ap-east-1 --query "Parameter.Value" --output text
+   ```
+Output  
+
+   ```
+   account-id.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:venvoy-image-version
+   ```
+`--set sidecar.image.repository=account-id.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy`
+`--set sidecar.image.tag=envoy-image-version`
 
 1. Confirm that the controller version is `v1.0.0` or later\. You can review the [change log](https://github.com/aws/aws-app-mesh-controller-for-k8s/releases) on GitHub\.
 
@@ -742,7 +755,7 @@ Any pods that you want to use with App Mesh must have the App Mesh sidecar conta
             serviceAccountName: my-service-a
             containers:
             - name: nginx
-              image: nginx:1.14.2
+              image: nginx:1.19.0
               ports:
               - containerPort: 80
       ```
@@ -802,8 +815,8 @@ The value for the `app` `matchLabels` `selector` in the spec must match the valu
           State:          Terminated
             Reason:       Completed
             Exit Code:    0
-            Started:      Wed, 17 Jun 2020 11:09:00 -0500
-            Finished:     Wed, 17 Jun 2020 11:09:01 -0500
+            Started:      Fri, 26 Jun 2020 08:36:22 -0500
+            Finished:     Fri, 26 Jun 2020 08:36:22 -0500
           Ready:          True
           Restart Count:  0
           Requests:
@@ -822,13 +835,13 @@ The value for the `app` `matchLabels` `selector` in the spec must match the valu
           ...
       Containers:
         nginx:
-          Container ID:   docker://109a9a4f15e9ddfe22c5ed4e8ae668aa645081b030fc7f96cd841dd164092c4d
-          Image:          nginx:1.14.2
+          Container ID:   docker://be6359dc6ecd3f18a1c87df7b57c2093e1f9db17d5b3a77f22585ce3bcab137a
+          Image:          nginx:1.19.0
           Image ID:       docker-pullable://nginx
           Port:           80/TCP
           Host Port:      0/TCP
           State:          Running
-            Started:      Wed, 17 Jun 2020 11:09:01 -0500
+            Started:      Fri, 26 Jun 2020 08:36:28 -0500
           Ready:          True
           Restart Count:  0
           Environment:
@@ -836,13 +849,13 @@ The value for the `app` `matchLabels` `selector` in the spec must match the valu
             AWS_WEB_IDENTITY_TOKEN_FILE:  /var/run/secrets/eks.amazonaws.com/serviceaccount/token
           ...
         envoy:
-          Container ID:   docker://283187d2a048c30a1109aab90635241e363d4ce10a2173e381c23e0d036d5cab
-          Image:          840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.12.3.0-prod
+          Container ID:   docker://905b55cbf33ef3b3debc51cb448401d24e2e7c2dbfc6a9754a2c49dd55a216b6
+          Image:          840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.12.4.0-prod
           Image ID:       docker-pullable://840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
           Port:           9901/TCP
           Host Port:      0/TCP
           State:          Running
-            Started:      Wed, 17 Jun 2020 11:09:01 -0500
+            Started:      Fri, 26 Jun 2020 08:36:36 -0500
           Ready:          True
           Restart Count:  0
           Requests:
@@ -859,19 +872,21 @@ The value for the `app` `matchLabels` `selector` in the spec must match the valu
       Events:
         Type    Reason     Age   From                                                   Message
         ----    ------     ----  ----                                                   -------
-        Normal  Scheduled  79s   default-scheduler                                      Successfully assigned my-app-1/my-service-a-54776556f6-2cxd9 to ip-192-168-44-157.us-west-2.compute.internal
-        Normal  Pulled     78s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Container image "111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager:v2" already present on machine
-        Normal  Created    78s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Created container proxyinit
-        Normal  Started    78s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Started container proxyinit
-        Normal  Pulled     77s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Container image "nginx:1.14.2" already present on machine
-        Normal  Created    77s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Created container nginx
-        Normal  Started    77s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Started container nginx
-        Normal  Pulled     77s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Container image "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.12.3.0-prod" already present on machine
-        Normal  Created    77s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Created container envoy
-        Normal  Started    77s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Started container envoy
+        Normal  Pulling    30s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Pulling image "111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager:v2"
+        Normal  Pulled     23s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Successfully pulled image "111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager:v2"
+        Normal  Created    21s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Created container proxyinit
+        Normal  Started    21s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Started container proxyinit
+        Normal  Pulling    20s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Pulling image "nginx:1.19.0"
+        Normal  Pulled     16s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Successfully pulled image "nginx:1.19.0"
+        Normal  Created    15s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Created container nginx
+        Normal  Started    15s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Started container nginx
+        Normal  Pulling    15s   kubelet, ip-192-168-44-157.us-west-2.compute.internal  Pulling image "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.12.4.0-prod"
+        Normal  Pulled     8s    kubelet, ip-192-168-44-157.us-west-2.compute.internal  Successfully pulled image "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.12.4.0-prod"
+        Normal  Created    7s    kubelet, ip-192-168-44-157.us-west-2.compute.internal  Created container envoy
+        Normal  Started    7s    kubelet, ip-192-168-44-157.us-west-2.compute.internal  Started container envoy
       ```
 
-      In the preceding output, you can see that the `proxyinit` and `envoy` containers were added to the pod by the controller\.
+      In the preceding output, you can see that the `proxyinit` and `envoy` containers were added to the pod by the controller\. If you deployed the example service to Fargate, then the `envoy` container was added to the pod by the controller, but the `proxyinit` container was not\.
 
 1. \(Optional\) Install add\-ons such as Prometheus, Grafana, AWS X\-Ray, Jaeger, and Datadog\. For more information, see [App Mesh add\-ons](https://github.com/aws/eks-charts#app-mesh-add-ons) on GitHub\. 
 
@@ -881,6 +896,12 @@ Remove all of the example resources created in this tutorial\. The controller al
 
 ```
 kubectl delete namespace my-apps
+```
+
+If you created a Fargate profile for the example service, then remove it\.
+
+```
+eksctl delete fargateprofile --name my-service-a --cluster my-cluster --region region-code
 ```
 
 Delete the mesh\.
@@ -893,4 +914,10 @@ kubectl delete mesh my-mesh
 
 ```
 helm delete appmesh-controller -n appmesh-system
+```
+
+\(Optional\) If you deployed the Kubernetes integration components to Fargate, then delete the Fargate profile\.
+
+```
+eksctl delete fargateprofile --name appmesh-system --cluster my-cluster --region region-code
 ```

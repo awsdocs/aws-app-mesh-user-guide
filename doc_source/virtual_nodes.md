@@ -9,7 +9,7 @@ If you require your Envoy stats or tracing to use a different name, you can over
 
 ## Creating a virtual node<a name="vn-create-virtual-node"></a>
 
- To create a virtual node using the AWS CLI version 1\.18\.82 or higher, see the example in the AWS CLI reference for the [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) command\.
+ To create a virtual node using the AWS CLI version 1\.18\.88 or higher, see the example in the AWS CLI reference for the [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) command\.
 
 **To create a virtual node using the AWS Management Console**
 
