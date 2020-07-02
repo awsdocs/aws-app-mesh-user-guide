@@ -540,35 +540,53 @@ After creating your mesh, you need to complete the following tasks:
 1. Install Docker and the AWS CLI on your instance according to your operating system documentation\.
 
 1. Authenticate to the Envoy Amazon ECR repository in the Region that you want your Docker client to pull the image from\.
+   + All Regions except `me-south-1` and `ap-east-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1` and `ap-east-1`\.
 
-   1. Retrieve the Amazon ECR repository account ID and latest version of the container image for your Region, replacing *region\-code* with a [supported App Mesh Region code](https://docs.aws.amazon.com/general/latest/gr/appmesh.html)\.
+     ```
+     $aws ecr get-login-password \
+         --region us-west-2 \
+     | docker login \
+         --username AWS \
+         --password-stdin 840364872350.dkr.ecr.us-west-2.amazonaws.com
+     ```
+   + `me-south-1` Region
 
-      ```
-      aws ssm get-parameter --name "/aws/service/appmesh/envoy" --region region-code --query "Parameter.Value" --output text
-      ```
+     ```
+     $aws ecr get-login-password \
+         --region me-south-1 \
+     | docker login \
+         --username AWS \
+         --password-stdin 772975370895.dkr.ecr.me-south-1.amazonaws.com
+     ```
+   + `ap-east-1` Region
 
-      Output
+     ```
+     $aws ecr get-login-password \
+         --region ap-east-1 \
+     | docker login \
+         --username AWS \
+         --password-stdin 856666278305.dkr.ecr.ap-east-1.amazonaws.com
+     ```
 
-      ```
-      account-id.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:envoy-image-version
-      ```
+1. Run one of the following commands to start the App Mesh Envoy container on your instance, depending on which Region you want to pull the image from\. The *apps* and *serviceB* values are the mesh and virtual node names defined in the scenario\. This information tells the proxy which virtual node configuration to read from App Mesh\. To complete the scenario, you also need to complete these steps for the Amazon EC2 instances that host the services represented by the `serviceBv2` and `serviceA` virtual nodes\. For your own application, replace these values with your own\.
+   + All Regions except `me-south-1` and `ap-east-1`\. You can replace *region\-code* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except the `me-south-1` and `ap-east-1` Regions\. You can replace `1337` with any value between `0` and `2147483647`\.
 
-   1. Log into the appropriate Amazon ECR repository\.
+     ```
+     sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
+     -u 1337 --network host 840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.12.4.0-prod
+     ```
+   + `me-south-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
-      ```
-      aws ecr get-login-password \
-          --region region-code \
-      | docker login \
-          --username AWS \
-          --password-stdin account-id.dkr.ecr.region-code.amazonaws.com
-      ```
+     ```
+     sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
+     -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.12.4.0-prod
+     ```
+   + `ap-east-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
-1. Run the following command to start the App Mesh Envoy container on your instance\. The *apps* and *serviceB* values are the mesh and virtual node names defined in the scenario\. This information tells the proxy which virtual node configuration to read from App Mesh\. To complete the scenario, you also need to complete these steps for the Amazon EC2 instances that host the services represented by the `serviceBv2` and `serviceA` virtual nodes\. For your own application, replace these values with your own\. Replace *envoy\-image* with the value returned in the previous step\. You can replace `1337` with any value between `0`–`2147483647`\.
-
-   ```
-   sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
-   -u 1337 --network host envoy-image;
-   ```
+     ```
+     sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
+     -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.12.4.0-prod
+     ```
 
 1. Select `Show more` below\. Create a file named `envoy-networking.sh` on your instance with the following contents\. Replace *8000* with the port that your application code uses for ingress\. You can change the value for `APPMESH_IGNORE_UID`, but the value must be the same as the value that you specified in the previous step; for example `1337`\. You can add additional addresses to `APPMESH_EGRESS_IGNORED_IP` if necessary\. Do not modify any other lines\.
 
