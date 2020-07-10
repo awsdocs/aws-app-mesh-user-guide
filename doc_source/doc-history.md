@@ -4,6 +4,7 @@ The following table describes the major updates and new features for the *AWS Ap
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [Create a virtual gateway and gateway route for mesh ingress](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_gateways.html) | Enable resources that are outside of a mesh to communicate to resources that are inside of a mesh\. | July 10, 2020 | 
 | [Create and manage App Mesh resources from within Kubernetes with the App Mesh controller for Kubernetes](https://docs.aws.amazon.com/app-mesh/latest/userguide/mesh-k8s-integration.html) | You can create and manage App Mesh resources from within Kubernetes\. The controller also automatically injects the Envoy proxy and init containers into pods that you deploy\. | June 18, 2020 | 
 | [Add a timeout value to a virtual node listener and route](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html) | You can add a timeout value to a virtual node listener and [route](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html)\. | June 18, 2020 | 
 | [Add a timeout value to a virtual node listener](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html#virtual-node-listener-timeout) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) You can add a timeout value to a virtual node listener\. | May 29, 2020 | 
