@@ -85,3 +85,29 @@ Steps defined in this resolution make use of the Envoy administration interface 
     ```
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\. If you believe that you’ve found a security vulnerability or have questions about App Mesh’s security, then see the [AWS vulnerability reporting guidelines](http://aws.amazon.com/security/vulnerability-reporting/)\.
+
+## Troubleshooting TLS with Elastic Load Balancing<a name="ts-security-tls-load-balancing"></a>
+
+**Symptoms**
+
+When attempting to configure an Elastic Load Balancer (Application Load Balancer/Network Load Balancer) to encrypt traffic to a virtual node, connectivity and load balancer health checks can fail.
+
+**Resolution**
+
+In order to determine the root cause of the issue, we need to check both the Envoy Proxy and the load balancer configuration.
+
++ For the Envoy proxy performing TLS termination we want to rule out any misconfiguration:
+    + Follow the steps provided above in the [Unable to connect to a backend virtual service with a TLS client policy](#ts-security-tls-client-policy) guide above.
++ For the load balancer, we need to look at the configuration of the `TargetGroup`:
+    + Ensure the `TargetGroup`'s port matches the Virtual Node’s defined listener port.
+    + For Application Load Balancers that are originating TLS connections over HTTP to your service:
+        + Make sure the `TargetGroup` protocol is set to `HTTPS`.
+        + If health checks are being utilized, ensure `HealthCheckProtocol` is set to `HTTPS` as well.
+    + For Network Load Balancers that are originating TLS connections over TCP to your service:
+        + Make sure the `TargetGroup` protocol is set to `TLS`.
+        + If health checks are being utilized, ensure `HealthCheckProtocol` is set to `TCP`.
+    + Note: Any updates to the `TargetGroup` requires you change the `TargetGroup`’s name.
+
+With this configured properly, your Elastic Load Balancer should be facilitating a secure connection to your service using the certificate provided to the Envoy Proxy.
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\. If you believe that you’ve found a security vulnerability or have questions about App Mesh’s security, then see the [AWS vulnerability reporting guidelines](http://aws.amazon.com/security/vulnerability-reporting/)\.
