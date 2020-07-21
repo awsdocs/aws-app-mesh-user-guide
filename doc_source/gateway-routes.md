@@ -4,7 +4,7 @@ A gateway route is attached to a virtual gateway and routes traffic to an existi
 
 ## Creating a gateway route<a name="create-gateway-route"></a>
 
-To create a gateway route using the AWS CLI version 1\.18\.97 or later, see the examples in the AWS CLI reference for the [create\-gateway\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-gateway-route.html) command\.
+To create a gateway route using the AWS CLI version 1\.18\.99 or later, see the examples in the AWS CLI reference for the [create\-gateway\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-gateway-route.html) command\.
 
 **To create a gateway route using the AWS Management Console**
 
@@ -43,7 +43,7 @@ You can't specify `/aws.app-mesh*` or `aws.appmesh` for the **Service name**\. T
 
 ## Deleting a gateway route<a name="delete-gateway-route"></a>
 
-To delete a route using the AWS CLI version 1\.18\.97 or higher, see the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-gateway-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-gateway-route.html) command\.
+To delete a route using the AWS CLI version 1\.18\.99 or higher, see the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-gateway-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-gateway-route.html) command\.
 
 **To delete a gateway route using the AWS Management Console**
 

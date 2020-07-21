@@ -8,7 +8,7 @@ External resources must be able to resolve a DNS name to an IP address assigned 
 
 **To create a virtual gateway using the AWS Management Console**
 
- To create a virtual gateway using the AWS CLI version 1\.18\.97 or higher, see the AWS CLI reference for the [create\-virtual\-gateway](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-gateway.html) command\.
+ To create a virtual gateway using the AWS CLI version 1\.18\.99 or higher, see the AWS CLI reference for the [create\-virtual\-gateway](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-gateway.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\. 
 
@@ -69,7 +69,7 @@ Enable proxy authorization for Envoy\. For more information, see [Proxy authoriz
 
 ## Deleting a virtual gateway<a name="delete-virtual-gateway"></a>
 
-To delete a virtual gateway using the AWS CLI version 1\.18\.97 or higher, see the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-gateway.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-gateway.html) command\.
+To delete a virtual gateway using the AWS CLI version 1\.18\.99 or higher, see the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-gateway.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-gateway.html) command\.
 
 **To delete a virtual gateway using the AWS Management Console**
 
