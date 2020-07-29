@@ -90,7 +90,7 @@ If your issue is still not resolved, then consider opening a [GitHub issue](http
 
 **Symptoms**
 
-When attempting to configure an Elastic Load Balancer (Application Load Balancer/Network Load Balancer) to encrypt traffic to a virtual node, connectivity and load balancer health checks can fail.
+When attempting to configure an Elastic Load Balancer (Application Load Balancer/Network Load Balancer) to encrypt traffic to a mesh endpoint, connectivity and load balancer health checks can fail.
 
 **Resolution**
 
@@ -99,7 +99,7 @@ In order to determine the root cause of the issue, we need to check both the Env
 + For the Envoy proxy performing TLS termination we want to rule out any misconfiguration:
     + Follow the steps provided above in the [Unable to connect to a backend virtual service with a TLS client policy](#ts-security-tls-client-policy) guide above.
 + For the load balancer, we need to look at the configuration of the `TargetGroup`:
-    + Ensure the `TargetGroup`'s port matches the Virtual Node’s defined listener port.
+    + Ensure the `TargetGroup`'s port matches the mesh endpoint’s defined listener port.
     + For Application Load Balancers that are originating TLS connections over HTTP to your service:
         + Make sure the `TargetGroup` protocol is set to `HTTPS`.
         + If health checks are being utilized, ensure `HealthCheckProtocol` is set to `HTTPS` as well.
