@@ -39,6 +39,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Infrastructure security in App Mesh](infrastructure-security.md)
       + [App Mesh Interface VPC Endpoints (AWS PrivateLink)](vpc-endpoints.md)
    + [Configuration and vulnerability analysis in AWS App Mesh](configuration-vulnerability-analysis.md)
++ [App Mesh observability](observability.md)
 + [Transport Layer Security (TLS)](tls.md)
 + [Working with shared meshes](sharing.md)
 + [AWS services integrated with App Mesh](appmesh-integrations.md)

@@ -77,23 +77,3 @@ Enables the use of App Mesh defined tags `appmesh.mesh` and `appmesh.virtual_nod
 
 `ENVOY_STATS_CONFIG_FILE`  
 Specify a file path in the Envoy container file system to override the default Stats tags configuration file with your own\.
-
-## Access logs<a name="envoy-logs"></a>
-
-When you create your virtual nodes, you have the option to configure Envoy access logs\. In the console, this is in the **Advanced configuration** section of the virtual node create or update workflows\.
-
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/app-mesh/latest/userguide/images/logging.png)
-
-The above image shows a logging path of `/dev/stdout` for Envoy access logs\. The code block below shows the JSON representation that you could use in the AWS CLI\.
-
-```
-      "logging": { 
-         "accessLog": { 
-            "file": { 
-               "path": "/dev/stdout"
-            }
-         }
-      }
-```
-
-When you send Envoy access logs to `/dev/stdout`, they are mixed in with the Envoy container logs, so you can export them to a log storage and processing service like CloudWatch Logs using standard Docker log drivers \(such as `[awslogs](https://docs.docker.com/config/containers/logging/awslogs/)`\)\. To export only the Envoy access logs \(and ignore the other Envoy container logs\), you can set the `ENVOY_LOG_LEVEL` to `off`\. For more information, see [Access logging](https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/access_log.html) in the Envoy documentation\.
