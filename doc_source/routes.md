@@ -42,7 +42,7 @@ Choose **Add metadata**\.
 
 ### \(Optional\) **Retry policy**
 
-A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\.
+A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\. If you don't define a retry policy, then App Mesh may automatically create a default policy for each of your routes\. For more information, see [Default route retry policy](envoy.md#default-retry-policy)\.
 + For **Retry timeout**, enter the number of units for the timeout duration\. A value is required if you select any protocol retry event\.
 + For **Retry timeout unit**, select a unit\. A value is required if you select any protocol retry event\.
 + For **Max retries**, enter the maximum number of retry attempts when the request fails\. A value is required if you select any protocol retry event\. We recommend a value of at least two\.
@@ -67,7 +67,7 @@ A retry policy enables clients to protect themselves from intermittent network f
 
 ### **\(Optional\) Retry policy**
 
-A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\.
+A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\. If you don't define a retry policy, then App Mesh may automatically create a default policy for each of your routes\. For more information, see [Default route retry policy](envoy.md#default-retry-policy)\.
 + For **Retry timeout**, enter the number of units for the timeout duration\. A value is required if you select any protocol retry event\.
 + For **Retry timeout unit**, select a unit\. A value is required if you select any protocol retry event\.
 + For **Max retries**, enter the maximum number of retry attempts when the request fails\. A value is required if you select any protocol retry event\. We recommend a value of at least two\.

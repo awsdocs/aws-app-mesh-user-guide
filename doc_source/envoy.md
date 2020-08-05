@@ -23,7 +23,7 @@ You must add an Envoy proxy to the Amazon ECS task, Kubernetes pod, or Amazon EC
 
 Access to this container image in Amazon ECR is controlled by AWS Identity and Access Management, so you must use IAM to ensure that you have read access to Amazon ECR\. For example, when using Amazon ECS, you can assign an appropriate task execution role to an Amazon ECS task\. Further, if you use IAM policies that limit access to specific Amazon ECR resources, then you must ensure that you allow access to the Region\-specific Amazon Resource Name \(ARN\) that identifies the `aws-appmesh-envoy` repository\. For example, in the `us-west-2` region, you'd allow access to the following resource: `arn:aws:ecr:us-west-2:840364872350:repository/aws-appmesh-envoy`\. For more information, see [Amazon ECR Managed Policies](https://docs.aws.amazon.com/AmazonECR/latest/userguide/ecr_managed_policies.html)\. If you're using Docker on an Amazon EC2 instance, then you need to authenticate Docker to the repository\. For more information, see [Registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html#registry_auth)\.
 
-We occassionally release new App Mesh features that depend on Envoy changes that have not been merged to the upstream Envoy images yet\. To use these new App Mesh features before the Envoy changes are merged upstream, you must use the App Mesh\-vended Envoy container image\. For a list of changes, see the [App Mesh GitHub roadmap issues](https://github.com/aws/aws-app-mesh-roadmap/labels/Envoy%20Upstream) with the `Envoy Upstream` label\. Otherwise, while we recommend that you use the App Mesh Envoy container image as the best supported option, you may use your own Envoy image\.
+We occasionally release new App Mesh features that depend on Envoy changes that have not been merged to the upstream Envoy images yet\. To use these new App Mesh features before the Envoy changes are merged upstream, you must use the App Mesh\-vended Envoy container image\. For a list of changes, see the [App Mesh GitHub roadmap issues](https://github.com/aws/aws-app-mesh-roadmap/labels/Envoy%20Upstream) with the `Envoy Upstream` label\. Otherwise, while we recommend that you use the App Mesh Envoy container image as the best supported option, you may use your own Envoy image\.
 
 ## Envoy configuration variables<a name="envoy-config"></a>
 
@@ -77,3 +77,32 @@ Enables the use of App Mesh defined tags `appmesh.mesh` and `appmesh.virtual_nod
 
 `ENVOY_STATS_CONFIG_FILE`  
 Specify a file path in the Envoy container file system to override the default Stats tags configuration file with your own\.
+
+## Default route retry policy<a name="default-retry-policy"></a>
+
+If you had no meshes in your account before July 29, 2020, then App Mesh automatically creates a default Envoy route retry policy for all HTTP, HTTP/2, and gRPC requests in any mesh in your account on or after July 29, 2020\. If you had any meshes in your account before July 29, 2020, then no default policy is created for any Envoy routes that existed before, on, or after July 29, 2020, unless you [open a ticket with AWS support](https://console.aws.amazon.com/support/home#/case/create)\. Once support processes the ticket, then the default policy will be created for any future Envoy routes that App Mesh creates on or after the date that the ticket was processed\. For more information about Envoy route retry policies, see [config\.route\.v3\.RetryPolicy](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/route/v3/route_components.proto#envoy-v3-api-msg-config-route-v3-retrypolicy) in the Envoy documentation\.
+
+App Mesh creates an Envoy route when you either create an App Mesh [route](routes.md) or define a virtual node provider for an App Mesh [virtual service](virtual_services.md)\. Though you can create an App Mesh route retry policy, you can't create an App Mesh retry policy for a virtual node provider\.
+
+The default policy is not visible through the App Mesh API\. The default policy is only visible through Envoy\. To view the configuration, [enable the administration interface](troubleshooting-best-practices.md#ts-bp-enable-proxy-admin-interface) and send a request to Envoy for a `config_dump`\. The default policy includes the following settings:
++ **Max retries** – `2`
++ **gRPC retry events** – `UNAVAILABLE`
++ **HTTP retry events** – `503`
+**Note**  
+It's not possible to create an App Mesh route retry policy that looks for a specific HTTP error code, however an App Mesh route retry policy can look for `server-error` or `gateway-error`, which both include `503` errors\. For more information, see [Routes](routes.md)\.
++ **TCP retry event** – `connect-failure` and `refused-stream`
+**Note**  
+It's not possible to create an App Mesh route retry policy that looks for either of these events, however an App Mesh route retry policy can look for `connection-error`, which is equivalent to `connect-failure`\. For more information, see [Routes](routes.md)\.
+
+## Default circuit breaker<a name="default-ciruit-breaker"></a>
+
+When you deploy an Envoy in App Mesh, Envoy default values are set for some of the circuit breaker settings\. For more information, see [cluster\.CircuitBreakers\.Thresholds](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/cluster/circuit_breaker.proto#cluster-circuitbreakers-thresholds) in the Envoy documentation\. The settings are not visible through the App Mesh API\. The settings are only visible through Envoy\. To view the configuration, [enable the administration interface](troubleshooting-best-practices.md#ts-bp-enable-proxy-admin-interface) and send a request to Envoy for a `config_dump`\.
+
+If you had no meshes in your account before July 29, 2020, then for each Envoy that you deploy in a mesh created on or after July 29, 2020, App Mesh effectively disables circuit breakers by changing the Envoy default values for the settings that follow\. If you had any meshes in your account before July 29, 2020, then the Envoy default values are set for any Envoy that you deploy in App Mesh on, or after July 29, 2020, unless you [open a ticket with AWS support](https://console.aws.amazon.com/support/home#/case/create)\. Once support processes the ticket, then the App Mesh default values for the following Envoy settings are set by App Mesh on all Envoys that you deploy after the date that the ticket is processed:
++ `max_requests` – `2147483647`
++ `max_pending_requests` – `2147483647`
++ `max_connections` – `2147483647`
++ `max_retries` – `2147483647`
+
+**Note**  
+Whether your Envoys have the Envoy or App Mesh default circuit breaker values, you are not able to modify the values\.
