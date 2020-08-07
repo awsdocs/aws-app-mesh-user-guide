@@ -23,7 +23,7 @@ The preceding image shows a logging path of `/dev/stdout` for Envoy access logs\
       }
 ```
 
-When you send Envoy access logs to `/dev/stdout`, they are mixed in with the Envoy container logs\. You can export them to a log storage and processing service like CloudWatch Logs using standard Docker log drivers such as `[awslogs](https://docs.docker.com/config/containers/logging/awslogs/)`\. To export only the Envoy access logs \(and ignore the other Envoy container logs\), you can set the `ENVOY_LOG_LEVEL` to `off`\. For more information, see [Access logging](https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/access_log.html) in the Envoy documentation\.
+When you send Envoy access logs to `/dev/stdout`, they are mixed in with the Envoy container logs\. You can export them to a log storage and processing service like CloudWatch Logs using standard Docker log drivers such as `[awslogs](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html)`\. To export only the Envoy access logs \(and ignore the other Envoy container logs\), you can set the `ENVOY_LOG_LEVEL` to `off`\. For more information, see [Access logging](https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/access_log.html) in the Envoy documentation\.
 
 **Enable access logs on Kubernetes**  
 When using the [App Mesh Controller for Kubernetes](https://docs.aws.amazon.com/app-mesh/latest/userguide/mesh-k8s-integration.html), you can configure virtual nodes with access logging by adding the logging configuration to the virtual node spec, as shown in the following example\.
