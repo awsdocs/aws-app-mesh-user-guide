@@ -88,3 +88,13 @@ listener.0.0.0.0_15000.ssl.ssl.fail_verify_san: 0
 ```
 
 For more information about Envoy TLS statistics, see [Envoy Listener Statistics](https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/stats)\.
+
+## Certificate Renewal
+
+### ACM PCA
+
+When you renew a certificate with ACM, the renewed certificate will be automatically distributed to your connected proxies within 35 minutes of the renewal completion. We recommend using [managed renewal](https://docs.aws.amazon.com/acm/latest/userguide/managed-renewal.html) to automatically renew certificates nearing the end of their validity period.
+
+### Your own certificate
+
+When using a certificate from the local file system, Envoy will automatically reload the certificate in response to a move command. See the [ConfigSource path parameter](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/config_source.proto#core-configsource) documentation for why Envoy only reloads certificates on move, and the [symbolic link swap example](https://www.envoyproxy.io/docs/envoy/latest/configuration/operations/runtime#config-runtime-symbolic-link-swap) for Envoy's recommended approach for changing files for a running proxy.
