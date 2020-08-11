@@ -8,17 +8,17 @@ You must add an Envoy proxy to the Amazon ECS task, Kubernetes pod, or Amazon EC
 + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`\. You can replace *us\-west\-2* with any Region other than `me-south-1` and `ap-east-1`\. 
 
   ```
-  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.12.5.0-prod
+  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.15.0.0-prod
   ```
 + `me-south-1` Region:
 
   ```
-  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.12.5.0-prod
+  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.15.0.0-prod
   ```
 + `ap-east-1` Region:
 
   ```
-  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.12.5.0-prod
+  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.15.0.0-prod
   ```
 
 Access to this container image in Amazon ECR is controlled by AWS Identity and Access Management, so you must use IAM to ensure that you have read access to Amazon ECR\. For example, when using Amazon ECS, you can assign an appropriate task execution role to an Amazon ECS task\. Further, if you use IAM policies that limit access to specific Amazon ECR resources, then you must ensure that you allow access to the Region\-specific Amazon Resource Name \(ARN\) that identifies the `aws-appmesh-envoy` repository\. For example, in the `us-west-2` region, you'd allow access to the following resource: `arn:aws:ecr:us-west-2:840364872350:repository/aws-appmesh-envoy`\. For more information, see [Amazon ECR Managed Policies](https://docs.aws.amazon.com/AmazonECR/latest/userguide/ecr_managed_policies.html)\. If you're using Docker on an Amazon EC2 instance, then you need to authenticate Docker to the repository\. For more information, see [Registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html#registry_auth)\.
@@ -50,7 +50,7 @@ Default: `info`
 The following environment variables help you to configure App Mesh with AWS X\-Ray\. For more information, see the [AWS X\-Ray Developer Guide](https://docs.aws.amazon.com/xray/latest/devguide/)\.
 
 `ENABLE_ENVOY_XRAY_TRACING`  
-Enables X\-Ray tracing using `127.0.0.1:2000` as the default daemon endpoint\.
+Enables X\-Ray tracing using `127.0.0.1:2000` as the default daemon endpoint\. To enable, set the value to `1`\.
 
 `XRAY_DAEMON_PORT`  
 Specify a port value to override the default X\-Ray daemon port\.
@@ -60,7 +60,7 @@ Specify a port value to override the default X\-Ray daemon port\.
 The following environment variables help you to configure App Mesh with DogStatsD\. For more information, see the [DogStatsD](https://docs.datadoghq.com/developers/dogstatsd/) documentation\.
 
 `ENABLE_ENVOY_DOG_STATSD`  
-Enables DogStatsD stats using `127.0.0.1:8125` as the default daemon endpoint\.
+Enables DogStatsD stats using `127.0.0.1:8125` as the default daemon endpoint\. To enable, set the value to `1`\.
 
 `STATSD_PORT`  
 Specify a port value to override the default DogStatsD daemon port\.
@@ -73,7 +73,7 @@ Specify a file path in the Envoy container file system to override the default D
 The following environment variables help you to configure App Mesh with Envoy Stats\. For more information, see the [Envoy Stats](https://www.envoyproxy.io/docs/envoy/v1.6.0/api-v2/config/metrics/v2/stats.proto) documentation\.
 
 `ENABLE_ENVOY_STATS_TAGS`  
-Enables the use of App Mesh defined tags `appmesh.mesh` and `appmesh.virtual_node`\. For more information, see [config\.metrics\.v2\.TagSpecifier](https://www.envoyproxy.io/docs/envoy/v1.6.0/api-v2/config/metrics/v2/stats.proto#envoy-api-msg-config-metrics-v2-tagspecifier) in the Envoy documentation\.
+Enables the use of App Mesh defined tags `appmesh.mesh` and `appmesh.virtual_node`\. For more information, see [config\.metrics\.v2\.TagSpecifier](https://www.envoyproxy.io/docs/envoy/v1.6.0/api-v2/config/metrics/v2/stats.proto#envoy-api-msg-config-metrics-v2-tagspecifier) in the Envoy documentation\. To enable, set the value to `1`\.
 
 `ENVOY_STATS_CONFIG_FILE`  
 Specify a file path in the Envoy container file system to override the default Stats tags configuration file with your own\.

@@ -8,7 +8,7 @@ External resources must be able to resolve a DNS name to an IP address assigned 
 
 **To create a virtual gateway using the AWS Management Console**
 
- To create a virtual gateway using the AWS CLI version 1\.18\.99 or higher, see the AWS CLI reference for the [create\-virtual\-gateway](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-gateway.html) command\.
+ To create a virtual gateway using the AWS CLI version 1\.18\.116 or higher, see the AWS CLI reference for the [create\-virtual\-gateway](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-gateway.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\. 
 
@@ -61,7 +61,7 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 ## Deploy virtual gateway<a name="deploy-virtual-gateway"></a>
 
-Deploy an Amazon ECS or Kubernetes service that contains only the [Envoy container](envoy.md)\. You can also deploy the Envoy container on an [Amazon EC2](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services) instance\. For more information see [Getting started with App Mesh and Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services) or [Tutorial: Configure App Mesh integration with Kubernetes](https://docs.aws.amazon.com/app-mesh/latest/userguide/mesh-k8s-integration.html)\. You need to set the `APPMESH_VIRTUAL_NODE_NAME` environment variable to `mesh/mesh-name/virtualGateway/virtual-gateway-name` and you must not specify XX\.
+Deploy an Amazon ECS or Kubernetes service that contains only the [Envoy container](envoy.md)\. You can also deploy the Envoy container on an [Amazon EC2](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services) instance\. For more information see [Getting started with App Mesh and Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services) or [Tutorial: Configure App Mesh integration with Kubernetes](https://docs.aws.amazon.com/app-mesh/latest/userguide/mesh-k8s-integration.html)\. You need to set the `APPMESH_VIRTUAL_NODE_NAME` environment variable to `mesh/mesh-name/virtualGateway/virtual-gateway-name` and you must not specify proxy configuration so that the proxy's traffic doesn't get redirected to itself\.
 
 We recommend that you deploy multiple instances of the container and set up a Network Load Balancer to load balance traffic to the instances\. The service discovery name of the load balancer is the name that you want external services to use to access resources that are in the mesh, such as *myapp\.example\.com*\. For more information see [Creating a Network Load Balancer](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-network-load-balancer.html) \(Amazon ECS\), [Creating an External Load Balancer](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/) \(Kubernetes\), or [Tutorial: Increase the availability of your application on Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-increase-availability.html)\.
 
@@ -69,7 +69,7 @@ Enable proxy authorization for Envoy\. For more information, see [Proxy authoriz
 
 ## Deleting a virtual gateway<a name="delete-virtual-gateway"></a>
 
-To delete a virtual gateway using the AWS CLI version 1\.18\.99 or higher, see the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-gateway.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-gateway.html) command\.
+To delete a virtual gateway using the AWS CLI version 1\.18\.116 or higher, see the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-gateway.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-gateway.html) command\.
 
 **To delete a virtual gateway using the AWS Management Console**
 
