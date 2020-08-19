@@ -38,7 +38,7 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. Configure the **Listener**\.
 
-   1. Select a **Protocol** and specify the **Port** that Envoy will listen for traffic on\.
+   1. Select a **Protocol** and specify the **Port** that Envoy will listen for traffic on\. The **http** listener permits connection transition to websockets\.
 
    1. \(Optional\) If you want to configure a health check for your listener, then select **Enable health check**\.
 

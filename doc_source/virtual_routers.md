@@ -22,7 +22,7 @@ To create a virtual router using the AWS CLI version 1\.18\.116 or higher, see t
 
 1. For **Virtual router name**, specify a name for your virtual router\. Up to 255 letters, numbers, hyphens, and underscores are allowed\.
 
-1. For **Listener**, specify a **Port** and **Protocol** for your virtual router\.
+1. For **Listener**, specify a **Port** and **Protocol** for your virtual router\. The `http` listener permits connection transition to websockets\.
 
 1. Choose **Create virtual router** to finish\.
 

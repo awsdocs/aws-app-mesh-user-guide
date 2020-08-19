@@ -55,7 +55,7 @@ If you want to enable Transport Layer Security \(TLS\) for an existing virtual n
 Logs must still be ingested by an agent in your application and sent to a destination\. This file path only instructs Envoy where to send the logs\. 
 
    1. **Listener configuration**
-      + If your virtual node expects ingress traffic, specify a **Port** and **Protocol** for the **Listener**\.
+      + If your virtual node expects ingress traffic, specify a **Port** and **Protocol** for the **Listener**\. The **http** listener permits connection transition to websockets\.
       + \(Optional\) **Enable health check** – Configure settings for a health check policy\.
 
         A health check policy is optional, but if you specify any values for a health policy, then you must specify values for **Healthy threshold**, **Health check interval**, **Health check protocol**, **Timeout period**, and **Unhealthy threshold**\.
