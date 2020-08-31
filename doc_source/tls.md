@@ -89,7 +89,7 @@ listener.0.0.0.0_15000.ssl.ssl.fail_verify_san: 0
 
 For more information about Envoy TLS statistics, see [Envoy Listener Statistics](https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/stats)\.
 
-## Certificate Renewal<a name="certificate-renewal"></a>
+## Certificate renewal<a name="certificate-renewal"></a>
 
 **ACM PCA**  
 When you renew a certificate with ACM, the renewed certificate will be automatically distributed to your connected proxies within 35 minutes of the renewal completion\. We recommend using managed renewal to automatically renew certificates nearing the end of their validity period\. For more information, see [Managed Renewal for ACM's Amazon\-Issued Certificates](https://docs.aws.amazon.com/acm/latest/userguide/managed-renewal.html) in the AWS Certificate Manager User Guide\.
