@@ -104,3 +104,17 @@ This is a known issue\. For more information, see [Retry policy on Virtual Node 
 To reduce request failures to virtual node providers, use a virtual router provider instead, and specify a retry policy on its routes\. For other ways to reduce request failures to your applications, see [App Mesh best practices](best-practices.md)\. 
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
+
+## Unable to connect to an Amazon EFS filesystem<a name="ts-connectivity-efs"></a>
+
+**Symptoms**  
+When configuring an Amazon ECS task with an Amazon EFS filesystem as a volume, the task fails to start with the following error\.
+
+```
+ResourceInitializationError: failed to invoke EFS utils commands to set up EFS volumes: stderr: mount.nfs4: Connection refused : unsuccessful EFS utils command execution; code: 32
+```
+
+**Resolution**  
+This is a known issue\. This error occurs because the NFS connection to Amazon EFS occurs before any containers in your task are started\. This traffic is routed by the proxy configuration to Envoy, which will not be running at this point\. Because of the ordering of startup, the NFS client fails to connecting to the Amazon EFS filesystem and the task fails to launch\. To resolve the issue, add port `2049` to the list of values for the `EgressIgnoredPorts` setting in the proxy configuration of your Amazon ECS task definition\. For more information, see [Proxy configuration](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#proxyConfiguration)\.
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.

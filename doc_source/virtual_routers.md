@@ -8,7 +8,7 @@ Any inbound traffic that your virtual router expects should be specified as a *l
 
 ## Creating a virtual router<a name="create-virtual-router"></a>
 
-To create a virtual router using the AWS CLI version 1\.18\.16 or higher, see the example in the AWS CLI reference for the [create\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-router.html) command\.
+To create a virtual router using the AWS CLI version 1\.18\.116 or higher, see the example in the AWS CLI reference for the [create\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-router.html) command\.
 
 **To create a virtual router using the AWS Management Console**
 
@@ -22,7 +22,7 @@ To create a virtual router using the AWS CLI version 1\.18\.16 or higher, see th
 
 1. For **Virtual router name**, specify a name for your virtual router\. Up to 255 letters, numbers, hyphens, and underscores are allowed\.
 
-1. For **Listener**, specify a **Port** and **Protocol** for your virtual router\.
+1. For **Listener**, specify a **Port** and **Protocol** for your virtual router\. The `http` listener permits connection transition to websockets\.
 
 1. Choose **Create virtual router** to finish\.
 

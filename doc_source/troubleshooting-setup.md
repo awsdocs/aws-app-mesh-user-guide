@@ -114,3 +114,23 @@ To resolve the issue, complete the following tasks\.
 + If you are configuring a health check for a [virtual gateway](virtual_gateways.md), then we recommend using a [network load balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancers.html) with a TCP or TLS health check on the virtual gateway's listener port\. This ensures that the virtual gateway listener is bootstrapped and ready to accept connections\.
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
+
+## Virtual gateway not accepting traffic on ports 1024 or less<a name="virtual-gateway-low-ports"></a>
+
+**Symptoms**  
+Your virtual gateway is not accepting traffic on port 1024 or less, but does accept traffic on a port number that is greater than 1024\. For example, you query the Envoy stats with the following command and receive a value other than zero\.
+
+```
+curl -s http://my-app.default.svc.cluster.local:9901/stats | grep "update_rejected"
+```
+
+You might see text similar to the following text in your logs describing a failure to bind to a privileged port:
+
+```
+gRPC config for type.googleapis.com/envoy.api.v2.Listener rejected: Error adding/updating listener(s) lds_ingress_0.0.0.0_port_<port num>: cannot bind '0.0.0.0:<port num>': Permission denied
+```
+
+**Resolution**  
+To resolve the issue, the user specified for the gateway needs to have the linux capability `CAP_NET_BIND_SERVICE`\. For more information, see [Capabilities](https://www.man7.org/linux/man-pages/man7/capabilities.7.html) in the Linux Programmer's Manual, [Linux parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#container_definition_linuxparameters) in ECS Task definition parameters, and [Set capabilities for a container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-capabilities-for-a-container) in the Kubernetes documentation\.
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.

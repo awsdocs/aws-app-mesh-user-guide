@@ -1,6 +1,6 @@
 # Getting started with AWS App Mesh<a name="appmesh-getting-started"></a>
 
-This topic helps you use AWS App Mesh with an actual service that is running on Amazon ECS, Kubernetes, or Amazon EC2\. 
+This topic helps you use AWS App Mesh with an actual service that is running on Amazon ECS or Amazon EC2\. To use App Mesh with Kubernetes, see [Tutorial: Configure App Mesh integration with Kubernetes](https://docs.aws.amazon.com/eks/latest/userguide/mesh-k8s-integration.html)\. This tutorial covers basic features of several App Mesh resource types\. To learn more about features of resources that aren't used when completing this tutorial, see the topics for [virtual nodes](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html), [virtual services](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_services.html), [virtual routers](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html), [routes](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html), and the [Envoy proxy](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy.html)\.
 
 ## Scenario<a name="scenario"></a>
 
@@ -8,22 +8,21 @@ To illustrate how to use App Mesh, assume that you have an application with the 
 + Includes two services named `serviceA` and `serviceB`\. 
 + Both services are registered to a namespace named `apps.local`\.
 + `ServiceA` communicates with `serviceB` over HTTP/2, port 80\.
-+  You've already deployed version 2 of `serviceB` and registered it with the name `serviceBv2` in the `apps.local` namespace\.
++  You have already deployed version 2 of `serviceB` and registered it with the name `serviceBv2` in the `apps.local` namespace\.
 
 You have the following requirements:
 + You want to send 75 percent of the traffic from `serviceA` to `serviceB` and 25 percent of the traffic to `serviceBv2` to ensure that `serviceBv2` is bug free before you send 100 percent of the traffic from `serviceA` to it\. 
-+ You want to be able to easily adjust the traffic weighting so that 100 percent of the traffic goes to `serviceBv2` once it's proven to be reliable\. Once all traffic is being sent to `serviceBv2`, you want to deprecate `serviceB`\.
-+ You don't want to have to change any existing application code or service discovery registration for your actual services to meet the previous requirements\. 
++ You want to be able to easily adjust the traffic weighting so that 100 percent of the traffic goes to `serviceBv2` once it is proven to be reliable\. Once all traffic is being sent to `serviceBv2`, you want to deprecate `serviceB`\.
++ You do not want to have to change any existing application code or service discovery registration for your actual services to meet the previous requirements\. 
 
-To meet your requirements, you've decided to create an App Mesh service mesh with virtual services, virtual nodes, a virtual router, and a route\. After implementing your mesh, you update the  services hosting your actual services to use the Envoy proxy\. Once updated, your services communicate with each other through the Envoy proxy rather than directly with each other\.
+To meet your requirements, you have decided to create an App Mesh service mesh with virtual services, virtual nodes, a virtual router, and a route\. After implementing your mesh, you update the  services hosting your actual services to use the Envoy proxy\. Once updated, your services communicate with each other through the Envoy proxy rather than directly with each other\.
 
 ## Prerequisites<a name="prerequisites"></a>
 
-App Mesh supports Linux services that are registered with DNS, AWS Cloud Map, or both\. To use this getting started guide, we recommend that you have three existing services that are registered with DNS\. You can create a service mesh and its resources even if the services don't exist, but you can't use the mesh until you have deployed actual services\.
+App Mesh supports Linux services that are registered with DNS, AWS Cloud Map, or both\. To use this getting started guide, we recommend that you have three existing services that are registered with DNS\. You can create a service mesh and its resources even if the services don't exist, but you cannot use the mesh until you have deployed actual services\.
 
 If you don't already have services running, you can:
 + [Create an Amazon ECS service with service discovery](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-service-discovery.html)\.
-+ [Setup an Amazon EKS cluster](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html) and deploy a [ cluster](https://docs.aws.amazon.com/eks/latest/userguide/eks-guestbook.html) and deploy a [sample application](https://docs.aws.amazon.com/eks/latest/userguide/eks-guestbook.html) to it\.
 + [Launch Amazon EC2 instances](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services) and deploy applications to them\.
 
 The remaining steps assume that the actual services are named `serviceA`, `serviceB`, and `serviceBv2` and that all services are discoverable through a namespace named `apps.local`\. 
@@ -36,7 +35,7 @@ Create the following resources:
 + A mesh named `apps`, since all of the services in the scenario are registered to the `apps.local` namespace\.
 + A virtual service named `serviceb.apps.local`, since the virtual service represents a service that is discoverable with that name, and you don't want to change your code to reference another name\. A virtual service named `servicea.apps.local` is added in a later step\.
 
-You can use the AWS Management Console or the AWS CLI version 1\.18\.16 or higher to complete the following steps\. If using the AWS CLI, use the `aws --version` command to check your installed AWS CLI version\. If you don't have version 1\.18\.16 or higher installed, you must [install or update the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)\. Select the tab for the tool that you want to use\.
+You can use the AWS Management Console or the AWS CLI version 1\.18\.116 or higher or 2\.0\.38 or higher to complete the following steps\. If using the AWS CLI, use the `aws --version` command to check your installed AWS CLI version\. If you don't have version 1\.18\.116 or higher or 2\.0\.38 or higher installed, then you must [install or update the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)\. Select the tab for the tool that you want to use\.
 
 ------
 #### [ AWS Management Console ]
@@ -77,9 +76,9 @@ Create a virtual node named `serviceB`, since one of the virtual nodes represent
 
 1. For **Virtual node name**, enter **serviceB**\. 
 
-1. For **Service discovery method**, choose `DNS` and enter **serviceb\.apps\.local** for **DNS hostname**\.
+1. For **Service discovery method**, choose **DNS** and enter **serviceb\.apps\.local** for **DNS hostname**\.
 
-1. Under **Listener**, enter **80** for **Port** and choose `http2` for **Protocol**\.
+1. Under **Listener configuration**, choose **http2** for **Protocol** and enter **80** for **Port**\.
 
 1. To continue, choose **Next**\.
 
@@ -123,21 +122,21 @@ Create a virtual node named `serviceB`, since one of the virtual nodes represent
 Virtual routers route traffic for one or more virtual services within your mesh\. For more information, see [Virtual Routers](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html) and [Routes](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html)\.
 
 Create the following resources:
-+ A virtual router named `serviceB`, since the `serviceB.apps.local` virtual service doesn't initiate outbound communication with any other service\. Remember that the virtual service that you created previously is an abstraction of your actual `serviceb.apps.local` service\. The virtual service sends traffic to the virtual router\. The virtual router will listen for traffic using the HTTP/2 protocol on port 80\. Other protocols are also supported\. 
-+ A route named `serviceB`\. It will route 100 percent of its traffic to the `serviceB` virtual node\. You'll change the weight in a later step once you've added the `serviceBv2` virtual node\. Though not covered in this guide, you can add additional filter criteria for the route and add a retry policy to cause the Envoy proxy to make multiple attempts to send traffic to a virtual node when it experiences a communication problem\.
++ A virtual router named `serviceB`, since the `serviceB.apps.local` virtual service does not initiate outbound communication with any other service\. Remember that the virtual service that you created previously is an abstraction of your actual `serviceb.apps.local` service\. The virtual service sends traffic to the virtual router\. The virtual router will listen for traffic using the HTTP/2 protocol on port 80\. Other protocols are also supported\. 
++ A route named `serviceB`\. It will route 100 percent of its traffic to the `serviceB` virtual node\. You will change the weight in a later step once you have added the `serviceBv2` virtual node\. Though not covered in this guide, you can add additional filter criteria for the route and add a retry policy to cause the Envoy proxy to make multiple attempts to send traffic to a virtual node when it experiences a communication problem\.
 
 ------
 #### [ AWS Management Console ]
 
 1. For **Virtual router name,** enter **serviceB**\.
 
-1. Under **Listener**, specify **80** for **Port** and choose `http2` for **Protocol**\.
+1. Under **Listener configuration**, choose **http2** for **Protocol** and specify **80** for **Port**\.
 
 1. For **Route name**, enter **serviceB**\. 
 
-1. For **Route type**, choose `http2`\.
+1. For **Route type**, choose **http2**\.
 
-1. For** Virtual node name**, select `serviceB` and enter **100** for **Weight**\.
+1. For **Virtual node name** under **Route configuration**, select `serviceB` and enter **100** for **Weight**\.
 
 1. To continue, choose **Next**\.
 
@@ -206,14 +205,16 @@ Create the following resources:
 
 ------
 
-## Step 4: review and create<a name="review-create"></a>
+## Step 4: Review and create<a name="review-create"></a>
 
 Review the settings against the previous instructions\.
 
 ------
 #### [ AWS Management Console ]
 
-Choose **Edit** if you need to make any changes in any section\. Once you're satisfied with the settings, choose **Create mesh service**\.
+Choose **Edit** if you need to make changes in any section\. Once you are satisfied with the settings, choose **Create mesh**\.
+
+The **Status** screen shows you all of the mesh resources that were created\. You can see the created resources in the console by selecting **View mesh**\.
 
 ------
 #### [ AWS CLI ]
@@ -256,7 +257,7 @@ aws appmesh describe-route --mesh-name apps \
 To complete the scenario, you need to:
 + Create one virtual node named `serviceBv2` and another named `serviceA`\. Both virtual nodes listen for requests over HTTP/2 port 80\. For the `serviceA` virtual node, configure a backend of `serviceb.apps.local`, since all outbound traffic from the `serviceA` virtual node is sent to the virtual service named `serviceb.apps.local`\. Though not covered in this guide, you can also specify a file path to write access logs to for a virtual node\.
 + Create one additional virtual service named `servicea.apps.local`, which will send all traffic directly to the `serviceA` virtual node\.
-+ Update the `serviceB` route that you created in a previous step to send 75 percent of its traffic to the `serviceB` virtual node and 25 percent of its traffic to the `serviceBv2` virtual node\. Over time, you can continue to modify the weights until `serviceBv2` receives 100 percent of the traffic\. Once all traffic is sent to `serviceBv2`, you can deprecate the `serviceB` virtual node and actual service\. As you change weights, your code doesn't require any modification, because the `serviceb.apps.local` virtual and actual service names don't change\. Recall that the `serviceb.apps.local` virtual service sends traffic to the virtual router, which routes the traffic to the virtual nodes\. The service discovery names for the virtual nodes can be changed at any time\.
++ Update the `serviceB` route that you created in a previous step to send 75 percent of its traffic to the `serviceB` virtual node and 25 percent of its traffic to the `serviceBv2` virtual node\. Over time, you can continue to modify the weights until `serviceBv2` receives 100 percent of the traffic\. Once all traffic is sent to `serviceBv2`, you can deprecate the `serviceB` virtual node and actual service\. As you change weights, your code does not require any modification, because the `serviceb.apps.local` virtual and actual service names don't change\. Recall that the `serviceb.apps.local` virtual service sends traffic to the virtual router, which routes the traffic to the virtual nodes\. The service discovery names for the virtual nodes can be changed at any time\.
 
 ------
 #### [ AWS Management Console ]
@@ -269,25 +270,23 @@ To complete the scenario, you need to:
 
 1. Choose **Create virtual node**\.
 
-1. For **Virtual node name**, enter **serviceBv2**, for **Service discovery method**, choose `DNS`, and for **DNS hostname**, enter **servicebv2\.apps\.local**\.
+1. For **Virtual node name**, enter **serviceBv2**, for **Service discovery method**, choose **DNS**, and for **DNS hostname**, enter **servicebv2\.apps\.local**\.
 
-1. For **Listener**, enter **80** for **Port** and select `http2` for **Protocol**\.
+1. For **Listener configuration**, select **http2** for **Protocol** and enter **80** for **Port**\.
 
 1. Choose **Create virtual node**\.
 
-1. Choose **Create virtual node** again, and enter **serviceA** for the **Virtual node name**, for **Service discovery method**, choose `DNS`, and for **DNS hostname**, enter **servicea\.apps\.local**\.
+1. Choose **Create virtual node** again\. Enter **serviceA** for the **Virtual node name**\. For **Service discovery method**, choose **DNS**, and for **DNS hostname**, enter **servicea\.apps\.local**\.
 
-1. Expand **Additional configuration**\.
+1. For **Enter a virtual service name** under **New backend**, enter **servicea\.apps\.local**\.
 
-1. Select **Add backend**\. Enter **serviceb\.apps\.local**\.
-
-1. Enter **80** for **Port**, choose `http2` for **Protocol**, and then choose **Create virtual node**\.
+1. Under **Listener configuration**, choose **http2** for **Protocol**, enter **80** for **Port**, and then choose **Create virtual node**\.
 
 1. In the left navigation pane, select** Virtual routers** and then select the `serviceB` virtual router from the list\.
 
 1. Under **Routes**, select the route named `ServiceB` that you created in a previous step, and choose **Edit**\.
 
-1. Under **Virtual node name**, change the value of **Weight** for `serviceB` to **75**\.
+1. Under **Targets**, **Virtual node name**, change the value of **Weight** for `serviceB` to **75**\.
 
 1. Choose **Add target**, choose `serviceBv2` from the drop\-down list, and set the value of **Weight** to **25**\.
 
@@ -295,7 +294,7 @@ To complete the scenario, you need to:
 
 1. In the left navigation pane, select** Virtual services** and then choose **Create virtual service**\.
 
-1. Enter **servicea\.apps\.local** for **Virtual service name**, select `Virtual node` for **Provider**, select `serviceA` for **Virtual node**, and then choose **Create virtual service\.**
+1. Enter **servicea\.apps\.local** for **Virtual service name**, select **Virtual node** for **Provider**, select `serviceA` for **Virtual node**, and then choose **Create virtual service\.**
 
 ------
 #### [ AWS CLI ]
@@ -371,7 +370,7 @@ To complete the scenario, you need to:
       aws appmesh create-virtual-node --cli-input-json file://create-virtual-node-servicea.json
       ```
 
-1. Update the `serviceb.apps.local` virtual service that you created in a previous step to send its traffic to the `serviceB` virtual router\. When the virtual service was originally created, it didn't send traffic anywhere, since the `serviceB` virtual router hadn't been created yet\.
+1. Update the `serviceb.apps.local` virtual service that you created in a previous step to send its traffic to the `serviceB` virtual router\. When the virtual service was originally created, it did not send traffic anywhere, since the `serviceB` virtual router had not been created yet\.
 
    1. Create a file named `update-virtual-service.json` with the following contents:
 
@@ -468,54 +467,128 @@ Before you created the service mesh, you had three actual services named `servic
 
 After creating your mesh, you need to complete the following tasks:
 + Authorize the Envoy proxy that you deploy with each service to read the configuration of one or more virtual nodes\. For more information about how to authorize the proxy, see [Proxy authorization](https://docs.aws.amazon.com/app-mesh/latest/userguide/proxy-authorization.html)\.
-+ Update each of your existing services to use the Envoy proxy\. To update your existing service that is running on Amazon ECS, see [Getting Started with App Mesh and Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services)\. To update your existing service that is running on Kubernetes, see [Getting Started with App Mesh and Kubernetes](https://docs.aws.amazon.com/eks/latest/userguide/appmesh-getting-started.html#update-services)\. To update your existing service that is running on Amazon EC2, complete the steps that follow\.
++ Update each of your existing services to use the Envoy proxy\. To update your existing service that is running on Amazon ECS, see [Getting Started with App Mesh and Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services)\. To update your existing service that is running on Amazon EC2, complete the steps that follow\.
 
 **To configure an Amazon EC2 instance as a virtual node member**
 
-1. Launch an Amazon EC2 instance with an IAM role that has read access to Amazon ECR\. This permissions allows the instance to pull the App Mesh Envoy container image from Amazon Elastic Container Registry\. For more information, see [Amazon ECR Managed Policies](https://docs.aws.amazon.com/AmazonECR/latest/userguide/ecr_managed_policies.html)\.
+1. Create an IAM role\.
+
+   1. Create a file named `ec2-trust-relationship.json` with the following contents\.
+
+      ```
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "ec2.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      }
+      ```
+
+   1. Create an IAM role with the following command\.
+
+      ```
+      aws iam create-role --role-name mesh-virtual-node-service-b --assume-role-policy-document file://ec2-trust-relationship.json
+      ```
+
+1. Attach IAM policies to the role that allow it to read from Amazon ECR and only the configuration of a specific App Mesh virtual node\.
+
+   1. Create a file named `virtual-node-policy.json` with the following contents\. `apps` is the name of the mesh you created in [Step 1: Create a mesh and virtual service](#create-mesh-and-virtual-service) and `serviceB` is the name of the virtual node that you created in [Step 2: Create a virtual node](#create-virtual-node)\. Replace *111122223333* with your account ID and *us\-west\-2* with the region that you created your mesh in\.
+
+      ```
+      {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Effect": "Allow",
+                  "Action": "appmesh:StreamAggregatedResources",
+                  "Resource": [
+                      "arn:aws:appmesh:us-west-2:111122223333:mesh/apps/virtualNode/serviceB"
+                  ]
+              }
+          ]
+      }
+      ```
+
+   1. Create the policy with the following command\.
+
+      ```
+      aws iam create-policy --policy-name virtual-node-policy --policy-document file://virtual-node-policy.json
+      ```
+
+   1. Attach the policy that you created in the previous step to the role so the role can read the configuration for only the `serviceB` virtual node from App Mesh\.
+
+      ```
+      aws iam attach-role-policy --policy-arn arn:aws:iam::111122223333:policy/virtual-node-policy --role-name mesh-virtual-node-service-b
+      ```
+
+   1. Attach the `AmazonEC2ContainerRegistryReadOnly` managed policy to the role so that it can pull the Envoy container image from Amazon ECR\.
+
+      ```
+      aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly --role-name mesh-virtual-node-service-b
+      ```
+
+1. [Launch an Amazon EC2 instance with the IAM role](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html#launch-instance-with-role) that you created\. 
 
 1. Connect to your instance via SSH\.
 
 1. Install Docker and the AWS CLI on your instance according to your operating system documentation\.
 
-1. Authenticate to the Envoy Amazon ECR repository in the Region that you want your Docker client to pull the image from:
+1. Authenticate to the Envoy Amazon ECR repository in the Region that you want your Docker client to pull the image from\.
    + All Regions except `me-south-1` and `ap-east-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1` and `ap-east-1`\.
 
      ```
-     $(aws ecr get-login --no-include-email --region us-west-2 --registry-ids 840364872350)
+     $aws ecr get-login-password \
+         --region us-west-2 \
+     | docker login \
+         --username AWS \
+         --password-stdin 840364872350.dkr.ecr.us-west-2.amazonaws.com
      ```
    + `me-south-1` Region
 
      ```
-     $(aws ecr get-login --no-include-email --region me-south-1 --registry-ids 772975370895)
+     $aws ecr get-login-password \
+         --region me-south-1 \
+     | docker login \
+         --username AWS \
+         --password-stdin 772975370895.dkr.ecr.me-south-1.amazonaws.com
      ```
    + `ap-east-1` Region
 
      ```
-     $(aws ecr get-login --no-include-email --region ap-east-1 --registry-ids 856666278305)
+     $aws ecr get-login-password \
+         --region ap-east-1 \
+     | docker login \
+         --username AWS \
+         --password-stdin 856666278305.dkr.ecr.ap-east-1.amazonaws.com
      ```
 
-1. Run one of the following commands to start the App Mesh Envoy container on your instance, depending on which Region you want to pull the image from\. The *apps* and *serviceB* values are the mesh and virtual node names defined in the scenario\. To complete the scenario, you also need to complete these steps for the Amazon EC2 instances that host the services represented by the `serviceBv2` and `serviceA` virtual nodes\. For your own application, replace these values with your own\.
-   + All Regions except `me-south-1` and `ap-east-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1` and `ap-east-1` Region\.
-
-     ```
-     sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.12.3.0-prod
-     ```
-   + `me-south-1` Region
+1. Run one of the following commands to start the App Mesh Envoy container on your instance, depending on which Region you want to pull the image from\. The *apps* and *serviceB* values are the mesh and virtual node names defined in the scenario\. This information tells the proxy which virtual node configuration to read from App Mesh\. To complete the scenario, you also need to complete these steps for the Amazon EC2 instances that host the services represented by the `serviceBv2` and `serviceA` virtual nodes\. For your own application, replace these values with your own\.
+   + All Regions except `me-south-1` and `ap-east-1`\. You can replace *region\-code* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except the `me-south-1` and `ap-east-1` Regions\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.12.3.0-prod
+     -u 1337 --network host 840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.15.0.0-prod
      ```
-   + `ap-east-1` Region
+   + `me-south-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.12.3.0-prod
+     -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.15.0.0-prod
+     ```
+   + `ap-east-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
+
+     ```
+     sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
+     -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.15.0.0-prod
      ```
 
-1. Select `more` below and run the script on your instance to configure the networking policies\. Replace the `APPMESH_APP_PORTS` value with the ports that your application code uses for ingress\.
+1. Select `Show more` below\. Create a file named `envoy-networking.sh` on your instance with the following contents\. Replace *8000* with the port that your application code uses for ingress\. You can change the value for `APPMESH_IGNORE_UID`, but the value must be the same as the value that you specified in the previous step; for example `1337`\. You can add additional addresses to `APPMESH_EGRESS_IGNORED_IP` if necessary\. Do not modify any other lines\.
 
    ```
    #!/bin/bash -e
@@ -538,7 +611,7 @@ After creating your mesh, you need to complete the following tasks:
    # Egress traffic from the processess owned by the following UID/GID will be ignored.
    if [ -z "$APPMESH_IGNORE_UID" ] && [ -z "$APPMESH_IGNORE_GID" ]; then
        echo "Variables APPMESH_IGNORE_UID and/or APPMESH_IGNORE_GID must be set."
-       echo "Envoy must run under those IDs to be able to properly route it's egress traffic."
+       echo "Envoy must run under those IDs to be able to properly route its egress traffic."
        exit 1
    fi
    
@@ -686,6 +759,12 @@ After creating your mesh, you need to complete the following tasks:
    fi
    
    main_loop
+   ```
+
+1. To configure `iptables` rules to route application traffic to the Envoy proxy, run the script that you created in the previous step\.
+
+   ```
+   sudo ./envoy-networking.sh
    ```
 
 1. Start your virtual node application code\.

@@ -9,7 +9,7 @@ If you require your Envoy stats or tracing to use a different name, you can over
 
 ## Creating a virtual node<a name="vn-create-virtual-node"></a>
 
- To create a virtual node using the AWS CLI version 1\.18\.16 or higher, see the example in the AWS CLI reference for the [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) command\.
+ To create a virtual node using the AWS CLI version 1\.18\.116 or higher, see the example in the AWS CLI reference for the [create\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-node.html) command\.
 
 **To create a virtual node using the AWS Management Console**
 
@@ -21,151 +21,61 @@ If you require your Envoy stats or tracing to use a different name, you can over
 
 1. Choose **Create virtual node**\.
 
-1. For **Virtual node name**, enter a name for your virtual node\.
+1. Specify settings for your virtual node\.
 
-1. For **Service discovery method**, choose one of the following options:
-   + **DNS** – Specify the **DNS hostname** of the actual service that the virtual node represents\. The Envoy proxy is deployed in an Amazon VPC\. The proxy sends name resolution requests to the DNS server that is configured for the VPC\. If the hostname resolves, the DNS server returns one or more IP addresses\. For more information about VPC DNS settings, see [Using DNS with your VPC](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html)\. If the DNS server returns multiple IP addresses, then the Envoy proxy chooses one of the addresses using the [Logical DNS](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/service_discovery#arch-overview-service-discovery-types-logical-dns) service discovery type\.
-   + **AWS Cloud Map** – Specify an existing **Service name** and **Namespace**\. Optionally, you can also specify attributes that App Mesh can query AWS Cloud Map for by selecting **Add row** and specifying a **Key** and **Value**\. Only instances that match all of the specified key/value pairs will be returned\. To use AWS Cloud Map, your account must have the `AWSServiceRoleForAppMesh` [service\-linked role](using-service-linked-roles.md)\. For more information about AWS Cloud Map, see the [AWS Cloud Map Developer Guide](https://docs.aws.amazon.com/cloud-map/latest/dg/)\.
-   + **None** – Select if your virtual node doesn't expect any inbound traffic\.
-
-1. Select **Additional configuration**
+   1. **Virtual node configuration**
+      + For **Virtual node name**, enter a name for your virtual node\.
+      + For **Service discovery method**, choose one of the following options:
+        + **DNS** – Specify the **DNS hostname** of the actual service that the virtual node represents\. The Envoy proxy is deployed in an Amazon VPC\. The proxy sends name resolution requests to the DNS server that is configured for the VPC\. If the hostname resolves, the DNS server returns one or more IP addresses\. For more information about VPC DNS settings, see [Using DNS with your VPC](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html)\. If the DNS server returns multiple IP addresses, then the Envoy proxy chooses one of the addresses using the [Logical DNS](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/service_discovery#arch-overview-service-discovery-types-logical-dns) service discovery type\.
+        + **AWS Cloud Map** – Specify an existing **Service name** and **Namespace**\. Optionally, you can also specify attributes that App Mesh can query AWS Cloud Map for by selecting **Add row** and specifying a **Key** and **Value**\. Only instances that match all of the specified key/value pairs will be returned\. To use AWS Cloud Map, your account must have the `AWSServiceRoleForAppMesh` [service\-linked role](using-service-linked-roles.md)\. For more information about AWS Cloud Map, see the [AWS Cloud Map Developer Guide](https://docs.aws.amazon.com/cloud-map/latest/dg/)\.
+        + **None** – Select if your virtual node doesn't expect any inbound traffic\.
+      + \(Optional\) **Client policy defaults** – Configure default requirements when communicating to backend virtual services\.
 **Note**  
 If you want to enable Transport Layer Security \(TLS\) for an existing virtual node, then we recommend that you create a new virtual node, which represents the same service as the existing virtual node, on which to enable TLS\. Then gradually shift traffic to the new virtual node using a virtual router and route\. For more information about creating a route and adjusting weights for the transition, see [Routes](routes.md)\. If you update an existing, traffic\-serving virtual node with TLS, there is a chance that the downstream client Envoy proxies will receive TLS validation context before the Envoy proxy for the virtual node that you have updated receives the certificate\. This can cause TLS negotiation errors on the downstream Envoy proxies\.
-   + \(Optional\) To configure default requirements when communicating to backend virtual services, select **Client policy defaults**\.
+[Proxy authorization](proxy-authorization.md) must be enabled for the Envoy proxy deployed with the application represented by the backend service's virtual nodes\. We recommend that when you enable proxy authorization, you restrict access to only the virtual nodes that this virtual node is communicating with\.
+        + \(Optional\) Select **Enforce TLS** if you want to require the virtual node to communicate with all backends using Transport Layer Security \(TLS\)\.
+        + \(Optional\) If you only want to require the use of TLS for one or more specific ports, then enter a number in **Ports**\. To add additional ports, select **Add port**\. If you don't specify any ports, TLS is enforced for all ports\.
+        + For **Certificate discovery method**, select one of the following options\. The certificate that you specify must already exist and meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
+          + **AWS Certificate Manager Private Certificate Authority** hosting – Select one or more existing **Certificates**\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with an ACM certificate, see [Configuring TLS with AWS Certificate Manager](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/tls-with-acm) on GitHub\.
+          + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where the Envoy is deployed\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with local files, see [Configuring TLS with File Provided TLS Certificates](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-tls-file-provided) on GitHub\.
+      + \(Optional\) **Service backends** – Specify the App Mesh virtual service that the virtual node will communicate with\.
+        + Enter an App Mesh virtual service name or full Amazon Resource Name \(ARN\) for the virtual service that your virtual node communicates with\.
+        + \(Optional\) If you set **Client policy defaults**, but want to override them with unique TLS settings for a backend, select **TLS settings** and then select **Override defaults**\.
+          + \(Optional\) Select **Enforce TLS** if you want to require the virtual node to communicate with all backends using TLS\.
+          + \(Optional\) If you only want to require the use of TLS for one or more specific ports, then enter a number in **Ports**\. To add additional ports, select **Add port**\. If you don't specify any ports, TLS is enforced for all ports\.
+          + For **Certificate discovery method**, select one of the following options\. The certificate that you specify must already exist and meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
+            + **AWS Certificate Manager Private Certificate Authority** hosting – Select one or more existing **Certificates**\.
+            + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where the Envoy is deployed\.
 
-     [Proxy authorization](proxy-authorization.md) must be enabled for the Envoy proxy deployed with the application represented by the backend service's virtual nodes\. We recommend that when you enable proxy authorization, you restrict access to only the virtual nodes that this virtual node is communicating with\.
-     + \(Optional\) Select **Enforce TLS** if you want to require the virtual node to communicate with all backends using Transport Layer Security \(TLS\)\.
-     + \(Optional\) If you only want to require the use of TLS for one or more specific ports, then enter a number in **Ports**\. To add additional ports, select **Add port**\. If you don't specify any ports, TLS is enforced for all ports\.
-     + For **Certificate discovery method**, select one of the following options\. The certificate that you specify must already exist and meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
-       + **AWS Certificate Manager Private Certificate Authority** hosting – Select one or more existing **Certificates**\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with an ACM certificate, see [Configuring TLS with AWS Certificate Manager](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/tls-with-acm) on GitHub\.
-       + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where the Envoy is deployed\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with local files, see [Configuring TLS with File Provided TLS Certificates](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-tls-file-provided) on GitHub\.
-   + To specify a backend virtual service that the virtual node will communicate with, choose **Add backend**\.
-     + Enter a virtual service name or full Amazon Resource Name \(ARN\) for the virtual service that your virtual node communicates with\.
-     + \(Optional\) If you set **Client policy defaults**, but want to override them with unique TLS settings for a backend, select **TLS settings** and then select **Override defaults**\.
-       + \(Optional\) Select **Enforce TLS** if you want to require the virtual node to communicate with all backends using TLS\.
-       + \(Optional\) If you only want to require the use of TLS for one or more specific ports, then enter a number in **Ports**\. To add additional ports, select **Add port**\. If you don't specify any ports, TLS is enforced for all ports\.
-       + For **Certificate discovery method**, select one of the following options\. The certificate that you specify must already exist and meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
-         + **AWS Certificate Manager Private Certificate Authority** hosting – Select one or more existing **Certificates**\.
-         + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where the Envoy is deployed\.
+        To add additional backends, select **Add backend**\.
+      + \(Optional\) **Logging**
 
-     To add additional backends, select **Add backend**\.
-   + To configure logging, enter the HTTP access logs path that you want Envoy to use\. We recommend the `/dev/stdout` path so that you can use Docker log drivers to export your Envoy logs to a service such as Amazon CloudWatch Logs\.
+        To configure logging, enter the HTTP access logs path that you want Envoy to use\. We recommend the `/dev/stdout` path so that you can use Docker log drivers to export your Envoy logs to a service such as Amazon CloudWatch Logs\.
 **Note**  
 Logs must still be ingested by an agent in your application and sent to a destination\. This file path only instructs Envoy where to send the logs\. 
 
-1. If your virtual node expects ingress traffic, specify a **Port** and **Protocol** for the **Listener**\.
+   1. **Listener configuration**
+      + If your virtual node expects ingress traffic, specify a **Port** and **Protocol** for the **Listener**\. The **http** listener permits connection transition to websockets\.
+      + \(Optional\) **Enable health check** – Configure settings for a health check policy\.
 
-1. \(Optional\) If you want to configure a health check for your listener, then select **Enable health check**\.
-
-   A health check policy is optional, but if you specify any values for a health policy, then you must specify values for **Healthy threshold**, **Health check interval**, **Health check protocol**, **Timeout period**, and **Unhealthy threshold**\.
-   + For **Health check protocol**, choose a protocol\. If you select **grpc**, then your service must conform to the [GRPC Health Checking Protocol](https://github.com/grpc/grpc/blob/master/doc/health-checking.md)\.
-   + For **Health check port**, specify the port that the health check should run on\.
-   + For **Healthy threshold**, specify the number of consecutive successful health checks that must occur before declaring the listener healthy\.
-   + For **Health check interval**, specify the time period in milliseconds between each health check execution\.
-   + For **Path**, specify the destination path for the health check request\. This value is only used if the **Health check protocol** is `http` or `http2`\. The value is ignored for other protocols\.
-   + For **Timeout period**, specify the amount of time to wait when receiving a response from the health check, in milliseconds\.
-   + For **Unhealthy threshold**, specify the number of consecutive failed health checks that must occur before declaring the listener unhealthy\.
-
-1. \(Optional\) If you want to specify whether other virtual nodes communicate with this virtual node using TLS, then select **Enable TLS termination**\.
-   + For **Mode**, select the mode you want TLS to be configured for on the listener\.
-   + For **Certificate method**, select one of the following options\. The certificate must meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
-     + **AWS Certificate Manager hosting** – Select an existing **Certificate**\.
-     + **Local file hosting** – Specify the path to the **Certificate chain** and **Private key** files on the file system where the Envoy proxy is deployed\.
+        A health check policy is optional, but if you specify any values for a health policy, then you must specify values for **Healthy threshold**, **Health check interval**, **Health check protocol**, **Timeout period**, and **Unhealthy threshold**\.
+        + For **Health check protocol**, choose a protocol\. If you select **grpc**, then your service must conform to the [GRPC Health Checking Protocol](https://github.com/grpc/grpc/blob/master/doc/health-checking.md)\.
+        + For **Health check port**, specify the port that the health check should run on\.
+        + For **Healthy threshold**, specify the number of consecutive successful health checks that must occur before declaring the listener healthy\.
+        + For **Health check interval**, specify the time period in milliseconds between each health check execution\.
+        + For **Path**, specify the destination path for the health check request\. This value is only used if the **Health check protocol** is `http` or `http2`\. The value is ignored for other protocols\.
+        + For **Timeout period**, specify the amount of time to wait when receiving a response from the health check, in milliseconds\.
+        + For **Unhealthy threshold**, specify the number of consecutive failed health checks that must occur before declaring the listener unhealthy\.
+      + \(Optional\) **Enable TLS termination** – Configure how other virtual nodes communicate with this virtual node using TLS\.
+        + For **Mode**, select the mode you want TLS to be configured for on the listener\.
+        + For **Certificate method**, select one of the following options\. The certificate must meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
+          + **AWS Certificate Manager hosting** – Select an existing **Certificate**\.
+          + **Local file hosting** – Specify the path to the **Certificate chain** and **Private key** files on the file system where the Envoy proxy is deployed\.
+      + \(Optional\) **Timeouts**\.
+        + **Request timeout** – You can specify a request timeout if you selected **grpc**, **http**, or **http2** for the listener's **Protocol**\. The default is 15 seconds\. If increasing the timeout, make sure that the timeout specified for any route that is used for a **Service backend** is also greater than 15 seconds\. For more information, see [Routes](routes.md)\.
+        + **Idle duration** – You can specify an idle duration for any listener protocol\.
 
 1. Choose **Create virtual node** to finish\.
-
-## App Mesh Preview Channel only \- Virtual node listener timeout<a name="virtual-node-listener-timeout"></a>
-
-By default, the App Mesh proxy has two timeout value types:
-+ **Per request** – The amount of time that a requester will wait for an upstream target to complete a response\. The default value is 15 seconds\.
-+ **Idle** – Bounds the amount of time a connection may be idle\. The default value is none\.
-
-If the default timeout values don't meet your requirements, then you can specify your own values\. You can specify a per request timeout for gRPC, HTTP, and HTTP/2 listeners and an idle timeout for gRPC, HTTP, HTTP/2, and TCP listeners\.
-
-For an end\-to\-end walk through of using a virtual node listener timeout, see [Timeout Policy Example](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-timeout-policy) on GitHub\.
-
-**To create a virtual node with a listener timeout**
-
-1. Add the Preview Channel service model to the AWS CLI version 1 with the following command\.
-
-   ```
-   aws configure add-model \
-       --service-name appmesh-preview \
-       --service-model https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
-   ```
-
-   If you're using the AWS CLI version 2, add the service model with the following commands:
-
-   ```
-   curl -o service-model.json https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
-   aws configure add-model --service-name appmesh-preview --service-model file://service-model.json
-   ```
-
-1. Create a mesh with the following command\.
-
-   ```
-   aws appmesh-preview create-mesh --mesh-name apps
-   ```
-
-1. Create a JSON file named `virtual-node.json` with a virtual node configuration\. In the following configuration, the listener has `idle` and `perRequest` timeouts\. 
-**Note**  
-You can specify a shorter `perRequest` timeout than the default of 15 seconds, if required\. If you specify a timeout that is longer than 15 seconds, then make sure that you also define a timeout that is greater than 15 seconds for the the following resources defined as part of the [virtual service](virtual_services.md) backend that you define:  
-[**Route**](routes.md#route-timeout) – If the backend uses a [virtual router](virtual_routers.md) provider
-**Virtual node** – The target virtual node for a route when using a virtual router provider for the backend or the virtual node itself when using a virtual node provider for the backend\. 
-For an example route configuration that also uses a timeout, see [App Mesh Preview Channel only \- Route timeout](routes.md#route-timeout)\.
-
-   ```
-   {
-      "meshName" : "apps",
-      "spec" : {
-         "backends" : [
-            {
-               "virtualService" : {
-                  "virtualServiceName" : "serviceb.svc.cluster.local"
-               }
-            }
-         ],
-         "listeners" : [
-            {
-               "portMapping" : {
-                  "port" : 80,
-                  "protocol" : "http2"
-               },
-               "timeout" : {
-                  "http2" : {
-                     "idle" : {
-                        "unit" : "s",
-                        "value" : 30
-                     },
-                     "perRequest" : {
-                        "unit" : "s",
-                        "value" : 20
-                     }
-                  }
-               }
-            }
-         ],
-         "serviceDiscovery" : {
-            "dns" : {
-               "hostname" : "servicea.svc.cluster.local"
-            }
-         }
-      },
-      "virtualNodeName" : "serviceA"
-   }
-   ```
-
-   Valid values for `timeout` are:
-   + `unit` – A time unit\. Valid values are `s` and `ms`\.
-   + `value` – The number of time units\.
-
-   Specifying `0` disables the `perRequest` timeout\. Specifying `0` disables the `idle` timeout\.
-
-1. Create the virtual node with the following command\.
-
-   ```
-   aws appmesh-preview create-virtual-node --cli-input-json file://virtual-node.json
-   ```
 
 ## Deleting a virtual node<a name="delete-virtual-node"></a>
 

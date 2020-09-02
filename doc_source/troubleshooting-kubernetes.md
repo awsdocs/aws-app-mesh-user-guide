@@ -8,7 +8,7 @@ This topic details common issues that you may experience when you use App Mesh w
 You have created the App Mesh resources using the Kubernetes custom resource definition \(CRD\), but the resources that you created are not visible in App Mesh when you use the AWS Management Console or APIs\.
 
 **Resolution**  
-The likely cause is an error in the Kubernetes controller for App Mesh\. For more information, see [Troubleshooting](https://github.com/aws/aws-app-mesh-controller-for-k8s/blob/master/docs/troubleshoot.md) on GitHub\. Check the controller logs for any errors or warnings indicating that the controller could not create any resources\. 
+The likely cause is an error in the Kubernetes controller for App Mesh\. For more information, see [Troubleshooting](https://github.com/aws/aws-app-mesh-controller-for-k8s/blob/master/docs/guide/troubleshooting.md) on GitHub\. Check the controller logs for any errors or warnings indicating that the controller could not create any resources\. 
 
 ```
 kubectl logs -n appmesh-system -f \

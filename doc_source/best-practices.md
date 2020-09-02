@@ -15,6 +15,9 @@ Configure all virtual services to use a virtual router and set a default retry p
 
 Other retry events need to be considered on a case\-by\-case basis as they may not be safe, such as if the request isn’t idempotent\. You will need to consider and test values for `maxRetries` and `perRetryTimeout` that make the appropriate trade off between the maximum latency of a request \(`maxRetries` \* `perRetryTimeout`\) versus the increased success rate of more retries\. Additionally, when Envoy attempts to connect to an endpoint that is no longer present, you should expect that request to consume the full `perRetryTimeout`\. To configure a retry policy, see [Creating a route](routes.md#create-route) and then select the protocol that you want to route\.
 
+**Note**  
+If you implemented a route on or after July 29, 2020 and didn't specify a retry policy, then App Mesh may have automatically created a default retry policy similar to the previous policy for each route you created on or after July 29, 2020\. For more information, see [Default route retry policy](envoy.md#default-retry-policy)\.
+
 ## Adjust deployment velocity<a name="reduce-deployment-velocity"></a>
 
 When using rolling deployments, reduce the overall deployment velocity\. By default, Amazon ECS configures a deployment strategy of a minimum of 100 percent healthy tasks and 200 percent total tasks\. On deployment, this results in two points of high drift:
@@ -27,7 +30,7 @@ When configured with these deployment constraints, container orchestrators may e
 If your service has a desired count of two or three, set `maximumPercent` to 150 percent\. Otherwise, set `maximumPercent` to 125 percent\.
 
 **Kubernetes**  
-Configure your deployment's [update strategy](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.16/#deploymentstrategy-v1beta2-apps), setting `maxUnavailable` to 0 percent and `maxSurge` to 25 percent\. 
+Configure your deployment's [update strategy](https://v1-16.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.16/#deploymentstrategy-v1beta2-apps), setting `maxUnavailable` to 0 percent and `maxSurge` to 25 percent\. 
 
 ## Scale out before scale in<a name="scale-out"></a>
 
