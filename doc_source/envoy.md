@@ -45,15 +45,39 @@ Specifies the log level for the Envoy container\.
 Valid values: `trace`, `debug`, `info`, `warning`, `error`, `critical`, `off`  
 Default: `info`
 
-### AWS X\-Ray variables<a name="envoy-xray-config"></a>
+### Tracing variables<a name="tracing-variables"></a>
+
+You can configure none, or one of the following tracing drivers\.
+
+#### AWS X\-Ray variables<a name="envoy-xray-config"></a>
 
 The following environment variables help you to configure App Mesh with AWS X\-Ray\. For more information, see the [AWS X\-Ray Developer Guide](https://docs.aws.amazon.com/xray/latest/devguide/)\.
 
 `ENABLE_ENVOY_XRAY_TRACING`  
-Enables X\-Ray tracing using `127.0.0.1:2000` as the default daemon endpoint\. To enable, set the value to `1`\.
+Enables X\-Ray tracing using `127.0.0.1:2000` as the default daemon endpoint\. To enable, set the value to `1` \(default value is `0`\)\.
 
 `XRAY_DAEMON_PORT`  
-Specify a port value to override the default X\-Ray daemon port\.
+Specify a port value to override the default X\-Ray daemon port: `2000`\.
+
+#### Datadog tracing variables<a name="datadog-tracing"></a>
+
+The following environment variables help you configure App Mesh with the Datadog agent tracer\. For more information, see [Agent Configuration](https://docs.datadoghq.com/tracing/send_traces/) in the Datadog documentation\.
+
+`ENABLE_ENVOY_DATADOG_TRACING`  
+Enables Datadog trace collection using `127.0.0.1:8126` as the default Datadog agent endpoint\. To enable, set the value to `1` \(default value is `0`\)\.
+
+`DATADOG_TRACER_PORT`  
+Specify a port value to override the default Datadog agent port: `8126`\.
+
+`DATADOG_TRACER_ADDRESS`  
+Specify an IP address to override the default Datadog agent address: `127.0.0.1`\.
+
+#### Envoy tracing variable<a name="envoy-tracing"></a>
+
+The following environment variable enables you to use your own tracing configuration\. 
+
+`ENVOY_TRACING_CFG_FILE`  
+Specify a file path in the Envoy container file system\. For more information, see [https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/trace/v2/http_tracer.proto](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/trace/v2/http_tracer.proto) in the Envoy documentation\.
 
 ### DogStatsD variables<a name="envoy-dogstatsd-config"></a>
 
@@ -73,7 +97,7 @@ Specify a file path in the Envoy container file system to override the default D
 The following environment variables help you to configure App Mesh with Envoy Stats\. For more information, see the [Envoy Stats](https://www.envoyproxy.io/docs/envoy/v1.6.0/api-v2/config/metrics/v2/stats.proto) documentation\.
 
 `ENABLE_ENVOY_STATS_TAGS`  
-Enables the use of App Mesh defined tags `appmesh.mesh` and `appmesh.virtual_node`\. For more information, see [config\.metrics\.v2\.TagSpecifier](https://www.envoyproxy.io/docs/envoy/v1.6.0/api-v2/config/metrics/v2/stats.proto#envoy-api-msg-config-metrics-v2-tagspecifier) in the Envoy documentation\. To enable, set the value to `1`\.
+Enables the use of App Mesh defined tags `appmesh.mesh` and `appmesh.virtual_node`\. For more information, see [config\.metrics\.v2\.TagSpecifier](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/metrics/v2/stats.proto#envoy-api-msg-config-metrics-v2-tagspecifier) in the Envoy documentation\. To enable, set the value to `1`\.
 
 `ENVOY_STATS_CONFIG_FILE`  
 Specify a file path in the Envoy container file system to override the default Stats tags configuration file with your own\.
