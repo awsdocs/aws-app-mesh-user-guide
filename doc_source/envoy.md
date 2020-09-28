@@ -21,6 +21,9 @@ You must add an Envoy proxy to the Amazon ECS task, Kubernetes pod, or Amazon EC
   856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.15.0.0-prod
   ```
 
+**Important**  
+Only version v1\.9\.0\-prod or later is supported for use with App Mesh\.
+
 Access to this container image in Amazon ECR is controlled by AWS Identity and Access Management, so you must use IAM to ensure that you have read access to Amazon ECR\. For example, when using Amazon ECS, you can assign an appropriate task execution role to an Amazon ECS task\. Further, if you use IAM policies that limit access to specific Amazon ECR resources, then you must ensure that you allow access to the Region\-specific Amazon Resource Name \(ARN\) that identifies the `aws-appmesh-envoy` repository\. For example, in the `us-west-2` region, you'd allow access to the following resource: `arn:aws:ecr:us-west-2:840364872350:repository/aws-appmesh-envoy`\. For more information, see [Amazon ECR Managed Policies](https://docs.aws.amazon.com/AmazonECR/latest/userguide/ecr_managed_policies.html)\. If you're using Docker on an Amazon EC2 instance, then you need to authenticate Docker to the repository\. For more information, see [Registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html#registry_auth)\.
 
 We occasionally release new App Mesh features that depend on Envoy changes that have not been merged to the upstream Envoy images yet\. To use these new App Mesh features before the Envoy changes are merged upstream, you must use the App Mesh\-vended Envoy container image\. For a list of changes, see the [App Mesh GitHub roadmap issues](https://github.com/aws/aws-app-mesh-roadmap/labels/Envoy%20Upstream) with the `Envoy Upstream` label\. Otherwise, while we recommend that you use the App Mesh Envoy container image as the best supported option, you may use your own Envoy image\.
@@ -118,7 +121,7 @@ It's not possible to create an App Mesh route retry policy that looks for a spec
 **Note**  
 It's not possible to create an App Mesh route retry policy that looks for either of these events, however an App Mesh route retry policy can look for `connection-error`, which is equivalent to `connect-failure`\. For more information, see [Routes](routes.md)\.
 
-## Default circuit breaker<a name="default-ciruit-breaker"></a>
+## Default circuit breaker<a name="default-circuit-breaker"></a>
 
 When you deploy an Envoy in App Mesh, Envoy default values are set for some of the circuit breaker settings\. For more information, see [cluster\.CircuitBreakers\.Thresholds](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/cluster/circuit_breaker.proto#cluster-circuitbreakers-thresholds) in the Envoy documentation\. The settings are not visible through the App Mesh API\. The settings are only visible through Envoy\. To view the configuration, [enable the administration interface](troubleshooting-best-practices.md#ts-bp-enable-proxy-admin-interface) and send a request to Envoy for a `config_dump`\.
 

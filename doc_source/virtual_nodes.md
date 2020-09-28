@@ -77,6 +77,176 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. Choose **Create virtual node** to finish\.
 
+## App Mesh Preview Channel only – Connection pooling<a name="virtual-node-connection-pooling"></a>
+
+Connection pooling limits the number of connections that an Envoy can concurrently establish with all the hosts in the upstream cluster\. Connection pooling is supported at the virtual node listener\. It is intended to protect your local application from being overwhelmed with connections and lets you adjust traffic shaping for the needs of your applications\.
+
+You can configure destination\-side connection pool settings for a virtual node listener\. App Mesh by sets the client\-side connection pool settings to infinite by default, simplifying mesh configuration\.
+
+**Prerequisites**
++ An existing App Mesh [service mesh](meshes.md#create-mesh)\.
++ An existing App Mesh [virtual service](virtual_services.md#create-virtual-service) that has an existing App Mesh [virtual node](#vn-create-virtual-node) or App Mesh [virtual router](virtual_routers.md#create-virtual-router) provider\.
+
+**To create a virtual node with connection pooling**
+
+1. Add the Preview Channel service model to the AWS CLI version 1 with the following command\.
+
+   ```
+   aws configure add-model \
+       --service-name appmesh-preview \
+       --service-model https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   ```
+
+   If you're using the AWS CLI version 2, add the service model with the following commands:
+
+   ```
+   curl -o service-model.json https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   aws configure add-model --service-name appmesh-preview --service-model file://service-model.json
+   ```
+
+1. Create a JSON file named `virtual-node.json` with a virtual node configuration\. In the following configuration, the `http` listener has custom values for `maxPendingRequests` and `maxConnections`\.
+
+   ```
+   {
+      "meshName" : "my-mesh",
+      "spec" : {
+         "backends" : [
+            {
+               "virtualService" : {
+                  "virtualServiceName" : "my-virtual-service-b.svc.cluster.local"
+               }
+            }
+         ],
+         "listeners" : [
+            {
+               "connectionPool" : {
+                  "http" : {
+                     "maxPendingRequests" : 1500,
+                     "maxConnections" : 2000
+                  }
+               },
+               "portMapping" : {
+                  "port" : 80,
+                  "protocol" : "http"
+               }
+            }
+         ],
+         "serviceDiscovery" : {
+            "dns" : {
+               "hostname" : "my-virtual-service-a.svc.cluster.local"
+            }
+         }
+      },
+      "virtualNodeName" : "my-virtual-node-a"
+   }
+   ```
+**Note**  
+If your listener is `tcp`, specify `maxConnections` only\. If your listener protocol is `grpc` or `http2`, specify `maxRequests` only\. The `connectionPool` and `portMapping` protocols must be the same\.
+
+   You can specify values for the following settings in the previous example:
+   + `maxConnections` – Represents the maximum number of outbound TCP connections the Envoy can establish concurrently with all the hosts in the upstream cluster\. This parameter is used for HTTP/1\.1 connections\.
+   + `maxPendingRequests` – Represents the number of overflowing requests after `max_connections` that an Envoy will queue to an upstream cluster\. This parameter is used for HTTP/1\.1 connections\.
+   + `maxRequests` – Represents the maximum number of inflight requests that an Envoy can concurrently support across all the hosts in the upstream cluster\. This parameter is used for controlling HTTP/2\.0 connections\.
+
+1. Create the virtual node with the following command\.
+
+   ```
+   aws appmesh-preview create-virtual-node --cli-input-json file://virtual-node.json
+   ```
+
+## App Mesh Preview Channel only – Outlier detection<a name="create-virtual-node-outlier-detection"></a>
+
+While existing active health checks protect your applications from sending traffic to hosts that are not deemed ready, they are not a complete solution\. Specifically, active health checks:
++ Quickly hit cardinality limits as you scale up\. Every client checks the health of every known destination\. In a fully connected mesh, this can lead to a significant number of health checks in a mesh\.
++ Will be a lagging indicator of emergent failure in a mesh, especially because you must balance health check call volume against health check frequency\.
+
+Adding outlier detection that is applied at the client Envoy allows clients to take near\-immediate action on connections where it has observed known bad failures\. Outlier detection also mitigates cardinality concerns, as Envoy is passively monitoring request traffic, rather than injecting additional health check traffic\.
+
+**Outlier detection:**
++ At client Envoys is a form of a circuit breaker implementation that tracks the health status of each individual host in the upstream service\. It automatically ejects endpoints that demonstrate abnormal behavior from the connection pool for a specified period of time, so that traffic is not routed to ill\-behaving endpoints\. Circuit breaking is a pattern for creating resilient applications that allow you to write applications that limit the impact of failures, latency spikes, and network irregularities\. Using a circuit breaker pattern enables fast failure, rather than clients trying to connect to an overloaded or failing host\.
++ Is a form of passive health checking\. It dynamically determines whether endpoints in an upstream cluster are performing unlike the others and removes them from the healthy load balancing set\. Envoy also supports active health checking, that probes upstream endpoints via HTTP requests, Layer 3 and 4 echo capabilities or the Redis `PING` command\. 
+
+Passive and active health checking can be enabled together or independently, and form the basis for an upstream health checking solution\. Tcp and gRPC errors are internally mapped to http `5xx` codes\.
+
+**Prerequisites**
++ An existing App Mesh [service mesh](meshes.md#create-mesh)\.
++ An existing App Mesh [virtual service](virtual_services.md#create-virtual-service) that has an existing App Mesh [virtual node](#vn-create-virtual-node) or App Mesh [virtual router](virtual_routers.md#create-virtual-router) provider\.
+
+**To create a virtual node with outlier detection**
+
+1. Add the Preview Channel service model to the AWS CLI version 1 with the following command\.
+
+   ```
+   aws configure add-model \
+       --service-name appmesh-preview \
+       --service-model https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   ```
+
+   If you're using the AWS CLI version 2, add the service model with the following commands:
+
+   ```
+   curl -o service-model.json https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   aws configure add-model --service-name appmesh-preview --service-model file://service-model.json
+   ```
+
+1. Create a JSON file named `virtual-node.json` with a virtual node configuration\.
+
+   ```
+   {
+      "meshName" : "my-mesh",
+      "spec" : {
+         "backends" : [
+            {
+               "virtualService" : {
+                  "virtualServiceName" : "my-virtual-service-b.svc.cluster.local"
+               }
+            }
+         ],
+         "listeners" : [
+            {
+               "outlierDetection" : {
+                  "baseEjectionDuration" : {
+                     "unit" : "s",
+                     "value" : 20
+                  },
+                  "interval" : {
+                     "unit" : "s",
+                     "value" : 10
+                  },
+                  "maxEjectionPercent" : 25,
+                  "maxServerErrors" : 7
+               },
+               "portMapping" : {
+                  "port" : 80,
+                  "protocol" : "http"
+               }
+            }
+         ],
+         "serviceDiscovery" : {
+            "cloudmap" : {
+               "namespaceName": "svc.cluster.local"
+               "serviceName" : "my-virtual-service-a"
+            }
+         }
+      },
+      "virtualNodeName" : "my-virtual-node-a"
+   }
+   ```
+
+   App Mesh supports the following parameters:
+   + `maxServerErrors` – The number of consecutive `5xx` errors required for ejection\.  This detection type takes into account both locally externally originated type of errors\. Errors generated by tcp proxy are internally mapped to HTTP `5xx` codes and treated as such\. If an upstream host returns some number of errors which are treated as consecutive `5xx` type errors, it will be ejected\.  
+   + `interval` – The time interval between ejection sweep analysis\.
+   + `baseEjectionDuration` – The base time that a host is ejected for\. The real time is equal to the base time multiplied by the number of times the host has been ejected, so that Envoys automatically increase the ejection period for unhealthy upstream servers\. 
+
+     Once a host is ejected, it will be returned to the pool after the ejection duration has elapsed\. Envoys automatically increase the ejection period for unhealthy upstream servers\.
+   + `maxEjectionPercent` – The maximum percentage of hosts in the load balancing pool for the upstream service that can be ejected\. Will eject at least one host regardless of the value\.
+
+1. Create the virtual node with the following command\.
+
+   ```
+   aws appmesh-preview create-virtual-node --cli-input-json file://virtual-node.json
+   ```
+
 ## Deleting a virtual node<a name="delete-virtual-node"></a>
 
 To delete a virtual node using the AWS CLI, use the `aws appmesh delete-virtual-node` command\. For an example of deleting a virtual node using the AWS CLI, see [delete\-virtual\-node](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-node.html)\.

@@ -59,6 +59,70 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. Choose **Create virtual gateway** to finish\.
 
+## App Mesh Preview Channel only – Connection pooling<a name="virtual-gateway-connection-pooling"></a>
+
+Connection pooling limits the number of connections that an Envoy can concurrently establish with all the hosts in the upstream cluster\. Connection pooling is supported at the virtual gateway listener\. It is intended to protect your local application from being overwhelmed with connections and lets you adjust traffic shaping for the needs of your applications\.
+
+You can configure destination\-side connection pool settings for a virtual gateway listener\. App Mesh sets the client\-side connection pool settings to infinite by default, simplifying mesh configuration\.
+
+**Prerequisites**
++ An existing App Mesh [service mesh](meshes.md#create-mesh)\.
+
+**To create a virtual gateway with connection pooling**
+
+1. Add the Preview Channel service model to the AWS CLI version 1 with the following command\.
+
+   ```
+   aws configure add-model \
+       --service-name appmesh-preview \
+       --service-model https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   ```
+
+   If you're using the AWS CLI version 2, add the service model with the following commands:
+
+   ```
+   curl -o service-model.json https://raw.githubusercontent.com/aws/aws-app-mesh-roadmap/master/appmesh-preview/service-model.json
+   aws configure add-model --service-name appmesh-preview --service-model file://service-model.json
+   ```
+
+1. Create a JSON file named `virtual-gateway.json` with a virtual gateway configuration\. In the following configuration, the `http` listener has custom values for `maxPendingRequests` and `maxConnections`\.
+
+   ```
+   {
+      "meshName" : "my-mesh",
+      "spec" : {
+         "listeners" : [
+            {
+               "connectionPool" : {
+                  "http" : {
+                     "maxConnections" : 1500,
+                     "maxPendingRequests" : 2000
+                  }
+               },
+               "portMapping" : {
+                  "port" : 80,
+                  "protocol" : "http"
+               }
+            }
+         ]
+      },
+      "virtualGatewayName" : "my-virtual-gateway"
+   }
+   ```
+**Note**  
+If your listener is `grpc` or `http2`, specify `maxRequests` only\. The `connectionPool` and `portMapping` protocols must be the same\.
+
+   You can specify values for the following settings in the previous example:
+   + `maxConnections` – Represents the maximum number of outbound TCP connections the Envoy can establish concurrently with all the hosts in the upstream cluster\. This parameter is used for HTTP/1\.1 connections\.
+   + `maxPendingRequests` – Represents the number of overflowing requests after `max_connections` that an Envoy will queue to an upstream cluster\. This parameter is used for HTTP/1\.1 connections\.
+   + `maxRequests` – Represents the maximum number of inflight requests that an Envoy can concurrently support across all the hosts in the upstream cluster\. This parameter is used for controlling HTTP/2\.0 connections\.
+
+1. Create the virtual gateway with the following command\.
+
+   ```
+   aws appmesh-preview create-virtual-gateway --cli-input-json file://virtual-gateway.json
+   ```
+
 ## Deploy virtual gateway<a name="deploy-virtual-gateway"></a>
 
 Deploy an Amazon ECS or Kubernetes service that contains only the [Envoy container](envoy.md)\. You can also deploy the Envoy container on an [Amazon EC2](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services) instance\. For more information see [Getting started with App Mesh and Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services) or [Tutorial: Configure App Mesh integration with Kubernetes](https://docs.aws.amazon.com/app-mesh/latest/userguide/mesh-k8s-integration.html)\. You need to set the `APPMESH_VIRTUAL_NODE_NAME` environment variable to `mesh/mesh-name/virtualGateway/virtual-gateway-name` and you must not specify proxy configuration so that the proxy's traffic doesn't get redirected to itself\.
