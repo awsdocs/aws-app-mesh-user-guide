@@ -1,19 +1,25 @@
-# Tutorial: Configure App Mesh integration with Kubernetes<a name="mesh-k8s-integration"></a>
+# Getting started with AWS App Mesh and Kubernetes<a name="getting-started-kubernetes"></a>
 
 When you integrate AWS App Mesh with Kubernetes using the App Mesh controller for Kubernetes, you manage App Mesh resources, such as meshes, virtual services, virtual nodes, virtual routers, and routes through Kubernetes\. You also automatically add the App Mesh sidecar container images to Kubernetes pod specifications\. This tutorial guides you through the installation of the App Mesh controller for Kubernetes to enable this integration\.
 
-The controller is accompanied by the deployment of the following Kubernetes custom resource definitions: `meshes`, `virtual services`, `virtual nodes`, and `virtual routers`\. The controller watches for creation, modification, and deletion of the custom resources and makes changes to the corresponding App Mesh `[mesh](https://docs.aws.amazon.com/app-mesh/latest/userguide/meshes.html)`, `[virtual service](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_services.html)`, `[virtual node](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html)`, `[virtual gateway](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_gateways.html)`, `[gateway route](https://docs.aws.amazon.com/app-mesh/latest/userguide/gateway-routes.html)`, and `[virtual router](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html)` \(including `[route](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html)`\) resources through the App Mesh API\. To learn more or contribute to the controller, see the [GitHub project](https://github.com/aws/aws-app-mesh-controller-for-k8s)\.
+The controller is accompanied by the deployment of the following Kubernetes custom resource definitions: `meshes`, `virtual services`, `virtual nodes`, and `virtual routers`\. The controller watches for creation, modification, and deletion of the custom resources and makes changes to the corresponding App Mesh [Service meshes](meshes.md), [Virtual services](virtual_services.md), [Virtual nodes](virtual_nodes.md), [Virtual gateways](virtual_gateways.md), [Gateway routes](gateway-routes.md), [Virtual routers](virtual_routers.md) \(including [Routes](routes.md)\) resources through the App Mesh API\. To learn more or contribute to the controller, see the [GitHub project](https://github.com/aws/aws-app-mesh-controller-for-k8s)\.
 
 The controller also installs a webhook that injects the following containers into Kubernetes pods that are labeled with a name that you specify\.
 + **App Mesh Envoy proxy** – Envoy uses the configuration defined in the App Mesh control plane to determine where to send your application traffic\. 
 + **App Mesh proxy route manager **– Updates `iptables` rules in a pod's network namespace that route ingress and egress traffic through Envoy\. This container runs as a Kubernetes init container inside of the pod\.
 
 ## Prerequisites<a name="mesh-k8s-integration-prerequisites"></a>
-+ An existing understanding of Kubernetes concepts\. For more information, see [What is Kubernetes](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/)\.
-+ An existing Kubernetes cluster running version 1\.13 or later\. If you don't have an existing cluster, you can deploy one using the [Getting Started with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html) guide\. If you're running your own Kubernetes cluster on Amazon EC2, then ensure that Docker is authenticated to the Amazon ECR repository that the Envoy image is in\. For more information, see [Envoy image](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy.html) and [Registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html#registry_auth) in the AWS documentation and [Pull an Image from a Private Registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/) in the Kubernetes documentation\.
++ An existing understanding of App Mesh concepts\. For more information, see [What Is AWS App Mesh?](what-is-app-mesh.md)\.
++ An existing understanding of Kubernetes concepts\. For more information, see [What is Kubernetes](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/) in the Kubernetes documentation\.
++ An existing Kubernetes cluster running version 1\.14 or later\. If you don't have an existing cluster, see [Getting Started with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html) in the *Amazon EKS User Guide*\. If you're running your own Kubernetes cluster on Amazon EC2, then ensure that Docker is authenticated to the Amazon ECR repository that the Envoy image is in\. For more information, see [Envoy image](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy.html), [Registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html#registry_auth) in the Amazon Elastic Container Registry User Guide, and [Pull an Image from a Private Registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/) in the Kubernetes documentation\.
++ App Mesh supports Linux services that are registered with DNS, AWS Cloud Map, or both\. To use this getting started guide, we recommend that you have three existing services that are registered with DNS\. The procedures in this topic assume that the existing services are named `serviceA`, `serviceB`, and `serviceBv2` and that all services are discoverable through a namespace named `apps.local`\.
+
+  You can create a service mesh and its resources even if the services don't exist, but you cannot use the mesh until you have deployed actual services\.
 + The AWS CLI version 1\.18\.116 or later or 2\.0\.38 or later installed\. To install or upgrade the AWS CLI, see [Installing the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)\. 
 + A `kubectl` client that is configured to communicate with your Kubernetes cluster\. If you're using Amazon Elastic Kubernetes Service, you can use the instructions for installing `[kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)` and configuring a `[kubeconfig](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)` file\.
-+ Helm version 3\.0 or later installed\. If you don't have Helm installed, you can install it by completing the instructions in [Using Helm with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/helm.html)\.
++ Helm version 3\.0 or later installed\. If you don't have Helm installed, see [Using Helm with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/helm.html) in the *Amazon EKS User Guide*\.
+
+The remaining steps assume that the actual services are named `serviceA`, `serviceB`, and `serviceBv2` and that all services are discoverable through a namespace named `apps.local`\.
 
 ## Step 1: Install the integration components<a name="install-controller"></a>
 
@@ -55,13 +61,13 @@ Install the integration components one time to each cluster that hosts pods that
    export AWS_REGION=region-code
    ```
 
-1. \(Optional\) If you want to run the controller on Fargate, then you need to create a Fargate profile\. If you don't have `eksctl` installed, you can install it with the instructions in [Installing or Upgrading `eksctl`](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl)\. If you'd prefer to create the profile using the console, see [Creating a Fargate profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html#create-fargate-profile)\.
+1. \(Optional\) If you want to run the controller on Fargate, then you need to create a Fargate profile\. If you don't have `eksctl` installed, see [Installing or Upgrading `eksctl`](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl) in the *Amazon EKS User Guide*\. If you'd prefer to create the profile using the console, see [Creating a Fargate profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html#create-fargate-profile) in the *Amazon EKS User Guide*\.
 
    ```
    eksctl create fargateprofile --cluster $CLUSTER_NAME --name appmesh-system --namespace appmesh-system
    ```
 
-1. Create an OpenID Connect \(OIDC\) identity provider for your cluster\. If you don't have `eksctl` installed, you can install it with the instructions in [Installing or upgrading `eksctl`](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl)\. If you'd prefer to create the provider using the console, see [Enabling IAM roles for service accounts on your cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)\.
+1. Create an OpenID Connect \(OIDC\) identity provider for your cluster\. If you don't have `eksctl` installed, you can install it with the instructions in [Installing or upgrading `eksctl`](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl) in the *Amazon EKS User Guide*\. If you'd prefer to create the provider using the console, see [Enabling IAM roles for service accounts on your cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) in the *Amazon EKS User Guide*\.
 
    ```
    eksctl utils associate-iam-oidc-provider \
@@ -84,7 +90,7 @@ The command creates an AWS IAM role with an auto\-generated name\. You are not a
        --approve
    ```
 
-   If you prefer to create the service account using the AWS Management Console or AWS CLI, see [Creating an IAM role and policy for your service account](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html#create-service-account-iam-role)\. If you use the AWS Management Console or AWS CLI to create the account, you also need to map the role to a Kubernetes service account\. For more information, see [Specifying an IAM role for your service account](https://docs.aws.amazon.com/eks/latest/userguide/specify-service-account-role.html)\. 
+   If you prefer to create the service account using the AWS Management Console or AWS CLI, see [Creating an IAM role and policy for your service account](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html#create-service-account-iam-role) in the *Amazon EKS User Guide*\. If you use the AWS Management Console or AWS CLI to create the account, you also need to map the role to a Kubernetes service account\. For more information, see [Specifying an IAM role for your service account](https://docs.aws.amazon.com/eks/latest/userguide/specify-service-account-role.html) in the *Amazon EKS User Guide*\. 
 
 1. Deploy the App Mesh controller\. For a list of all configuration options, see [Configuration](https://github.com/aws/eks-charts/blob/master/stable/appmesh-controller/README.md#configuration) on GitHub\.
 
@@ -263,7 +269,7 @@ Once the controller has created an App Mesh resource, we recommend that you only
             hostname: my-service-a.my-apps.svc.cluster.local
       ```
 
-      Virtual nodes have capabilities, such as end\-to\-end encryption and health checks, that aren't covered in this tutorial\. For more information, see [Virtual nodes](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html)\. To see all available settings for a virtual node that you can set in the preceding spec, run the following command\.
+      Virtual nodes have capabilities, such as end\-to\-end encryption and health checks, that aren't covered in this tutorial\. For more information, see [Virtual nodes](virtual_nodes.md)\. To see all available settings for a virtual node that you can set in the preceding spec, run the following command\.
 
       ```
       aws appmesh create-virtual-node --generate-cli-skeleton yaml-input
@@ -373,7 +379,7 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
 
 1. Create an App Mesh virtual router\. Virtual routers handle traffic for one or more virtual services within your mesh\.
 
-   1. Save the following contents to a file named `virtual-router.yaml` on your computer\. The file will be used to create a virtual router to route traffic to the virtual node named `my-service-a` that was created in the previous step\. The controller will create the App Mesh virtual router and route resources\. You can specify many more capabilities for your routes and use protocols other than `http`\. For more information, see [Virtual routers](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html) and [Routes](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html)\. Notice that the virtual node name referenced is the Kubernetes virtual node name, not the App Mesh virtual node name that was created in App Mesh by the controller\.
+   1. Save the following contents to a file named `virtual-router.yaml` on your computer\. The file will be used to create a virtual router to route traffic to the virtual node named `my-service-a` that was created in the previous step\. The controller will create the App Mesh virtual router and route resources\. You can specify many more capabilities for your routes and use protocols other than `http`\. For more information, see [Virtual routers](virtual_routers.md) and [Routes](routes.md)\. Notice that the virtual node name referenced is the Kubernetes virtual node name, not the App Mesh virtual node name that was created in App Mesh by the controller\.
 
       ```
       apiVersion: appmesh.k8s.aws/v1beta2
@@ -553,7 +559,7 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
 
 1. Create an App Mesh virtual service\. A virtual service is an abstraction of a real service that is provided by a virtual node directly or indirectly by means of a virtual router\. Dependent services call your virtual service by its name\. Though the name doesn't matter to App Mesh, we recommend naming the virtual service the fully qualified domain name of the actual service that the virtual service represents\. By naming your virtual services this way, you don't need to change your application code to reference a different name\. The requests are routed to the virtual node or virtual router that is specified as the provider for the virtual service\.
 
-   1. Save the following contents to a file named `virtual-service.yaml` on your computer\. The file will be used to create a virtual service that uses a virtual router provider to route traffic to the virtual node named `my-service-a` that was created in a previous step\. The value for `awsName` in the `spec` is the fully qualified domain name \(FQDN\) of the actual Kubernetes service that this virtual service abstracts\. The Kubernetes service is created in [Step 3: Create or update services](#create-update-services)\. For more information, see [Virtual services](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_services.html)\.
+   1. Save the following contents to a file named `virtual-service.yaml` on your computer\. The file will be used to create a virtual service that uses a virtual router provider to route traffic to the virtual node named `my-service-a` that was created in a previous step\. The value for `awsName` in the `spec` is the fully qualified domain name \(FQDN\) of the actual Kubernetes service that this virtual service abstracts\. The Kubernetes service is created in [Step 3: Create or update services](#create-update-services)\. For more information, see [Virtual services](virtual_services.md)\.
 
       ```
       apiVersion: appmesh.k8s.aws/v1beta2
@@ -660,7 +666,7 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
       }
       ```
 
-Though not covered in this tutorial, the controller can also deploy App Mesh [virtual gateways](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_gateways.html) and [gateway routes](https://docs.aws.amazon.com/app-mesh/latest/userguide/gateway-routes.html)\. For a walkthrough of deploying these resources with the controller, see [Configuring Ingress Gateway](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-k8s-ingress-gateway), or a [sample manifest](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/howto-k8s-ingress-gateway/v1beta2/manifest.yaml.template) that includes the resources on GitHub\.
+Though not covered in this tutorial, the controller can also deploy App Mesh [Virtual gateways](virtual_gateways.md) and [Gateway routes](gateway-routes.md)\. For a walkthrough of deploying these resources with the controller, see [Configuring Ingress Gateway](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-k8s-ingress-gateway), or a [sample manifest](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/howto-k8s-ingress-gateway/v1beta2/manifest.yaml.template) that includes the resources on GitHub\.
 
 ## Step 3: Create or update services<a name="create-update-services"></a>
 
@@ -703,9 +709,9 @@ Any pods that you want to use with App Mesh must have the App Mesh sidecar conta
           --approve
       ```
 
-      If you prefer to create the service account using the AWS Management Console or AWS CLI, see [Creating an IAM Role and policy for your service account](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html#create-service-account-iam-role)\. If you use the AWS Management Console or AWS CLI to create the account, you also need to map the role to a Kubernetes service account\. For more information, see [Specifying an IAM role for your service account](https://docs.aws.amazon.com/eks/latest/userguide/specify-service-account-role.html)\.
+      If you prefer to create the service account using the AWS Management Console or AWS CLI, see [Creating an IAM Role and policy for your service account](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html#create-service-account-iam-role) in the *Amazon EKS User Guide*\. If you use the AWS Management Console or AWS CLI to create the account, you also need to map the role to a Kubernetes service account\. For more information, see [Specifying an IAM role for your service account](https://docs.aws.amazon.com/eks/latest/userguide/specify-service-account-role.html) in the *Amazon EKS User Guide*\.
 
-1. \(Optional\) If you want to deploy your deployment to Fargate pods, then you need to create a Fargate profile\. If you don't have `eksctl` installed, you can install it with the instructions in [Installing or Upgrading `eksctl`](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl)\. If you'd prefer to create the profile using the console, see [Creating a Fargate profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html#create-fargate-profile)\.
+1. \(Optional\) If you want to deploy your deployment to Fargate pods, then you need to create a Fargate profile\. If you don't have `eksctl` installed, you can install it with the instructions in [Installing or Upgrading `eksctl`](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl) in the *Amazon EKS User Guide*\. If you'd prefer to create the profile using the console, see [Creating a Fargate profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html#create-fargate-profile) in the *Amazon EKS User Guide*\.
 
    ```
    eksctl create fargateprofile --cluster my-cluster --region region-code --name my-service-a --namespace my-apps
@@ -756,7 +762,7 @@ Any pods that you want to use with App Mesh must have the App Mesh sidecar conta
               - containerPort: 80
       ```
 **Important**  
-The value for the `app` `matchLabels` `selector` in the spec must match the value that you specified when you created the virtual node in sub\-step `3` of [Step 2: Deploy App Mesh resources](#configure-app-mesh), or the sidecar containers won't be injected into the pod\. In the previous example, the value for the label is `my-app-1`\. If you deploy a virtual gateway, rather than a virtual node, then the `Deployment` manifest should include only the Envoy container\. For more information about the image to use, see [Envoy image](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy.html)\. For a sample manfest, see the [deployment example](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/howto-k8s-ingress-gateway/v1beta2/manifest.yaml.template#L585) on GitHub\.
+The value for the `app` `matchLabels` `selector` in the spec must match the value that you specified when you created the virtual node in sub\-step `3` of [Step 2: Deploy App Mesh resources](#configure-app-mesh), or the sidecar containers won't be injected into the pod\. In the previous example, the value for the label is `my-app-1`\. If you deploy a virtual gateway, rather than a virtual node, then the `Deployment` manifest should include only the Envoy container\. For more information about the image to use, see [Envoy image](envoy.md)\. For a sample manfest, see the [deployment example](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/howto-k8s-ingress-gateway/v1beta2/manifest.yaml.template#L585) on GitHub\.
 
    1. Deploy the service\.
 
@@ -858,7 +864,7 @@ The value for the `app` `matchLabels` `selector` in the spec must match the valu
             cpu:     10m
             memory:  32Mi
           Environment:
-            APPMESH_VIRTUAL_NODE_NAME:    mesh/my-mesh/virtualNode/my-service-a_my-apps
+            APPMESH_RESOURCE_ARN:         arn:aws:iam::111122223333:mesh/my-mesh/virtualNode/my-service-a_my-apps
             APPMESH_PREVIEW:              0
             ENVOY_LOG_LEVEL:              info
             AWS_REGION:                   us-west-2

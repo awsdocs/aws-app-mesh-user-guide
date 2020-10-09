@@ -4,5 +4,4 @@ App Mesh works with other AWS services to provide additional solutions for your 
 
 **Topics**
 + [Creating App Mesh resources with AWS CloudFormation](creating-resources-with-cloudformation.md)
-+ [Tutorial: Configure App Mesh integration with Kubernetes](mesh-k8s-integration.md)
 + [App Mesh on AWS Outposts](app-mesh-on-outposts.md)

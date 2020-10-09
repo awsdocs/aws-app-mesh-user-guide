@@ -15,7 +15,10 @@ Amazon's trademarks and trade dress may not be used in
 -----
 ## Contents
 + [What Is AWS App Mesh?](what-is-app-mesh.md)
-+ [Getting started with AWS App Mesh](appmesh-getting-started.md)
++ [Getting started with App Mesh](getting-started.md)
+   + [Getting started with AWS App Mesh and Amazon ECS](getting-started-ecs.md)
+   + [Getting started with AWS App Mesh and Kubernetes](getting-started-kubernetes.md)
+   + [Getting started with AWS App Mesh and Amazon EC2](getting-started-ec2.md)
 + [App Mesh best practices](best-practices.md)
 + [Service meshes](meshes.md)
 + [Virtual services](virtual_services.md)
@@ -44,7 +47,6 @@ Amazon's trademarks and trade dress may not be used in
 + [Working with shared meshes](sharing.md)
 + [AWS services integrated with App Mesh](appmesh-integrations.md)
    + [Creating App Mesh resources with AWS CloudFormation](creating-resources-with-cloudformation.md)
-   + [Tutorial: Configure App Mesh integration with Kubernetes](mesh-k8s-integration.md)
    + [App Mesh on AWS Outposts](app-mesh-on-outposts.md)
 + [App Mesh troubleshooting](troubleshooting.md)
    + [App Mesh troubleshooting best practices](troubleshooting-best-practices.md)

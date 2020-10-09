@@ -4,7 +4,7 @@ AWS App Mesh is a service mesh based on the [Envoy](https://www.envoyproxy.io/) 
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/app-mesh/latest/userguide/images/proxy.png)
 
-You must add an Envoy proxy to the Amazon ECS task, Kubernetes pod, or Amazon EC2 instance represented by your App Mesh virtual nodes\. App Mesh vends an Envoy proxy Docker container image and ensures that this container image is patched with the latest vulnerability and performance patches\. App Mesh tests a new Envoy proxy release against the App Mesh feature set before making a new container image available to you\.
+You must add an Envoy proxy to the Amazon ECS task, Kubernetes pod, or Amazon EC2 instance represented by your App Mesh endpoint, such as a virtual ndoe or virtual gateway\. App Mesh vends an Envoy proxy Docker container image and ensures that this container image is patched with the latest vulnerability and performance patches\. App Mesh tests a new Envoy proxy release against the App Mesh feature set before making a new container image available to you\.
 + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`\. You can replace *region\-code* with any Region other than `me-south-1` and `ap-east-1`\. 
 
   ```
@@ -34,10 +34,13 @@ The following environment variables enable you to configure the Envoy containers
 
 ### Required variables<a name="envoy-required-config"></a>
 
-The following environment variable is required for all App Mesh Envoy containers\.
+The following environment variable is required for all App Mesh Envoy containers\. This variable can only be used with version `1.15.0` or later of the Envoy image\. If you're using an earlier version of the image, then you must set the `APPMESH_VIRTUAL_NODE_NAME` variable instead\.
 
-`APPMESH_VIRTUAL_NODE_NAME`  
-When you add the Envoy container to a task group, set this environment variable to the name of the virtual node that the task group represents: for example, `mesh/meshName/virtualNode/virtualNodeName`\.
+`APPMESH_RESOURCE_ARN`  
+ When you add the Envoy container to a task group, set this environment variable to the ARN of the virtual node or the virtual gateway that the task group represents\. The following list contains example ARNs:  
++ **Virtual node** – arn:aws:appmesh:*region\-code*:*111122223333*:mesh/*meshName*/virtualNode/*virtualNodeName*
++ **Virtual gateway** – arn:aws:appmesh:*region\-code*:*111122223333*:mesh/*meshName*/virtualGateway/*virtualGatewayName*
+When using the [App Mesh Preview Channel](preview.md), ARNs must use the *us\-west\-2* region and use `appmesh-preview`, instead of `appmesh`\. For example, the ARN of a virtual node in the App Mesh Preview Channel is `arn:aws:appmesh-preview:us-west-2:111122223333:mesh/meshName/virtualNode/virtualNodeName`\.
 
 ### Optional variables<a name="envoy-optional-config"></a>
 
@@ -47,6 +50,16 @@ The following environment variable is optional for App Mesh Envoy containers\.
 Specifies the log level for the Envoy container\.  
 Valid values: `trace`, `debug`, `info`, `warning`, `error`, `critical`, `off`  
 Default: `info`
+
+### Admin variables<a name="envoy-admin-variables"></a>
+
+These environment variables let you configure Envoy’s administrative interface\.
+
+`ENVOY_ADMIN_ACCESS_PORT`  
+Specify a custom admin port for Envoy to listen on\. Default: `9901`\.
+
+`ENVOY_ADMIN_ACCESS_LOG_FILE`  
+Specify a custom path to write Envoy access logs to\. Default: `/tmp/envoy_admin_access.log`\.
 
 ### Tracing variables<a name="tracing-variables"></a>
 
@@ -92,8 +105,21 @@ Enables DogStatsD stats using `127.0.0.1:8125` as the default daemon endpoint\. 
 `STATSD_PORT`  
 Specify a port value to override the default DogStatsD daemon port\.
 
+`STATSD_ADDRESS`  
+Specify an IP address value to override the default DogStatsD daemon IP address\. Default: `127.0.0.1`\. This variable can only be used with version `1.15.0` or later of the Envoy image\.
+
 `ENVOY_STATS_SINKS_CFG_FILE`  
 Specify a file path in the Envoy container file system to override the default DogStatsD configuration with your own\. For more information, see [config\.metrics\.v2\.DogStatsdSink](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/metrics/v2/stats.proto#envoy-api-msg-config-metrics-v2-dogstatsdsink) in the Envoy documentation\.
+
+### App Mesh variables<a name="envoy-appmesh-variables"></a>
+
+The following variables help you configure App Mesh\.
+
+`APPMESH_PREVIEW`  
+Set the value to `1` to connect to the App Mesh Preview Channel endpoint\. For more information about using the App Mesh Preview Channel, see [App Mesh Preview Channel](preview.md)\.
+
+`APPMESH_RESOURCE_CLUSTER`  
+By default App Mesh uses the name of the resource you specified in `APPMESH_RESOURCE_ARN` when Envoy is referring to itself in metrics and traces\. You can override this behavior by setting the `APPMESH_RESOURCE_CLUSTER` environment variable with your own name\. This variable can only be used with version `1.15.0` or later of the Envoy image\.
 
 ### Envoy stats variables<a name="envoy-stats-config"></a>
 
@@ -104,6 +130,10 @@ Enables the use of App Mesh defined tags `appmesh.mesh` and `appmesh.virtual_nod
 
 `ENVOY_STATS_CONFIG_FILE`  
 Specify a file path in the Envoy container file system to override the default Stats tags configuration file with your own\.
+
+### Deprecated variables<a name="envoy-deprecated-variables"></a>
+
+The environment variables `APPMESH_VIRTUAL_NODE_NAME` and `APPMESH_RESOURCE_NAME` are deprecated in Envoy version `1.15.0` or later, but are still supported for existing meshes\. Instead of using these variables with Envoy version `1.15.0` or later, use `APPMESH_RESOURCE_ARN` for all App Mesh endpoints\.
 
 ## Default route retry policy<a name="default-retry-policy"></a>
 

@@ -4,7 +4,7 @@ A service mesh is a logical boundary for network traffic between the services th
 
 ## Creating a service mesh<a name="create-mesh"></a>
 
-To create a service mesh using the AWS CLI version or higher, see the example in the AWS CLI reference for the [create\-mesh](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-mesh.html) command\.
+To create a service mesh using the AWS CLI version 1\.18\.116 or higher, see the example in the AWS CLI reference for the [create\-mesh](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-mesh.html) command\.
 
 **To create a service mesh using the AWS Management Console**
 

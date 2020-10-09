@@ -1,11 +1,11 @@
-# Getting started with AWS App Mesh<a name="appmesh-getting-started"></a>
+# Getting started with AWS App Mesh and Amazon EC2<a name="getting-started-ec2"></a>
 
-This topic helps you use AWS App Mesh with an actual service that is running on Amazon ECS or Amazon EC2\. To use App Mesh with Kubernetes, see [Tutorial: Configure App Mesh integration with Kubernetes](https://docs.aws.amazon.com/eks/latest/userguide/mesh-k8s-integration.html)\. This tutorial covers basic features of several App Mesh resource types\. To learn more about features of resources that aren't used when completing this tutorial, see the topics for [virtual nodes](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html), [virtual services](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_services.html), [virtual routers](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html), [routes](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html), and the [Envoy proxy](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy.html)\.
+This topic helps you use AWS App Mesh with an actual service that is running on Amazon EC2\. This tutorial covers basic features of several App Mesh resource types\.
 
 ## Scenario<a name="scenario"></a>
 
 To illustrate how to use App Mesh, assume that you have an application with the following characteristics:
-+ Includes two services named `serviceA` and `serviceB`\. 
++ Consists of two services named `serviceA` and `serviceB`\. 
 + Both services are registered to a namespace named `apps.local`\.
 + `ServiceA` communicates with `serviceB` over HTTP/2, port 80\.
 +  You have already deployed version 2 of `serviceB` and registered it with the name `serviceBv2` in the `apps.local` namespace\.
@@ -15,27 +15,23 @@ You have the following requirements:
 + You want to be able to easily adjust the traffic weighting so that 100 percent of the traffic goes to `serviceBv2` once it is proven to be reliable\. Once all traffic is being sent to `serviceBv2`, you want to deprecate `serviceB`\.
 + You do not want to have to change any existing application code or service discovery registration for your actual services to meet the previous requirements\. 
 
-To meet your requirements, you have decided to create an App Mesh service mesh with virtual services, virtual nodes, a virtual router, and a route\. After implementing your mesh, you update the  services hosting your actual services to use the Envoy proxy\. Once updated, your services communicate with each other through the Envoy proxy rather than directly with each other\.
+To meet your requirements, you have decided to create an App Mesh service mesh with virtual services, virtual nodes, a virtual router, and a route\. After implementing your mesh, you update your services to use the Envoy proxy\. Once updated, your services communicate with each other through the Envoy proxy rather than directly with each other\.
 
 ## Prerequisites<a name="prerequisites"></a>
 
 App Mesh supports Linux services that are registered with DNS, AWS Cloud Map, or both\. To use this getting started guide, we recommend that you have three existing services that are registered with DNS\. You can create a service mesh and its resources even if the services don't exist, but you cannot use the mesh until you have deployed actual services\.
 
-If you don't already have services running, you can:
-+ [Create an Amazon ECS service with service discovery](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-service-discovery.html)\.
-+ [Launch Amazon EC2 instances](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services) and deploy applications to them\.
-
-The remaining steps assume that the actual services are named `serviceA`, `serviceB`, and `serviceBv2` and that all services are discoverable through a namespace named `apps.local`\. 
+If you don't already have services running, you can launch Amazon EC2 instances and deploy applications to them\. For more information, see [Tutorial: Getting started with Amazon EC2 Linux instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-lamp-amazon-linux-2.html) in the Amazon EC2 User Guide for Linux Instances\. The remaining steps assume that the actual services are named `serviceA`, `serviceB`, and `serviceBv2` and that all services are discoverable through a namespace named `apps.local`\. 
 
 ## Step 1: Create a mesh and virtual service<a name="create-mesh-and-virtual-service"></a>
 
-A service mesh is a logical boundary for network traffic between the services that reside within it\. For more information, see [Service Meshes](https://docs.aws.amazon.com/app-mesh/latest/userguide/meshes.html)\. A virtual service is an abstraction of an actual service\. For more information, see [Virtual Services](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_services.html)\. 
+A service mesh is a logical boundary for network traffic between the services that reside within it\. For more information, see [Service meshes](meshes.md)\. A virtual service is an abstraction of an actual service\. For more information, see [Virtual services](virtual_services.md)\. 
 
 Create the following resources:
 + A mesh named `apps`, since all of the services in the scenario are registered to the `apps.local` namespace\.
 + A virtual service named `serviceb.apps.local`, since the virtual service represents a service that is discoverable with that name, and you don't want to change your code to reference another name\. A virtual service named `servicea.apps.local` is added in a later step\.
 
-You can use the AWS Management Console or the AWS CLI version 1\.18\.116 or higher or 2\.0\.38 or higher to complete the following steps\. If using the AWS CLI, use the `aws --version` command to check your installed AWS CLI version\. If you don't have version 1\.18\.116 or higher or 2\.0\.38 or higher installed, then you must [install or update the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)\. Select the tab for the tool that you want to use\.
+You can use the AWS Management Console or the AWS CLI version 1\.18\.116 or higher or 2\.0\.38 or higher to complete the following steps\. If using the AWS CLI, use the `aws --version` command to check your installed AWS CLI version\. If you don't have version 1\.18\.116 or higher or 2\.0\.38 or higher installed, then you must [install or update the AWS CLI](https://docs.aws.amazon.com/cli/latest/reference/appmesh/cli-chap-install.html)\. Select the tab for the tool that you want to use\.
 
 ------
 #### [ AWS Management Console ]
@@ -67,7 +63,7 @@ You can use the AWS Management Console or the AWS CLI version 1\.18\.116 or high
 
 ## Step 2: Create a virtual node<a name="create-virtual-node"></a>
 
-A virtual node acts as a logical pointer to an actual service\. For more information, see [Virtual Nodes](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html)\. 
+A virtual node acts as a logical pointer to an actual service\. For more information, see [Virtual nodes](virtual_nodes.md)\. 
 
 Create a virtual node named `serviceB`, since one of the virtual nodes represents the actual service named `serviceB`\. The actual service that the virtual node represents is discoverable through `DNS` with a hostname of `serviceb.apps.local`\. Alternately, you can discover actual services using AWS Cloud Map\. The virtual node will listen for traffic using the HTTP/2 protocol on port 80\. Other protocols are also supported, as are health checks\. You will create virtual nodes for `serviceA` and `serviceBv2` in a later step\.
 
@@ -119,7 +115,7 @@ Create a virtual node named `serviceB`, since one of the virtual nodes represent
 
 ## Step 3: Create a virtual router and route<a name="create-virtual-router-and-route"></a>
 
-Virtual routers route traffic for one or more virtual services within your mesh\. For more information, see [Virtual Routers](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_routers.html) and [Routes](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html)\.
+Virtual routers route traffic for one or more virtual services within your mesh\. For more information, see [Virtual routers](virtual_routers.md) and [Routes](routes.md)\.
 
 Create the following resources:
 + A virtual router named `serviceB`, since the `serviceB.apps.local` virtual service does not initiate outbound communication with any other service\. Remember that the virtual service that you created previously is an abstraction of your actual `serviceb.apps.local` service\. The virtual service sends traffic to the virtual router\. The virtual router will listen for traffic using the HTTP/2 protocol on port 80\. Other protocols are also supported\. 
@@ -466,8 +462,8 @@ Before you created the service mesh, you had three actual services named `servic
 ## Step 6: Update services<a name="update-services"></a>
 
 After creating your mesh, you need to complete the following tasks:
-+ Authorize the Envoy proxy that you deploy with each service to read the configuration of one or more virtual nodes\. For more information about how to authorize the proxy, see [Proxy authorization](https://docs.aws.amazon.com/app-mesh/latest/userguide/proxy-authorization.html)\.
-+ Update each of your existing services to use the Envoy proxy\. To update your existing service that is running on Amazon ECS, see [Getting Started with App Mesh and Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services)\. To update your existing service that is running on Amazon EC2, complete the steps that follow\.
++ Authorize the Envoy proxy that you deploy with each service to read the configuration of one or more virtual nodes\. For more information about how to authorize the proxy, see [Proxy authorization](proxy-authorization.md)\.
++ To update your existing service, complete the steps that follow\.
 
 **To configure an Amazon EC2 instance as a virtual node member**
 
@@ -572,21 +568,23 @@ After creating your mesh, you need to complete the following tasks:
    + All Regions except `me-south-1` and `ap-east-1`\. You can replace *region\-code* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except the `me-south-1` and `ap-east-1` Regions\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
-     sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
+     sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
      -u 1337 --network host 840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
      ```
    + `me-south-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
-     sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
+     sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
      -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
      ```
    + `ap-east-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
-     sudo docker run --detach --env APPMESH_VIRTUAL_NODE_NAME=mesh/apps/virtualNode/serviceB  \
+     sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
      -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
      ```
+**Note**  
+The `APPMESH_RESOURCE_ARN` property requires version `1.15.0` or later of the Envoy image\. For more information, see [Envoy image](envoy.md)\.
 **Important**  
 Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
 

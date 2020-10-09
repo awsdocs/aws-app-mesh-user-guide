@@ -66,7 +66,7 @@ Owners and consumers can identify shared meshes and mesh resources using the App
 
 **To identify a shared mesh using the App Mesh console**
 
-1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\.
+1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\. 
 
 1. From the left navigation, select **Meshes**\. The account ID of the mesh owner for each mesh is listed in the **Mesh owner** column\.
 
