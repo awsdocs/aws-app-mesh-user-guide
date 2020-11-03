@@ -14,7 +14,9 @@ To create a gateway route using the AWS CLI version 1\.18\.116 or later, see the
 
 1. Choose **Virtual gateways** in the left navigation\.
 
-1. Choose the virtual gateway that you want to associate a new gateway route with\. If none are listed, then you need to [create a virtual gateway](virtual_gateways.md#create-virtual-gateway) first\. You can only create a gateway route for a virtual gateway that your account is listed as the **Resource owner** of\.
+1. Choose the virtual gateway that you want to associate a new gateway route with\. If none are listed, then you need to [create a virtual gateway](virtual_gateways.md#create-virtual-gateway) first\.
+**Important**
+You can only create a gateway route for a virtual gateway that your account is listed as the **Resource owner** of\.
 
 1. In the **Gateway routes** table, choose **Create gateway route**\.
 
