@@ -1,4 +1,4 @@
-# Logging App Mesh API calls with AWS CloudTrail<a name="logging-using-cloudtrail"></a>
+# Logging with AWS CloudTrail<a name="logging-using-cloudtrail"></a>
 
 AWS App Mesh works with AWS CloudTrail, a service that provides a record of actions taken by a user, a role, or an AWS service in App Mesh\. CloudTrail captures all API calls for App Mesh as events\. The calls captured include calls from the App Mesh console and code calls to the App Mesh API operations\. If you create a trail, you can enable continuous delivery of CloudTrail events to an Amazon S3 bucket, including events for App Mesh\. If you don't configure a trail, you can still view the most recent events in the CloudTrail console in **Event history**\. Using the information collected by CloudTrail, you can determine the request that was made to App Mesh, the IP address from which the request was made, which user or account made the request, when it was made, and additional details\. 
 

@@ -33,7 +33,7 @@ To create a gateway route using the AWS CLI version 1\.18\.116 or later, see the
 **Important**  
 You can't specify either `/aws-appmesh*` or `/aws-app-mesh*` for **Match prefix**\. These prefixes are reserved for future App Mesh internal use\.
 If multiple gateway routes are defined, then a request is matched to the route with the longest prefix\. For example, if two gateway routes existed, with one having a prefix of `/chapter` and one having a prefix of `/`, then a request for `www.example.com/chapter/` would be matched to the gateway route with the `/chapter` prefix\.
-   + **grpc** – Specify a **Service name**\. Depending on how you configure your virtual service, the virtual service could route the request to different virtual nodes based on method name or specific metadata, for example\. To learn more about virtual services, see [Virtual services](virtual_services.md)\. 
+   + **grpc** – Specify your gRPC **Service name**\. Your gRPC service acts as an API for your application and is defined with ProtoBuf\. For more information about gRPC, see [grpc\.io](https://grpc.io/docs/what-is-grpc/core-concepts/)\. 
 **Important**  
 You can't specify `/aws.app-mesh*` or `aws.appmesh` for the **Service name**\. These service names are reserved for future App Mesh internal use\.
 

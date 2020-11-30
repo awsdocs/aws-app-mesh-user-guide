@@ -82,7 +82,7 @@ filter @message like /gRPC config stream closed/
 | parse @message "gRPC config stream closed: *, *" as StatusCode, Message
 ```
 
-f the provided error message was not helpful, or your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here)\.
+If the provided error message was not helpful, or your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here)\.
 
 ## Envoy container health check, readiness probe, or liveliness probe failing<a name="ts-setup-envoy-container-checks"></a>
 
@@ -132,5 +132,8 @@ gRPC config for type.googleapis.com/envoy.api.v2.Listener rejected: Error adding
 
 **Resolution**  
 To resolve the issue, the user specified for the gateway needs to have the linux capability `CAP_NET_BIND_SERVICE`\. For more information, see [Capabilities](https://www.man7.org/linux/man-pages/man7/capabilities.7.html) in the Linux Programmer's Manual, [Linux parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#container_definition_linuxparameters) in ECS Task definition parameters, and [Set capabilities for a container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-capabilities-for-a-container) in the Kubernetes documentation\.
+
+**Important**  
+Fargate must use a port value greater than 1024\.
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.

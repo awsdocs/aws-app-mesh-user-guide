@@ -26,7 +26,7 @@ To meet your requirements, you have decided to create an App Mesh service mesh w
 
 ## Step 1: Create a mesh and virtual service<a name="create-mesh-and-virtual-service2"></a>
 
-A service mesh is a logical boundary for network traffic between the services that reside within it\. For more information, see [Service meshes](meshes.md)\. A virtual service is an abstraction of an actual service\. For more information, see [Virtual services](virtual_services.md)\. 
+A service mesh is a logical boundary for network traffic between the services that reside within it\. For more information, see [Service Meshes](meshes.md)\. A virtual service is an abstraction of an actual service\. For more information, see [Virtual services](virtual_services.md)\. 
 
 Create the following resources:
 + A mesh named `apps`, since all of the services in the scenario are registered to the `apps.local` namespace\.
@@ -490,7 +490,7 @@ The following steps only show updating the `taskB` task for the scenario\. You a
       1. For **Application container name**, choose the container name to use for the App Mesh application\. This container must already be defined within the task definition\.
 
       1. For **Envoy image**, complete the following task and enter the value that is returned\.
-         + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`\. You can replace *region\-code* with any Region other than `me-south-1` and `ap-east-1`\. 
+         + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`, `eu-south-1`\. You can replace *region\-code* with any Region other than `me-south-1` and `ap-east-1`, `eu-south-1`\. 
 
            ```
            840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
@@ -504,6 +504,11 @@ The following steps only show updating the `taskB` task for the scenario\. You a
 
            ```
            856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+           ```
+         + `eu-south-1` Region:
+
+           ```
+           422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
            ```
 **Important**  
 Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
@@ -604,7 +609,7 @@ The application containers in your task definitions must wait for the Envoy prox
 **Envoy container definition**
 
 Your Amazon ECS task definitions must contain an App Mesh Envoy container image\.
-+ All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`\. You can replace *region\-code* with any Region other than `me-south-1` and `ap-east-1`\. 
++ All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`, `eu-south-1`\. You can replace *region\-code* with any Region other than `me-south-1` and `ap-east-1`, `eu-south-1`\. 
 
   ```
   840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
@@ -618,6 +623,11 @@ Your Amazon ECS task definitions must contain an App Mesh Envoy container image\
 
   ```
   856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+  ```
++ `eu-south-1` Region:
+
+  ```
+  422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
   ```
 
 **Important**  

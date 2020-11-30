@@ -58,7 +58,7 @@ If your issue is still not resolved, then consider opening a [GitHub issue](http
 Your Kubernetes pods are not being registered in or de\-registered from AWS Cloud Map as part of their life cycle\. A pod may start successfully and be ready to serve traffic, but not receive any\. When a pod is terminated, clients may still retain its IP address and attempt to send traffic to it, failing\.
 
 **Resolution**  
-This is a known issue\. For more information, see the [Pods don't get auto registered/deregistered in kubernetes with AWS Cloud Map](https://github.com/aws/aws-app-mesh-controller-for-k8s/issues/159) GitHub issue\. Due to the relationship between pods, App Mesh virtual nodes, and AWS Cloud Map resources, the [App Mesh controller for Kubernetes](https://github.com/aws/aws-app-mesh-controller-for-k8s) may become desynchronized and lose resources\. For example, this can happen if a virtual node resource is deleted from Kubernetes before terminating its associated pods\. 
+This is a known issue\. For more information, see the [Pods don't get auto registered/deregistered in Kubernetes with AWS Cloud Map](https://github.com/aws/aws-app-mesh-controller-for-k8s/issues/159) GitHub issue\. Due to the relationship between pods, App Mesh virtual nodes, and AWS Cloud Map resources, the [App Mesh controller for Kubernetes](https://github.com/aws/aws-app-mesh-controller-for-k8s) may become desynchronized and lose resources\. For example, this can happen if a virtual node resource is deleted from Kubernetes before terminating its associated pods\. 
 
 To mitigate this issue:
 + Make sure that you are running the latest version of the App Mesh controller for Kubernetes\.

@@ -12,11 +12,16 @@ Security is a shared responsibility between AWS and you\. The [shared responsibi
 
 This documentation helps you understand how to apply the shared responsibility model when using App Mesh\. The following topics show you how to configure App Mesh to meet your security and compliance objectives\. You also learn how to use other AWS services that help you to monitor and secure your App Mesh resources\. 
 
+**App Mesh security tenet**  
+Customers should be able to tune the security to the extent they need\. Platform should not block them from being more secure\. Platform features are secure by default\.
+
 **Topics**
++ [Transport Layer Security \(TLS\)](tls.md)
++ [App Mesh Preview Channel only – Mutual TLS Authentication](mutual-tls.md)
++ [How AWS App Mesh works with IAM](security-iam.md)
++ [Logging with AWS CloudTrail](logging-using-cloudtrail.md)
 + [Data protection in AWS App Mesh](data-protection.md)
-+ [Identity and Access Management for AWS App Mesh](security-iam.md)
-+ [Logging App Mesh API calls with AWS CloudTrail](logging-using-cloudtrail.md)
 + [Compliance validation for AWS App Mesh](compliance.md)
-+ [Resilience in AWS App Mesh](disaster-recovery-resiliency.md)
 + [Infrastructure security in App Mesh](infrastructure-security.md)
++ [Resilience in AWS App Mesh](disaster-recovery-resiliency.md)
 + [Configuration and vulnerability analysis in AWS App Mesh](configuration-vulnerability-analysis.md)

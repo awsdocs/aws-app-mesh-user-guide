@@ -1,4 +1,4 @@
-# Service meshes<a name="meshes"></a>
+# Service Meshes<a name="meshes"></a>
 
 A service mesh is a logical boundary for network traffic between the services that reside within it\. After you create your service mesh, you can create virtual services, virtual nodes, virtual routers, and routes to distribute traffic between the applications in your mesh\.
 

@@ -25,7 +25,7 @@ If you don't already have services running, you can launch Amazon EC2 instances 
 
 ## Step 1: Create a mesh and virtual service<a name="create-mesh-and-virtual-service"></a>
 
-A service mesh is a logical boundary for network traffic between the services that reside within it\. For more information, see [Service meshes](meshes.md)\. A virtual service is an abstraction of an actual service\. For more information, see [Virtual services](virtual_services.md)\. 
+A service mesh is a logical boundary for network traffic between the services that reside within it\. For more information, see [Service Meshes](meshes.md)\. A virtual service is an abstraction of an actual service\. For more information, see [Virtual services](virtual_services.md)\. 
 
 Create the following resources:
 + A mesh named `apps`, since all of the services in the scenario are registered to the `apps.local` namespace\.
@@ -462,7 +462,7 @@ Before you created the service mesh, you had three actual services named `servic
 ## Step 6: Update services<a name="update-services"></a>
 
 After creating your mesh, you need to complete the following tasks:
-+ Authorize the Envoy proxy that you deploy with each service to read the configuration of one or more virtual nodes\. For more information about how to authorize the proxy, see [Proxy authorization](proxy-authorization.md)\.
++ Authorize the Envoy proxy that you deploy with each service to read the configuration of one or more virtual nodes\. For more information about how to authorize the proxy, see [Envoy Proxy authorization](proxy-authorization.md)\.
 + To update your existing service, complete the steps that follow\.
 
 **To configure an Amazon EC2 instance as a virtual node member**
@@ -536,7 +536,7 @@ After creating your mesh, you need to complete the following tasks:
 1. Install Docker and the AWS CLI on your instance according to your operating system documentation\.
 
 1. Authenticate to the Envoy Amazon ECR repository in the Region that you want your Docker client to pull the image from\.
-   + All Regions except `me-south-1` and `ap-east-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1` and `ap-east-1`\.
+   + All Regions except `me-south-1` and `ap-east-1`, `eu-south-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1` and `ap-east-1`, `eu-south-1`\.
 
      ```
      $aws ecr get-login-password \
@@ -565,7 +565,7 @@ After creating your mesh, you need to complete the following tasks:
      ```
 
 1. Run one of the following commands to start the App Mesh Envoy container on your instance, depending on which Region you want to pull the image from\. The *apps* and *serviceB* values are the mesh and virtual node names defined in the scenario\. This information tells the proxy which virtual node configuration to read from App Mesh\. To complete the scenario, you also need to complete these steps for the Amazon EC2 instances that host the services represented by the `serviceBv2` and `serviceA` virtual nodes\. For your own application, replace these values with your own\.
-   + All Regions except `me-south-1` and `ap-east-1`\. You can replace *region\-code* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except the `me-south-1` and `ap-east-1` Regions\. You can replace `1337` with any value between `0` and `2147483647`\.
+   + All Regions except `me-south-1` and `ap-east-1`, `eu-south-1`\. You can replace *region\-code* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except the `me-south-1` and `ap-east-1`, `eu-south-1` Regions\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \

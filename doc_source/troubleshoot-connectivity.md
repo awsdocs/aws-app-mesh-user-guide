@@ -50,19 +50,24 @@ By default, App Mesh does not allow egress traffic from applications within the 
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 
-## Unable to connect to a MySQL server<a name="ts-connectivity-troubleshooting-mysql"></a>
+## Unable to connect to a MySQL or SMTP server<a name="ts-connectivity-troubleshooting-mysql-and-smtp"></a>
 
 **Symptoms**  
-When allowing egress traffic to all destinations \(Mesh `EgressFilter type`=`ALLOW_ALL`\) or specifically to a MySQL database using a virtual node definition, the connection from your application fails to MySQL with the following error message\.
+When allowing egress traffic to all destinations \(Mesh `EgressFilter type`=`ALLOW_ALL`\), such as an SMTP server or a MySQL database using a virtual node definition, the connection from your application fails\. As an example, the following is an error message from attempting to connect to a MySQL server\.
 
 ```
 ERROR 2013 (HY000): Lost connection to MySQL server at 'reading initial communication packet', system error: 0
 ```
 
 **Resolution**  
-This is a known issue\. For more information, see the [Unable to connect to MySQL with App Mesh](https://github.com/aws/aws-app-mesh-roadmap/issues/62) GitHub issue\. This error occurs because the egress listener in Envoy configured by App Mesh adds the Envoy TLS Inspector listener filter\. For more information, see [TLS Inspector](https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/listener_filters/tls_inspector#config-listener-filters-tls-inspector) in the Envoy documentation\. This filter evaluates whether or not a connection is using TLS by inspecting the first packet sent from the client\. With MySQL however, the server sends the first packet after connection\. For more information, see [Initial Handshake](https://dev.mysql.com/doc/internals/en/initial-handshake.html) in the MySQL documentation\. Because the server sends the first packet, inspection at the filter fails\.
+This is a known issue that is resolved by using App Mesh image version 1\.15\.0 or later\. For more information, see the [Unable to connect to MySQL with App Mesh](https://github.com/aws/aws-app-mesh-roadmap/issues/62) GitHub issue\. This error occurs because the egress listener in Envoy configured by App Mesh adds the Envoy TLS Inspector listener filter\. For more information, see [TLS Inspector](https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/listener_filters/tls_inspector#config-listener-filters-tls-inspector) in the Envoy documentation\. This filter evaluates whether or not a connection is using TLS by inspecting the first packet sent from the client\. With MySQL and SMTP, however, the server sends the first packet after connection\. For more information about MySQL, see [Initial Handshake](https://dev.mysql.com/doc/internals/en/initial-handshake.html) in the MySQL documentation\. Because the server sends the first packet, inspection at the filter fails\.
 
-To work around this issue, add port `3306` to the list of values for the `APPMESH_EGRESS_IGNORED_PORTS` in your services\. For more information, see [Update services](https://docs.aws.amazon.com/eks/latest/userguide/appmesh-getting-started.html#update-services) for Kubernetes , [Update services](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services) for Amazon ECS, or [Update services](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services) for Amazon EC2\. 
+To work around this issue, either upgrade your Envoy version to AppMesh image 1\.15\.0 \(or later version\), or use the following instructions: add port `3306` to the list of values for the `APPMESH_EGRESS_IGNORED_PORTS` in your services for MySQL, and the port you are using for STMP\.
+
+**Important**  
+While the standard SMTP ports are `25`, `587`, and `465`, you should only add the port you are using to `APPMESH_EGRESS_IGNORED_PORTS` and not all three\.
+
+For more information, see [Update services](https://docs.aws.amazon.com/eks/latest/userguide/appmesh-getting-started.html#update-services) for Kubernetes , [Update services](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services) for Amazon ECS, or [Update services](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services) for Amazon EC2\. 
 
 If your issue is still not resolved, then you can provide us with details on what you're experiencing using the existing [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/62) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 
@@ -74,7 +79,7 @@ Your application is unable to connect to a backend that uses the TCP protocol se
 **Resolution**  
 This is a known issue\. For more information, see [Routing to multiple TCP destinations on the same port](https://github.com/aws/aws-app-mesh-roadmap/issues/195) on GitHub\. App Mesh does not currently allow multiple backend destinations modeled as TCP to share the same port due to restrictions in the information provided to the Envoy proxy at OSI Layer 4\. To make sure that TCP traffic can be routed appropriately for all backend destinations, do the following: 
 + Make sure that all destinations are using a unique port\. If you are using a virtual router provider for the backend virtual service, you can change the virtual router port without changing the port on the virtual nodes that it routes to\. This allows the applications to open connections on the virtual router port while the Envoy proxy continues to use the port defined in the virtual node\.
-+ If the destination modeled as TCP is a MySQL server, or any other TCP\-based protocol in which the server sends the first packets after connection, see [Unable to connect to a MySQL server](#ts-connectivity-troubleshooting-mysql)\.
++ If the destination modeled as TCP is a MySQL server, or any other TCP\-based protocol in which the server sends the first packets after connection, see [Unable to connect to a MySQL or SMTP server](#ts-connectivity-troubleshooting-mysql-and-smtp)\.
 
 If your issue is still not resolved, then you can provide us with details on what you're experiencing using the existing [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/195) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 
@@ -116,5 +121,15 @@ ResourceInitializationError: failed to invoke EFS utils commands to set up EFS v
 
 **Resolution**  
 This is a known issue\. This error occurs because the NFS connection to Amazon EFS occurs before any containers in your task are started\. This traffic is routed by the proxy configuration to Envoy, which will not be running at this point\. Because of the ordering of startup, the NFS client fails to connecting to the Amazon EFS filesystem and the task fails to launch\. To resolve the issue, add port `2049` to the list of values for the `EgressIgnoredPorts` setting in the proxy configuration of your Amazon ECS task definition\. For more information, see [Proxy configuration](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#proxyConfiguration)\.
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
+
+## Connectivity succeeds to service, but the incoming request does not appear in access logs, traces, or metrics for Envoy<a name="ts-connectivity-iptables"></a>
+
+**Symptoms**  
+ Even though your application can connect and send requests to another application, you either can not see incoming requests in the access logs or in tracing information for the Envoy proxy\.
+
+**Resolution**  
+This is a known issue\. From more information, see [iptables rules setup](https://github.com/aws/aws-app-mesh-roadmap/issues/166) issue on Github\. The Envoy proxy only intercepts ingress traffic to the port of which its corresponding virtual node is listening on\. Requests to any other port will bypass the Envoy proxy and reach to the service behind it directly\. In order to let the Envoy proxy intercept the ingress traffic for your service you need to set your virtual node and service to listen on the same port\.
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
