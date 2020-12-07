@@ -19,6 +19,7 @@ A shared mesh has the following permissions:
 + Owners can delete any resource in a mesh that any account created\.
 + Owner's resources can only reference other resources in the same account\. For example, a virtual node can only reference AWS Cloud Map or an AWS Certificate Manager certificate that is in the same account as the virtual node's owner\.
 + Owners and consumers can connect an Envoy proxy to App Mesh as a virtual node that the account owns\.
++ Owners can create virtual gateways and virtual gateway routes\.
 
 ## Prerequisites for sharing meshes<a name="sharing-prereqs"></a>
 

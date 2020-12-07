@@ -552,7 +552,8 @@ Specify any ingress ports that your application containers listen on\. In this e
 Envoy doesn't proxy traffic to these IP addresses\. Set this value to `169.254.170.2,169.254.169.254`, which ignores the Amazon EC2 metadata server and the Amazon ECS task metadata endpoint\. The metadata endpoint provides IAM roles for tasks credentials\. You can add additional addresses\.
 
 `EgressIgnoredPorts`  
-You can add a comma separated list of ports\. Envoy doesn't proxy traffic to these ports\. Even if you list no ports, port 22 is ignored\.
+You can add a comma separated list of ports\. Envoy doesn't proxy traffic to these ports\. Even if you list no ports, port 22 is ignored\.  
+The maximum number of egress ports that can be ignored is 15\.
 
 ```
 "proxyConfiguration": {

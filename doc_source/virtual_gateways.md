@@ -2,7 +2,12 @@
 
 A virtual gateway allows resources that are outside of your mesh to communicate to resources that are inside of your mesh\. The virtual gateway represents an Envoy proxy running in an Amazon ECS service, in a Kubernetes service, or on an Amazon EC2 instance\. Unlike a virtual node, which represents Envoy running with an application, a virtual gateway represents Envoy deployed by itself\. 
 
-External resources must be able to resolve a DNS name to an IP address assigned to the service or instance that runs Envoy\. Envoy can then access all of the App Mesh configuration for resources that are inside of the mesh\. To complete an end\-to\-end walkthrough, see [Configuring Ingress Gateway](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-ingress-gateway)\.
+External resources must be able to resolve a DNS name to an IP address assigned to the service or instance that runs Envoy\. Envoy can then access all of the App Mesh configuration for resources that are inside of the mesh\. The configuration for handling the incoming requests at the Virtual Gateway are specified using [Gateway Routes](https://docs.aws.amazon.com/app-mesh/latest/userguide/gateway-routes.html)\.
+
+**Important**  
+A virtual gateway with a HTTP or HTTP2 listener rewrites the incoming request's hostname to the Gateway Route target Virtual Service's name, and the matched prefix from the Gateway Route is rewritten to `/`, by default\. For example, if you have configured the Gateway route match prefix to `/chapter`, and, if the incoming request is `/chapter/1`, the request would be rewritten to `/1`\. For more details, refer to the [Creating a gateway route](https://docs.aws.amazon.com/app-mesh/latest/userguide/gateway-routes.html#create-gateway-route) section from Gateway Routes\.
+
+To complete an end\-to\-end walkthrough, see [Configuring Ingress Gateway](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-ingress-gateway)\.
 
 ## Creating a virtual gateway<a name="create-virtual-gateway"></a>
 
