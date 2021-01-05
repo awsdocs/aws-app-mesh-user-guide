@@ -37,7 +37,7 @@ spec:
   template:
     metadata:
       annotations:
-        *appmesh**.k8s.aws/mesh: my-mesh
+        appmesh.k8s.aws/mesh: my-mesh
         appmesh.k8s.aws/virtualNode:my-virtual-node
 ...
 ```
