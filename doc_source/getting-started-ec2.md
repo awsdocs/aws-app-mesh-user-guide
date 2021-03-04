@@ -12,7 +12,7 @@ To illustrate how to use App Mesh, assume that you have an application with the 
 
 You have the following requirements:
 + You want to send 75 percent of the traffic from `serviceA` to `serviceB` and 25 percent of the traffic to `serviceBv2` to ensure that `serviceBv2` is bug free before you send 100 percent of the traffic from `serviceA` to it\. 
-+ You want to be able to easily adjust the traffic weighting so that 100 percent of the traffic goes to `serviceBv2` once it is proven to be reliable\. Once all traffic is being sent to `serviceBv2`, you want to deprecate `serviceB`\.
++ You want to be able to easily adjust the traffic weighting so that 100 percent of the traffic goes to `serviceBv2` once it is proven to be reliable\. Once all traffic is being sent to `serviceBv2`, you want to discontinue `serviceB`\.
 + You do not want to have to change any existing application code or service discovery registration for your actual services to meet the previous requirements\. 
 
 To meet your requirements, you have decided to create an App Mesh service mesh with virtual services, virtual nodes, a virtual router, and a route\. After implementing your mesh, you update your services to use the Envoy proxy\. Once updated, your services communicate with each other through the Envoy proxy rather than directly with each other\.
@@ -253,7 +253,7 @@ aws appmesh describe-route --mesh-name apps \
 To complete the scenario, you need to:
 + Create one virtual node named `serviceBv2` and another named `serviceA`\. Both virtual nodes listen for requests over HTTP/2 port 80\. For the `serviceA` virtual node, configure a backend of `serviceb.apps.local`, since all outbound traffic from the `serviceA` virtual node is sent to the virtual service named `serviceb.apps.local`\. Though not covered in this guide, you can also specify a file path to write access logs to for a virtual node\.
 + Create one additional virtual service named `servicea.apps.local`, which will send all traffic directly to the `serviceA` virtual node\.
-+ Update the `serviceB` route that you created in a previous step to send 75 percent of its traffic to the `serviceB` virtual node and 25 percent of its traffic to the `serviceBv2` virtual node\. Over time, you can continue to modify the weights until `serviceBv2` receives 100 percent of the traffic\. Once all traffic is sent to `serviceBv2`, you can deprecate the `serviceB` virtual node and actual service\. As you change weights, your code does not require any modification, because the `serviceb.apps.local` virtual and actual service names don't change\. Recall that the `serviceb.apps.local` virtual service sends traffic to the virtual router, which routes the traffic to the virtual nodes\. The service discovery names for the virtual nodes can be changed at any time\.
++ Update the `serviceB` route that you created in a previous step to send 75 percent of its traffic to the `serviceB` virtual node and 25 percent of its traffic to the `serviceBv2` virtual node\. Over time, you can continue to modify the weights until `serviceBv2` receives 100 percent of the traffic\. Once all traffic is sent to `serviceBv2`, you can shut down and discontinue the `serviceB` virtual node and actual service\. As you change weights, your code does not require any modification, because the `serviceb.apps.local` virtual and actual service names don't change\. Recall that the `serviceb.apps.local` virtual service sends traffic to the virtual router, which routes the traffic to the virtual nodes\. The service discovery names for the virtual nodes can be changed at any time\.
 
 ------
 #### [ AWS Management Console ]
@@ -494,7 +494,7 @@ After creating your mesh, you need to complete the following tasks:
 
 1. Attach IAM policies to the role that allow it to read from Amazon ECR and only the configuration of a specific App Mesh virtual node\.
 
-   1. Create a file named `virtual-node-policy.json` with the following contents\. `apps` is the name of the mesh you created in [Step 1: Create a mesh and virtual service](#create-mesh-and-virtual-service) and `serviceB` is the name of the virtual node that you created in [Step 2: Create a virtual node](#create-virtual-node)\. Replace *111122223333* with your account ID and *us\-west\-2* with the region that you created your mesh in\.
+   1. Create a file named `virtual-node-policy.json` with the following contents\. `apps` is the name of the mesh you created in [Step 1: Create a mesh and virtual service](#create-mesh-and-virtual-service) and `serviceB` is the name of the virtual node that you created in [Step 2: Create a virtual node](#create-virtual-node)\. Replace *111122223333* with your account ID and *us\-west\-2* with the Region that you created your mesh in\.
 
       ```
       {
@@ -536,7 +536,7 @@ After creating your mesh, you need to complete the following tasks:
 1. Install Docker and the AWS CLI on your instance according to your operating system documentation\.
 
 1. Authenticate to the Envoy Amazon ECR repository in the Region that you want your Docker client to pull the image from\.
-   + All Regions except `me-south-1` and `ap-east-1`, `eu-south-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1` and `ap-east-1`, `eu-south-1`\.
+   + All Regions except `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\.
 
      ```
      $aws ecr get-login-password \
@@ -565,30 +565,30 @@ After creating your mesh, you need to complete the following tasks:
      ```
 
 1. Run one of the following commands to start the App Mesh Envoy container on your instance, depending on which Region you want to pull the image from\. The *apps* and *serviceB* values are the mesh and virtual node names defined in the scenario\. This information tells the proxy which virtual node configuration to read from App Mesh\. To complete the scenario, you also need to complete these steps for the Amazon EC2 instances that host the services represented by the `serviceBv2` and `serviceA` virtual nodes\. For your own application, replace these values with your own\.
-   + All Regions except `me-south-1` and `ap-east-1`, `eu-south-1`\. You can replace *region\-code* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except the `me-south-1` and `ap-east-1`, `eu-south-1` Regions\. You can replace `1337` with any value between `0` and `2147483647`\.
+   + All Regions except `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\. You can replace *Region\-code* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except the `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1` Regions\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+     -u 1337 --network host 840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
      ```
    + `me-south-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+     -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
      ```
    + `ap-east-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+     -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
      ```
 **Note**  
 The `APPMESH_RESOURCE_ARN` property requires version `1.15.0` or later of the Envoy image\. For more information, see [Envoy image](envoy.md)\.
 **Important**  
 Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
 
-1. Select `Show more` below\. Create a file named `envoy-networking.sh` on your instance with the following contents\. Replace *8000* with the port that your application code uses for ingress\. You can change the value for `APPMESH_IGNORE_UID`, but the value must be the same as the value that you specified in the previous step; for example `1337`\. You can add additional addresses to `APPMESH_EGRESS_IGNORED_IP` if necessary\. Do not modify any other lines\.
+1. Select `Show more` below\. Create a file named `envoy-networking.sh` on your instance with the following contents\. Replace *8000* with the port that your application code uses for incoming traffic\. You can change the value for `APPMESH_IGNORE_UID`, but the value must be the same as the value that you specified in the previous step; for example `1337`\. You can add additional addresses to `APPMESH_EGRESS_IGNORED_IP` if necessary\. Do not modify any other lines\.
 
    ```
    #!/bin/bash -e
@@ -608,21 +608,21 @@ Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
    # Enable routing on the application start.
    [ -z "$APPMESH_START_ENABLED" ] && APPMESH_START_ENABLED="0"
    
-   # Egress traffic from the processess owned by the following UID/GID will be ignored.
+   # Outbound traffic from the processess owned by the following UID/GID will be ignored.
    if [ -z "$APPMESH_IGNORE_UID" ] && [ -z "$APPMESH_IGNORE_GID" ]; then
        echo "Variables APPMESH_IGNORE_UID and/or APPMESH_IGNORE_GID must be set."
-       echo "Envoy must run under those IDs to be able to properly route its egress traffic."
+       echo "Envoy must run under those IDs to be able to properly route its outbound traffic."
        exit 1
    fi
    
    # Port numbers Application and Envoy are listening on.
    if [ -z "$APPMESH_ENVOY_INGRESS_PORT" ] || [ -z "$APPMESH_ENVOY_EGRESS_PORT" ] || [ -z "$APPMESH_APP_PORTS" ]; then
        echo "All of APPMESH_ENVOY_INGRESS_PORT, APPMESH_ENVOY_EGRESS_PORT and APPMESH_APP_PORTS variables must be set."
-       echo "If any one of them is not set we will not be able to route either ingress, egress, or both directions."
+       echo "If any one of them is not set we will not be able to route either inbound, outbound, or both directions."
        exit 1
    fi
    
-   # Comma separated list of ports for which egress traffic will be ignored, we always refuse to route SSH traffic.
+   # Comma separated list of ports for which outbound traffic will be ignored, we always refuse to route SSH traffic.
    if [ -z "$APPMESH_EGRESS_IGNORED_PORTS" ]; then
        APPMESH_EGRESS_IGNORED_PORTS="22"
    else
@@ -689,7 +689,7 @@ Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
            -m multiport --dports "$APPMESH_APP_PORTS" \
            -j REDIRECT --to-port "$APPMESH_ENVOY_INGRESS_PORT"
    
-       # Apply AppMesh ingress chain to everything non-local
+       # Apply AppMesh inbound chain to everything non-local
        iptables -t nat -A PREROUTING \
            -p tcp \
            -m addrtype ! --src-type LOCAL \

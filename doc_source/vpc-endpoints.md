@@ -17,10 +17,10 @@ For additional considerations and limitations, see [Interface Endpoint Availabil
 
 ## Create the Interface VPC Endpoint for App Mesh<a name="app-mesh-setting-up-vpc-create"></a>
 
-To create the interface VPC endpoint for the App Mesh service, use the [Creating an Interface Endpoint](https://docs.aws.amazon.com/vpc/latest/userguide/vpce-interface.html#create-interface-endpoint) procedure in the *Amazon VPC User Guide*\. Specify `com.amazonaws.region.appmesh-envoy-management` for the service name\.
+To create the interface VPC endpoint for the App Mesh service, use the [Creating an Interface Endpoint](https://docs.aws.amazon.com/vpc/latest/userguide/vpce-interface.html#create-interface-endpoint) procedure in the *Amazon VPC User Guide*\. Specify `com.amazonaws.Region.appmesh-envoy-management` for the service name\.
 
 **Note**  
-*region* represents the Region identifier for an AWS Region supported by App Mesh, such as `us-east-2` for the US East \(Ohio\) Region\.
+*Region* represents the Region identifier for an AWS Region supported by App Mesh, such as `us-east-2` for the US East \(Ohio\) Region\.
 
 Though you can define an interface VPC endpoint for App Mesh in any Region where App Mesh is supported, you may not be able to define an endpoint for all Availability Zones in each Region\. To find out which Availability Zones are supported with interface VPC endpoints in a Region, use the [describe\-vpc\-endpoint\-services ](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-vpc-endpoint-services.html)command or use the AWS Management Console\. For example, the following command returns the availability zones to which you can deploy an App Mesh interface VPC endpoint within the US East \(Ohio\) Region: 
 

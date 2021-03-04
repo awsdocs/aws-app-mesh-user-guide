@@ -1,6 +1,6 @@
 # Getting started with AWS App Mesh and Amazon ECS<a name="getting-started-ecs"></a>
 
-This topic helps you use AWS App Mesh with an actual service that is running on \. This tutorial covers basic features of several App Mesh resource types\.
+This topic helps you use AWS App Mesh with an actual service that is running on Amazon ECS\. This tutorial covers basic features of several App Mesh resource types\.
 
 ## Scenario<a name="scenario"></a>
 
@@ -12,7 +12,7 @@ To illustrate how to use App Mesh, assume that you have an application with the 
 
 You have the following requirements:
 + You want to send 75 percent of the traffic from `serviceA` to `serviceB` and 25 percent of the traffic to `serviceBv2` to ensure that `serviceBv2` is bug free before you send 100 percent of the traffic from `serviceA` to it\. 
-+ You want to be able to easily adjust the traffic weighting so that 100 percent of the traffic goes to `serviceBv2` once it is proven to be reliable\. Once all traffic is being sent to `serviceBv2`, you want to deprecate `serviceB`\.
++ You want to be able to easily adjust the traffic weighting so that 100 percent of the traffic goes to `serviceBv2` once it is proven to be reliable\. Once all traffic is being sent to `serviceBv2`, you want to discontinue `serviceB`\.
 + You do not want to have to change any existing application code or service discovery registration for your actual services to meet the previous requirements\. 
 
 To meet your requirements, you have decided to create an App Mesh service mesh with virtual services, virtual nodes, a virtual router, and a route\. After implementing your mesh, you update your services to use the Envoy proxy\. Once updated, your services communicate with each other through the Envoy proxy rather than directly with each other\.
@@ -254,7 +254,7 @@ aws appmesh describe-route --mesh-name apps \
 To complete the scenario, you need to:
 + Create one virtual node named `serviceBv2` and another named `serviceA`\. Both virtual nodes listen for requests over HTTP/2 port 80\. For the `serviceA` virtual node, configure a backend of `serviceb.apps.local`, since all outbound traffic from the `serviceA` virtual node is sent to the virtual service named `serviceb.apps.local`\. Though not covered in this guide, you can also specify a file path to write access logs to for a virtual node\.
 + Create one additional virtual service named `servicea.apps.local`, which will send all traffic directly to the `serviceA` virtual node\.
-+ Update the `serviceB` route that you created in a previous step to send 75 percent of its traffic to the `serviceB` virtual node and 25 percent of its traffic to the `serviceBv2` virtual node\. Over time, you can continue to modify the weights until `serviceBv2` receives 100 percent of the traffic\. Once all traffic is sent to `serviceBv2`, you can deprecate the `serviceB` virtual node and actual service\. As you change weights, your code does not require any modification, because the `serviceb.apps.local` virtual and actual service names don't change\. Recall that the `serviceb.apps.local` virtual service sends traffic to the virtual router, which routes the traffic to the virtual nodes\. The service discovery names for the virtual nodes can be changed at any time\.
++ Update the `serviceB` route that you created in a previous step to send 75 percent of its traffic to the `serviceB` virtual node and 25 percent of its traffic to the `serviceBv2` virtual node\. Over time, you can continue to modify the weights until `serviceBv2` receives 100 percent of the traffic\. Once all traffic is sent to `serviceBv2`, you can shut down and discontinue the `serviceB` virtual node and actual service\. As you change weights, your code does not require any modification, because the `serviceb.apps.local` virtual and actual service names don't change\. Recall that the `serviceb.apps.local` virtual service sends traffic to the virtual router, which routes the traffic to the virtual nodes\. The service discovery names for the virtual nodes can be changed at any time\.
 
 ------
 #### [ AWS Management Console ]
@@ -490,25 +490,35 @@ The following steps only show updating the `taskB` task for the scenario\. You a
       1. For **Application container name**, choose the container name to use for the App Mesh application\. This container must already be defined within the task definition\.
 
       1. For **Envoy image**, complete the following task and enter the value that is returned\.
-         + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`, `eu-south-1`\. You can replace *region\-code* with any Region other than `me-south-1` and `ap-east-1`, `eu-south-1`\. 
+         + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\. You can replace *Region\-code* with any Region other than `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\. 
 
            ```
-           840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+           840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
            ```
          + `me-south-1` Region:
 
            ```
-           772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+           772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
            ```
          + `ap-east-1` Region:
 
            ```
-           856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+           856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
            ```
          + `eu-south-1` Region:
 
            ```
-           422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+           422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
+           ```
+         + `af-south-1` Region:
+
+           ```
+           924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
+           ```
+         + `Public repository`
+
+           ```
+           public.ecr.aws/appmesh/aws-appmesh-envoy:v1.16.1.0-prod
            ```
 **Important**  
 Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
@@ -540,20 +550,20 @@ To configure your Amazon ECS service to use App Mesh, your service's task defini
 The Envoy proxy doesn't route traffic from processes that use this user ID\. You can choose any user ID that you want for this property value, but this ID must be the same as the `user` ID for the Envoy container in your task definition\. This matching allows Envoy to ignore its own traffic without using the proxy\. Our examples use `1337` for historical purposes\.
 
 `ProxyIngressPort`  
-This is the ingress port for the Envoy proxy container\. Set this value to `15000`\.
+This is the inbound port for the Envoy proxy container\. Set this value to `15000`\.
 
 `ProxyEgressPort`  
-This is the egress port for the Envoy proxy container\. Set this value to `15001`\.
+This is the outbound port for the Envoy proxy container\. Set this value to `15001`\.
 
 `AppPorts`  
-Specify any ingress ports that your application containers listen on\. In this example, the application container listens on port `9080`\. The port that you specify must match the port configured on the virtual node listener\.
+Specify any inbound ports that your application containers listen on\. In this example, the application container listens on port `9080`\. The port that you specify must match the port configured on the virtual node listener\.
 
 `EgressIgnoredIPs`  
 Envoy doesn't proxy traffic to these IP addresses\. Set this value to `169.254.170.2,169.254.169.254`, which ignores the Amazon EC2 metadata server and the Amazon ECS task metadata endpoint\. The metadata endpoint provides IAM roles for tasks credentials\. You can add additional addresses\.
 
 `EgressIgnoredPorts`  
 You can add a comma separated list of ports\. Envoy doesn't proxy traffic to these ports\. Even if you list no ports, port 22 is ignored\.  
-The maximum number of egress ports that can be ignored is 15\.
+The maximum number of outbound ports that can be ignored is 15\.
 
 ```
 "proxyConfiguration": {
@@ -610,25 +620,35 @@ The application containers in your task definitions must wait for the Envoy prox
 **Envoy container definition**
 
 Your Amazon ECS task definitions must contain an App Mesh Envoy container image\.
-+ All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`, `eu-south-1`\. You can replace *region\-code* with any Region other than `me-south-1` and `ap-east-1`, `eu-south-1`\. 
++ All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\. You can replace *Region\-code* with any Region other than `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\. 
 
   ```
-  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
   ```
 + `me-south-1` Region:
 
   ```
-  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
   ```
 + `ap-east-1` Region:
 
   ```
-  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
   ```
 + `eu-south-1` Region:
 
   ```
-  422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod
+  422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
+  ```
++ `af-south-1` Region:
+
+  ```
+  924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod
+  ```
++ `Public repository`
+
+  ```
+  public.ecr.aws/appmesh/aws-appmesh-envoy:v1.16.1.0-prod
   ```
 
 **Important**  
@@ -650,7 +670,7 @@ The following code shows an Envoy container definition example\.
 ```
 {
 	"name": "envoy",
-	"image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod",
+	"image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod",
 	"essential": true,
 	"environment": [{
 		"name": "APPMESH_RESOURCE_ARN",
@@ -733,7 +753,7 @@ If you're running an Amazon ECS task as described in the Credentials section, th
       },
       {         
          "name" : "envoy",
-         "image" : "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod",
+         "image" : "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod",
          "essential" : true,
          "environment" : [
             {
@@ -823,7 +843,7 @@ X\-Ray allows you to collect data about requests that an application serves and 
       {
          
          "name" : "envoy",
-         "image" : "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod",
+         "image" : "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod",
          "essential" : true,
          "environment" : [
             {
@@ -927,7 +947,7 @@ X\-Ray allows you to collect data about requests that an application serves and 
     },
     {
       "name": "envoy",
-      "image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod",
+      "image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod",
       "essential": true,
       "environment": [
         {
@@ -1014,7 +1034,7 @@ X\-Ray allows you to collect data about requests that an application serves and 
     },
     {
       "name": "envoy",
-      "image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod",
+      "image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.16.1.1-prod",
       "essential": true,
       "environment": [
         {

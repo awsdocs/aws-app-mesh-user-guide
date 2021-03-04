@@ -6,7 +6,7 @@ The controller is accompanied by the deployment of the following Kubernetes cust
 
 The controller also installs a webhook that injects the following containers into Kubernetes pods that are labeled with a name that you specify\.
 + **App Mesh Envoy proxy** – Envoy uses the configuration defined in the App Mesh control plane to determine where to send your application traffic\. 
-+ **App Mesh proxy route manager **– Updates `iptables` rules in a pod's network namespace that route ingress and egress traffic through Envoy\. This container runs as a Kubernetes init container inside of the pod\.
++ **App Mesh proxy route manager **– Updates `iptables` rules in a pod's network namespace that route inbound and outbound traffic through Envoy\. This container runs as a Kubernetes init container inside of the pod\.
 
 ## Prerequisites<a name="mesh-k8s-integration-prerequisites"></a>
 + An existing understanding of App Mesh concepts\. For more information, see [What Is AWS App Mesh?](what-is-app-mesh.md)\.
@@ -54,11 +54,11 @@ Install the integration components one time to each cluster that hosts pods that
    kubectl create ns appmesh-system
    ```
 
-1. Set the following variables for use in later steps\. Replace `cluster-name` and `region-code` with the values for your existing cluster\.
+1. Set the following variables for use in later steps\. Replace `cluster-name` and `Region-code` with the values for your existing cluster\.
 
    ```
    export CLUSTER_NAME=cluster-name
-   export AWS_REGION=region-code
+   export AWS_REGION=Region-code
    ```
 
 1. \(Optional\) If you want to run the controller on Fargate, then you need to create a Fargate profile\. If you don't have `eksctl` installed, see [Installing or Upgrading `eksctl`](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl) in the *Amazon EKS User Guide*\. If you'd prefer to create the profile using the console, see [Creating a Fargate profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html#create-fargate-profile) in the *Amazon EKS User Guide*\.
@@ -105,11 +105,11 @@ The command creates an AWS IAM role with an auto\-generated name\. You are not a
 If your cluster is in the `me-south-1` or `ap-east-1` Regions, then you need to add the following option to the previous command:  
 
    ```
-   --set sidecar.image.repository=account-id.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy
+   --set sidecar.image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/aws-appmesh-envoy
    ```
-Replace *account\-id* and *region\-code* with one of the appropriate sets of values\.  
-772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.15\.1\.0\-prod
-856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.15\.1\.0\-prod
+Replace *account\-id* and *Region\-code* with one of the appropriate sets of values\.  
+772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.16\.1\.1\-prod
+856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.16\.1\.1\-prod
 **Important**  
 Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
 
@@ -666,7 +666,7 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
       }
       ```
 
-Though not covered in this tutorial, the controller can also deploy App Mesh [Virtual gateways](virtual_gateways.md) and [Gateway routes](gateway-routes.md)\. For a walkthrough of deploying these resources with the controller, see [Configuring Ingress Gateway](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-k8s-ingress-gateway), or a [sample manifest](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/howto-k8s-ingress-gateway/v1beta2/manifest.yaml.template) that includes the resources on GitHub\.
+Though not covered in this tutorial, the controller can also deploy App Mesh [Virtual gateways](virtual_gateways.md) and [Gateway routes](gateway-routes.md)\. For a walkthrough of deploying these resources with the controller, see [Configuring Inbound Gateway](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-k8s-ingress-gateway), or a [sample manifest](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/howto-k8s-ingress-gateway/v1beta2/manifest.yaml.template) that includes the resources on GitHub\.
 
 ## Step 3: Create or update services<a name="create-update-services"></a>
 
@@ -684,7 +684,7 @@ Any pods that you want to use with App Mesh must have the App Mesh sidecar conta
                   "Effect": "Allow",
                   "Action": "appmesh:StreamAggregatedResources",
                   "Resource": [
-                      "arn:aws:appmesh:region-code:111122223333:mesh/my-mesh/virtualNode/my-service-a_my-apps"
+                      "arn:aws:appmesh:Region-code:111122223333:mesh/my-mesh/virtualNode/my-service-a_my-apps"
                   ]
               }
           ]
@@ -714,7 +714,7 @@ Any pods that you want to use with App Mesh must have the App Mesh sidecar conta
 1. \(Optional\) If you want to deploy your deployment to Fargate pods, then you need to create a Fargate profile\. If you don't have `eksctl` installed, you can install it with the instructions in [Installing or Upgrading `eksctl`](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl) in the *Amazon EKS User Guide*\. If you'd prefer to create the profile using the console, see [Creating a Fargate profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html#create-fargate-profile) in the *Amazon EKS User Guide*\.
 
    ```
-   eksctl create fargateprofile --cluster my-cluster --region region-code --name my-service-a --namespace my-apps
+   eksctl create fargateprofile --cluster my-cluster --region Region-code --name my-service-a --namespace my-apps
    ```
 
 1. Create a Kubernetes service and deployment\. If you have an existing deployment that you want to use with App Mesh, then you need to deploy a virtual node, as you did in sub\-step `3` of [Step 2: Deploy App Mesh resources](#configure-app-mesh), and update your deployment to make sure that its label matches the label that you set on the virtual node, so that the sidecar containers are automatically added to the pods and the pods are redeployed\.
@@ -903,7 +903,7 @@ kubectl delete namespace my-apps
 If you created a Fargate profile for the example service, then remove it\.
 
 ```
-eksctl delete fargateprofile --name my-service-a --cluster my-cluster --region region-code
+eksctl delete fargateprofile --name my-service-a --cluster my-cluster --region Region-code
 ```
 
 Delete the mesh\.
@@ -921,5 +921,5 @@ helm delete appmesh-controller -n appmesh-system
 \(Optional\) If you deployed the Kubernetes integration components to Fargate, then delete the Fargate profile\.
 
 ```
-eksctl delete fargateprofile --name appmesh-system --cluster my-cluster --region region-code
+eksctl delete fargateprofile --name appmesh-system --cluster my-cluster --region Region-code
 ```

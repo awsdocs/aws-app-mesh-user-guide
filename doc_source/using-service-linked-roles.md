@@ -53,6 +53,6 @@ Complete the previous steps for all meshes in your account\.
 
 Use the IAM console, the AWS CLI, or the AWS API to delete the AWSServiceRoleForAppMesh service\-linked role\. For more information, see [Deleting a Service\-Linked Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html#delete-service-linked-role) in the *IAM User Guide*\.
 
-## Supported regions for App Mesh service\-linked roles<a name="slr-regions"></a>
+## Supported Regions for App Mesh service\-linked roles<a name="slr-regions"></a>
 
 App Mesh supports using service\-linked roles in all of the Regions where the service is available\. For more information, see [App Mesh Endpoints and Quotas](https://docs.aws.amazon.com/general/latest/gr/appmesh.html)\.

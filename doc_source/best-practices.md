@@ -16,7 +16,7 @@ Configure all virtual services to use a virtual router and set a default retry p
 Other retry events need to be considered on a case\-by\-case basis as they may not be safe, such as if the request isn’t idempotent\. You will need to consider and test values for `maxRetries` and `perRetryTimeout` that make the appropriate trade off between the maximum latency of a request \(`maxRetries` \* `perRetryTimeout`\) versus the increased success rate of more retries\. Additionally, when Envoy attempts to connect to an endpoint that is no longer present, you should expect that request to consume the full `perRetryTimeout`\. To configure a retry policy, see [Creating a route](routes.md#create-route) and then select the protocol that you want to route\.
 
 **Note**  
-If you implemented a route on or after July 29, 2020 and didn't specify a retry policy, then App Mesh may have automatically created a default retry policy similar to the previous policy for each route you created on or after July 29, 2020\. For more information, see [Default route retry policy](envoy.md#default-retry-policy)\.
+If you implemented a route on or after July 29, 2020 and didn't specify a retry policy, then App Mesh may have automatically created a default retry policy similar to the previous policy for each route you created on or after July 29, 2020\. For more information, see [Default route retry policy](envoy-defaults.md#default-retry-policy)\.
 
 ## Adjust deployment velocity<a name="reduce-deployment-velocity"></a>
 

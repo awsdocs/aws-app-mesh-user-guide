@@ -7,11 +7,13 @@ External resources must be able to resolve a DNS name to an IP address assigned 
 **Important**  
 A virtual gateway with a HTTP or HTTP2 listener rewrites the incoming request's hostname to the Gateway Route target Virtual Service's name, and the matched prefix from the Gateway Route is rewritten to `/`, by default\. For example, if you have configured the Gateway route match prefix to `/chapter`, and, if the incoming request is `/chapter/1`, the request would be rewritten to `/1`\. For more details, refer to the [Creating a gateway route](https://docs.aws.amazon.com/app-mesh/latest/userguide/gateway-routes.html#create-gateway-route) section from Gateway Routes\.
 
-To complete an end\-to\-end walkthrough, see [Configuring Ingress Gateway](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-ingress-gateway)\.
+To complete an end\-to\-end walkthrough, see [Configuring Inbound Gateway](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-ingress-gateway)\.
 
 ## Creating a virtual gateway<a name="create-virtual-gateway"></a>
 
 **To create a virtual gateway using the AWS Management Console**
+**Note**  
+When creating a Virtual Gateway, you must add a namespace selector with a label to identify the list of namespaces to associate Gateway Routes to the created Virtual Gateway\.
 
  To create a virtual gateway using the AWS CLI version 1\.18\.116 or higher, see the AWS CLI reference for the [create\-virtual\-gateway](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-gateway.html) command\.
 
@@ -31,9 +33,16 @@ To complete an end\-to\-end walkthrough, see [Configuring Ingress Gateway](https
 
    1. \(Optional\) For **Ports**, specify one or more ports that you want to enforce TLS communication with virtual services on\.
 
-   1. For **Certificate discovery method**, select one of the following options\. The certificate that you specify must already exist and meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
+   1. For **Validation method**, select one of the following options\. The certificate that you specify must already exist and meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
       + **AWS Certificate Manager Private Certificate Authority** hosting – Select one or more existing **Certificates**\.
-      + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where the Envoy is deployed\.
+      + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret Envoy will fetch using the Secret Discovery Service\.
+      + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where Envoy is deployed\.
+
+   1. \(Optional\) Enter a **Subject Alternative Name**\. To add additional SANs, select **Add SAN**\. SANs must be FQDN or URI formatted\.
+
+   1. \(Optional\) Select **Provide client certificate** and one of the options below to provide a client certificate when a server requests it and enable mutual TLS authentication\. To learn more about mutual TLS, see the App Mesh [Mutual TLS Authentication](https://docs.aws.amazon.com/app-mesh/latest/userguide/mutual-tls.html) docs\.
+      + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret Envoy will fetch using the Secret Discovery Service\.
+      + **Local file hosting** – Specify the path to the **Certificate chain** file, as well as the **Private key**, on the file system where Envoy is deployed\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with local files, see [Configuring TLS with File Provided TLS Certificates](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-tls-file-provided) on GitHub\.
 
    1. Specify a **Port** and **Protocol** for the **Listener**\. Each virtual gateway can have only one port and protocol specified\. If you need the virtual gateway to route traffic over multiple ports and protocols, then you must create a virtual gateway for each port or prototol\.
 
@@ -71,15 +80,20 @@ The connectionPool and portMapping protocols must be the same\. If your listener
       + For **Mode**, select the mode you want TLS to be configured for on the listener\.
       + For **Certificate method**, select one of the following options\. The certificate must meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
         + **AWS Certificate Manager hosting** – Select an existing **Certificate**\.
+        + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret Envoy will fetch using the Secret Discovery Service\.
         + **Local file hosting** – Specify the path to the **Certificate chain** and **Private key** files on the file system where Envoy is deployed\.
+      + \(Optional\) Select **Require client certificate** and one of the options below to enable mutual TLS authentication if the client provides a certificate\. To learn more about mutual TLS, see the App Mesh [Mutual TLS Authentication](https://docs.aws.amazon.com/app-mesh/latest/userguide/mutual-tls.html) docs\.
+        + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret Envoy will fetch using the Secret Discovery Service\.
+        + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where Envoy is deployed\.
+      + \(Optional\) Enter a **Subject Alternative Name**\. To add additional SANs, select **Add SAN**\. SANs must be FQDN or URI formatted\.
 
 1. Choose **Create virtual gateway** to finish\.
 
 ## Deploy virtual gateway<a name="deploy-virtual-gateway"></a>
 
-Deploy an Amazon ECS or Kubernetes service that contains only the [Envoy container](envoy.md)\. You can also deploy the Envoy container on an [Amazon EC2](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services) instance\. For more information see [Getting started with App Mesh and Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services) or [Tutorial: Configure App Mesh integration with Kubernetes](https://docs.aws.amazon.com/app-mesh/latest/userguide/mesh-k8s-integration.html)\. You need to set the `APPMESH_RESOURCE_ARN` environment variable to `mesh/mesh-name/virtualGateway/virtual-gateway-name` and you must not specify proxy configuration so that the proxy's traffic doesn't get redirected to itself\. By default, App Mesh uses the name of the resource you specified in `APPMESH_RESOURCE_ARN` when Envoy is referring to itself in metrics and traces\. You can override this behavior by setting the `APPMESH_RESOURCE_CLUSTER `environment variable with your own name\.
+Deploy an Amazon ECS or Kubernetes service that contains only the [Envoy container](envoy.md)\. You can also deploy the Envoy container on an Amazon EC2 instance\. For more information, see [Getting started with App Mesh and Amazon EC2](https://docs.aws.amazon.com/app-mesh/latest/userguide/getting-started-ec2.html)\. For more information on how to deploy on Amazon ECS see [Getting started with App Mesh and Amazon ECS](https://docs.aws.amazon.com/app-mesh/latest/userguide/getting-started-ecs.html) or [Getting started with AWS App Mesh and Kubernetes](https://docs.aws.amazon.com/app-mesh/latest/userguide/getting-started-kubernetes.html) to deploy to Kubernetes\. You need to set the `APPMESH_RESOURCE_ARN` environment variable to `mesh/mesh-name/virtualGateway/virtual-gateway-name` and you must not specify proxy configuration so that the proxy's traffic doesn't get redirected to itself\. By default, App Mesh uses the name of the resource you specified in `APPMESH_RESOURCE_ARN` when Envoy is referring to itself in metrics and traces\. You can override this behavior by setting the `APPMESH_RESOURCE_CLUSTER `environment variable with your own name\.
 
-We recommend that you deploy multiple instances of the container and set up a Network Load Balancer to load balance traffic to the instances\. The service discovery name of the load balancer is the name that you want external services to use to access resources that are in the mesh, such as *myapp\.example\.com*\. For more information see [Creating a Network Load Balancer](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-network-load-balancer.html) \(Amazon ECS\), [Creating an External Load Balancer](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/) \(Kubernetes\), or [Tutorial: Increase the availability of your application on Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-increase-availability.html)\.
+We recommend that you deploy multiple instances of the container and set up a Network Load Balancer to load balance traffic to the instances\. The service discovery name of the load balancer is the name that you want external services to use to access resources that are in the mesh, such as *myapp\.example\.com*\. For more information see [Creating a Network Load Balancer](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-network-load-balancer.html) \(Amazon ECS\), [Creating an External Load Balancer](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/) \(Kubernetes\), or [Tutorial: Increase the availability of your application on Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-increase-availability.html)\. You can also find more examples and walkthroughs in our [App Mesh examples](https://docs.aws.amazon.com/app-mesh/latest/userguide/examples.html)\.
 
 Enable proxy authorization for Envoy\. For more information, see [Envoy Proxy authorization](proxy-authorization.md)\.
 

@@ -42,14 +42,14 @@ Your Envoy proxy is unable to connect to the App Mesh Envoy management service\.
 + Errors resolving the App Mesh Envoy management service endpoint
 
 **Resolution**  
-Make sure that your Envoy proxy has access to the internet or to a private [VPC endpoint](vpc-endpoints.md) and that your [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) allow egress traffic on port 443\. App Mesh’s public Envoy management service endpoints follow the fully qualified domain name \(FQDN\) format\.
+Make sure that your Envoy proxy has access to the internet or to a private [VPC endpoint](vpc-endpoints.md) and that your [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) allow outbound traffic on port 443\. App Mesh’s public Envoy management service endpoints follow the fully qualified domain name \(FQDN\) format\.
 
 ```
 # App Mesh Production Endpoint
-appmesh-envoy-management.region-code.amazonaws.com
+appmesh-envoy-management.Region-code.amazonaws.com
 
 # App Mesh Preview Endpoint
-appmesh-preview-envoy-management.region-code.amazonaws.com
+appmesh-preview-envoy-management.Region-code.amazonaws.com
 ```
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
@@ -107,7 +107,7 @@ Your mesh endpoint is considered healthy by the container health check or readin
 
 **Resolution**  
 To resolve the issue, complete the following tasks\.
-+ Make sure that the [security group](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) associated with your mesh endpoint accepts ingress traffic on the port you've configured for your health check\.
++ Make sure that the [security group](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) associated with your mesh endpoint accepts inbound traffic on the port you've configured for your health check\.
 + Make sure that the health check is succeeding consistently when requested manually; for example, from a [bastion host within your VPC](http://aws.amazon.com/quickstart/architecture/linux-bastion/)\.
 + If you are configuring a health check for a virtual node, then we recommend implementing a health check endpoint in your application; for example, /ping for HTTP\. This ensures that both the Envoy proxy and your application are routable from the load balancer\.
 + You can use any elastic load balancer type for the virtual node, depending on the features that you need\. For more information, see [Elastic Load Balancing features](http://aws.amazon.com/elasticloadbalancing/features/#compare)\.

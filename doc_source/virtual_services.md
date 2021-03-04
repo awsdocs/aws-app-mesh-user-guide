@@ -22,7 +22,7 @@ To create a virtual service using the AWS CLI version 1\.18\.116 or higher, see 
    + If you want the virtual service to spread traffic across multiple virtual nodes, select **Virtual router** and then choose the virtual router to use from the drop\-down menu\.
    + If you want the virtual service to reach a virtual node directly, without a virtual router, select **Virtual node** and then choose the virtual node to use from the drop\-down menu\.
 **Note**  
-App Mesh may automatically create a default Envoy route retry policy for each virtual node provider that you define on or after July 29, 2020, even though you can't define such a policy through the App Mesh API\. For more information, see [Default route retry policy](envoy.md#default-retry-policy)\.
+App Mesh may automatically create a default Envoy route retry policy for each virtual node provider that you define on or after July 29, 2020, even though you can't define such a policy through the App Mesh API\. For more information, see [Default route retry policy](envoy-defaults.md#default-retry-policy)\.
    + If you don't want the virtual service to route traffic at this time \(for example, if your virtual nodes or virtual router doesn't exist yet\), choose **None**\. You can update the provider for this virtual service later\.
 
 1. Choose **Create virtual service** to finish\.

@@ -17,7 +17,7 @@ Customers should be able to tune the security to the extent they need\. Platform
 
 **Topics**
 + [Transport Layer Security \(TLS\)](tls.md)
-+ [App Mesh Preview Channel only – Mutual TLS Authentication](mutual-tls.md)
++ [Mutual TLS Authentication](mutual-tls.md)
 + [How AWS App Mesh works with IAM](security-iam.md)
 + [Logging with AWS CloudTrail](logging-using-cloudtrail.md)
 + [Data protection in AWS App Mesh](data-protection.md)

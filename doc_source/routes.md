@@ -42,7 +42,7 @@ Choose **Add metadata**\.
 
 ### \(Optional\) **Retry policy**
 
-A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\. If you don't define a retry policy, then App Mesh may automatically create a default policy for each of your routes\. For more information, see [Default route retry policy](envoy.md#default-retry-policy)\.
+A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\. If you don't define a retry policy, then App Mesh may automatically create a default policy for each of your routes\. For more information, see [Default route retry policy](envoy-defaults.md#default-retry-policy)\.
 + For **Retry timeout**, enter the number of units for the timeout duration\. A value is required if you select any protocol retry event\.
 + For **Retry timeout unit**, select a unit\. A value is required if you select any protocol retry event\.
 + For **Max retries**, enter the maximum number of retry attempts when the request fails\. A value is required if you select any protocol retry event\. We recommend a value of at least two\.
@@ -51,15 +51,15 @@ A retry policy enables clients to protect themselves from intermittent network f
 + Select one or more **gRPC retry events**\. We recommend selecting at least **cancelled** and **unavailable**\.
 
 ### **\(Optional\) Timeouts**
-+ **Request timeout** – The default is 15 seconds\. If you specified a **Retry policy**, then the duration that you specify here should always be greater than or equal to the retry duration multiplied by the **Max retries** that you defined in the **Retry policy** so that your retry policy can complete\. If you specify a duration greater than 15 seconds, then make sure that the timeout specified for the listener of any virtual node **Target** is also greater than 15 seconds\. For more information, see [Virtual nodes](virtual_nodes.md)\.
-+ **Idle duration** – The maximum amount of time that the route can be idle\.
++ The default is 15 seconds\. If you specified a **Retry policy**, then the duration that you specify here should always be greater than or equal to the retry duration multiplied by the **Max retries** that you defined in the **Retry policy** so that your retry policy can complete\. If you specify a duration greater than 15 seconds, then make sure that the timeout specified for the listener of any virtual node **Target** is also greater than 15 seconds\. For more information, see [Virtual Nodes](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html)\.
++ The maximum amount of time that the route can be idle\.
 
 ### HTTP and HTTP/2<a name="http-http2"></a>
 
 ### \(Optional\) Match
 + Specify the **Prefix** that the route should match\. For example, if your virtual service name is `service-b.local` and you want the route to match requests to `service-b.local/metrics`, your prefix should be `/metrics`\. Specifying `/` routes all traffic\.
 + \(Optional\) Select a **Method**\. 
-+ \(Optional\) Select a **Scheme**\. 
++ \(Optional\) Select a **Scheme**\. Applicable only for HTTP2 routes\. 
 
 ### \(Optional\) Headers
 + \(Optional\) Select **Add header**\. Enter the **Header name** that you want to route based on, select a **Match type**, and enter a **Match value**\. Selecting **Invert** will match the opposite\. For example, if you specify a header named `clientRequestId` with a **Prefix** of `123`, and select **Invert**, then the route is matched for any request that has a header that starts with anything other than `123`\.
@@ -67,7 +67,7 @@ A retry policy enables clients to protect themselves from intermittent network f
 
 ### **\(Optional\) Retry policy**
 
-A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\. If you don't define a retry policy, then App Mesh may automatically create a default policy for each of your routes\. For more information, see [Default route retry policy](envoy.md#default-retry-policy)\.
+A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\. If you don't define a retry policy, then App Mesh may automatically create a default policy for each of your routes\. For more information, see [Default route retry policy](envoy-defaults.md#default-retry-policy)\.
 + For **Retry timeout**, enter the number of units for the timeout duration\. A value is required if you select any protocol retry event\.
 + For **Retry timeout unit**, select a unit\. A value is required if you select any protocol retry event\.
 + For **Max retries**, enter the maximum number of retry attempts when the request fails\. A value is required if you select any protocol retry event\. We recommend a value of at least two\.
@@ -75,13 +75,16 @@ A retry policy enables clients to protect themselves from intermittent network f
 + Select a **TCP retry event**\.
 
 ### **\(Optional\) Timeouts**
-+ **Request timeout** – The default is 15 seconds\. If you specified a **Retry policy**, then the duration that you specify here should always be greater than or equal to the retry duration multiplied by the **Max retries** that you defined in the **Retry policy** so that your retry policy can complete\. If you specify a duration greater than 15 seconds, then make sure that the timeout specified for the listener of any virtual node **Target** is also greater than 15 seconds\. For more information, see [Virtual nodes](virtual_nodes.md)\.
-+ **Idle duration** – The maximum amount of time that the route can be idle\.
++ **Request timeout** – The default is 15 seconds\. If you specified a **Retry policy**, then the duration that you specify here should always be greater than or equal to the retry duration multiplied by the **Max retries** that you defined in the **Retry policy** so that your retry policy can complete\.
++ **Idle duration** – The default is 300 seconds\.
+
+**Note**  
+ If you specify a timeout greater than the default, make sure that the timeout specified for the listener for all virtual node participants is also greater than the default\. However, if you decrease the timeout to a value that is lower than the default, it's optional to update the timeouts at virtual nodes\. For more information, see [Virtual Nodes](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html)\.
 
 ### TCP<a name="tcp"></a>
 
 ### **\(Optional\) Timeouts**
-+ **Idle duration** – The maximum amount of time that the route can be idle\.
++ **Idle duration** – The default is 300 seconds\.
 
 ## Deleting a route<a name="delete-route"></a>
 
