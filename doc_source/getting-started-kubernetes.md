@@ -294,7 +294,7 @@ Once the controller has created an App Mesh resource, we recommend that you only
       Namespace:    my-apps
       Labels:       <none>
       Annotations:  kubectl.kubernetes.io/last-applied-configuration:
-                      {"apiVersion":"appmesh.k8s.aws/v1beta2","kind":"VirtualNode","metadata":{"annotations":{},"name":"my-service-a","namespace":"my-app-1"},"s...
+                      {"apiVersion":"appmesh.k8s.aws/v1beta2","kind":"VirtualNode","metadata":{"annotations":{},"name":"my-service-a","namespace":"my-apps"},"s...
       API Version:  appmesh.k8s.aws/v1beta2
       Kind:         VirtualNode
       Metadata:
@@ -332,7 +332,7 @@ Once the controller has created an App Mesh resource, we recommend that you only
 
    1. View the details of the virtual node that the controller created in App Mesh\.
 **Note**  
-Even though the name of the virtual node created in Kubernetes is `my-service-a`, the name of the virtual node created in App Mesh is `my-service-a_my-app-1`\. The controller appends the Kubernetes namespace name to the App Mesh virtual node name when it creates the App Mesh resource\. The namespace name is added because in Kubernetes you can create virtual nodes with the same name in different namespaces, but in App Mesh a virtual node name must be unique within a mesh\.
+Even though the name of the virtual node created in Kubernetes is `my-service-a`, the name of the virtual node created in App Mesh is `my-service-a_my-apps`\. The controller appends the Kubernetes namespace name to the App Mesh virtual node name when it creates the App Mesh resource\. The namespace name is added because in Kubernetes you can create virtual nodes with the same name in different namespaces, but in App Mesh a virtual node name must be unique within a mesh\.
 
       ```
       aws appmesh describe-virtual-node --mesh-name my-mesh --virtual-node-name my-service-a_my-apps
@@ -432,7 +432,7 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
 
       ```
       Name:         my-service-a-virtual-router
-      Namespace:    my-app-1
+      Namespace:    my-apps
       Labels:       <none>
       Annotations:  kubectl.kubernetes.io/last-applied-configuration:
                       {"apiVersion":"appmesh.k8s.aws/v1beta2","kind":"VirtualRouter","metadata":{"annotations":{},"name":"my-service-a-virtual-router","namespac...
@@ -470,7 +470,7 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
       Events:                        <none>
       ```
 
-   1. View the virtual router resource that the controller created in App Mesh\. You specify `my-service-a-virtual-router_my-app-1` for `name`, because when the controller created the virtual router in App Mesh, it appended the Kubernetes namespace name to the name of the virtual router\.
+   1. View the virtual router resource that the controller created in App Mesh\. You specify `my-service-a-virtual-router_my-apps` for `name`, because when the controller created the virtual router in App Mesh, it appended the Kubernetes namespace name to the name of the virtual router\.
 
       ```
       aws appmesh describe-virtual-router --virtual-router-name my-service-a-virtual-router_my-apps --mesh-name my-mesh
@@ -597,10 +597,10 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
 
       ```
       Name:         my-service-a
-      Namespace:    my-app-1
+      Namespace:    my-apps
       Labels:       <none>
       Annotations:  kubectl.kubernetes.io/last-applied-configuration:
-                      {"apiVersion":"appmesh.k8s.aws/v1beta2","kind":"VirtualService","metadata":{"annotations":{},"name":"my-service-a","namespace":"my-app-1"}...
+                      {"apiVersion":"appmesh.k8s.aws/v1beta2","kind":"VirtualService","metadata":{"annotations":{},"name":"my-service-a","namespace":"my-apps"}...
       API Version:  appmesh.k8s.aws/v1beta2
       Kind:         VirtualService
       Metadata:
