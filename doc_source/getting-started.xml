@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent"> 
+    %phrases-shared;
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+]>
+<chapter id="getting-started" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <info>
+        <title id="getting-started.title">Getting started with &MESH;</title>
+        <titleabbrev>Getting started</titleabbrev>
+    </info>
+    <para>You can use &MESH; with applications that you deploy to &ECS;, Kubernetes (that you deploy to
+        your own &EC2; instances or running on &EKS;), and &EC2;. To get started with &MESH;, select one of the services that you have applications deployed to that you want to use with &MESH;. You can always enable applications in the other services to also work with &MESH; after you complete one of the Getting started guides.</para>
+    <para role="topiclist"/>
+    <xi:include href="getting-started-ecs.xml"/>
+    <xi:include href="getting-started-kubernetes.xml"/>
+    <xi:include href="getting-started-ec2.xml"/>
+    <xi:include href="roadmap.xml"/>
+    <xi:include href="examples.xml"/>
+</chapter>

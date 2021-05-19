@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+    %phrases-shared;
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+]>
+<section id="jaeger">
+    <info>
+        <title id="jaeger.title">Jaeger for &MESH; with &EKS;</title>
+        <titleabbrev>Jaeger</titleabbrev>
+    </info>
+    <para>Jaeger is an open source, end to end distributed tracing system. It can be used to profile
+        networks and for monitoring. Jaeger can also help you troubleshoot complex cloud native
+        applications.</para>
+    <para>To implement Jaeger into your application code, you can find the guide specific to your
+        language in the Jaeger documentation <ulink
+            url="https://www.jaegertracing.io/docs/1.21/client-libraries/">tracing
+        libraries</ulink>.</para>
+    <section id="installing-jaeger">
+        <info>
+            <title id="installing-jaeger.title">Installing Jaeger using Helm</title>
+        </info>
+        <procedure>
+            <step>
+                <para>Add the EKS repository to Helm:</para>
+                <programlisting>helm repo add eks https://aws.github.io/eks-charts</programlisting>
+            </step>
+            <step>
+                <para>Install &MESH; Jaeger</para>
+                <programlisting>
+helm upgrade -i appmesh-jaeger eks/appmesh-jaeger \
+--namespace appmesh-system
+                </programlisting>
+            </step>
+        </procedure>
+    </section>
+    <section id="jaeger-sample">
+        <info>
+            <title id="jaeger-sample.title">Jaeger Example</title>
+        </info>
+        <para>The following is an example of creating a <code>PersistentVolumeClaim</code> for
+            Jaeger persistent storage.</para>
+        <programlisting>
+helm upgrade -i appmesh-controller eks/appmesh-controller \
+--namespace appmesh-system \
+--set tracing.enabled=true \
+--set tracing.provider=jaeger \
+--set tracing.address=appmesh-jaeger.appmesh-system \
+--set tracing.port=9411
+        </programlisting>
+    </section>
+    <section id="jaeger-walkthrough">
+        <info>
+            <title id="jaeger-walkthrough.title">Walkthrough for using the Jaeger</title>
+        </info>
+        <itemizedlist>
+
+            <listitem>
+                <para><ulink
+                        url="https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/eks/o11y-jaeger.md"
+                        >App Mesh with EKS—Observability: Jaeger</ulink></para>
+            </listitem>
+        </itemizedlist>
+    </section>
+    <section id="jaeger-eks">
+        <info>
+            <title id="jaeger-eks.title">To learn more about Jaeger</title>
+        </info>
+        <itemizedlist>
+
+            <listitem>
+                <para><ulink url="https://www.jaegertracing.io/">Jaeger Documentation</ulink></para>
+            </listitem>
+        </itemizedlist>
+    </section>
+</section>

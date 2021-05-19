@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+    %phrases-shared;
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+]>
+<section id="prometheus">
+    <info>
+        <title id="prometheus.title">Prometheus for &MESH; with &EKS;</title>
+        <titleabbrev>Prometheus</titleabbrev>
+    </info>
+    <para>Prometheus is an open-source monitoring and alerting toolkit. One of its capabilities is
+        to specify a format for emitting metrics that can be consumed by other systems. For more
+        information about Prometheus, see <ulink
+            url="https://prometheus.io/docs/introduction/overview/">Overview</ulink> in the
+        Prometheus documentation. Envoy can emit its metrics via its stats endpoint by passing in
+        the parameter <code>/stats?format=prometheus</code>.</para>
+    <section id="installing-prometheus">
+        <info>
+            <title id="installing-prometheus.title">Installing Prometheus</title>
+        </info>
+        <procedure>
+            
+            <step>
+                <para>Add the EKS repository to Helm:</para>
+                <programlisting>helm repo add eks https://aws.github.io/eks-charts</programlisting>
+            </step>
+            <step>
+                <para>Install &MESH; Prometheus</para>
+                <programlisting>
+helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
+--namespace appmesh-system
+                </programlisting>
+            </step>
+        </procedure>
+    </section>
+    <section id="prometheus-sample">
+        <info>
+            <title id="prometheus-sample.title">Prometheus Example</title>
+        </info>
+        <para>The following is an example of creating a <code>PersistentVolumeClaim</code> for Prometheus persistent storage.</para>
+        <programlisting>
+helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
+--namespace appmesh-system \
+--set retention=12h \
+--set persistentVolumeClaim.claimName=prometheus
+        </programlisting>
+    </section>
+    <section id="prometheus-walkthrough">
+        <info>
+            <title id="prometheus-walkthrough.title">Walkthrough for using the Prometheus</title>
+        </info>
+        <itemizedlist>
+            
+            <listitem>
+                <para><ulink
+                        url="https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/eks/o11y-prometheus.md"
+                        >App Mesh with EKS—Observability: Prometheus</ulink></para>
+            </listitem>
+        </itemizedlist>
+    </section>
+    <section id="prometheus-eks">
+        <info>
+            <title id="prometheus-eks.title">To learn more about Prometheus and Prometheus with &EKS;</title>
+        </info>
+        <itemizedlist>
+            
+            <listitem>
+                <para><ulink url="https://prometheus.io/docs/introduction/overview/">Prometheus
+                    Documentation</ulink></para>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">EKS -</emphasis>
+                    <ulink url="https://docs.aws.amazon.com/eks/latest/userguide/prometheus.html"
+                        >Control plane metrics with Prometheus</ulink></para>
+            </listitem>
+        </itemizedlist>
+    </section>
+</section>

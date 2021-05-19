@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+   
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent"> 
+    %phrases-shared;     
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+
+<!ENTITY SERVICENAMElong '&MESHlong;'>
+<!ENTITY SERVICENAME '&MESH;'>     
+]>
+
+<!--TODO: REPLACE SERVICE NAME ENTITIES WITH REAL SERVICE NAME-->
+<!--The text in this template has been approved by the security and compliance team, therefore we highly recommend that you use this text as-is. However, if you have good reason to alter the wording for your specific service, you can.--> 
+
+<section id="compliance" role="topic">
+    <info>
+        <title id="compliance.title">Compliance validation for &SERVICENAMElong;</title>
+        <titleabbrev>Compliance validation</titleabbrev>
+        <abstract>
+            <para>Learn what &AWS; services are in scope of a specific compliance program.</para>
+        </abstract>
+    </info>
+    &ComplianceIntro;
+    &ComplianceResources;
+</section>

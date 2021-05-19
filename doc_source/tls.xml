@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+    %phrases-shared;
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+]>
+<section role="topic" id="tls">
+    <info>
+        <title id="tls.title">Transport Layer Security (TLS)</title>
+        <titleabbrev>Transport Layer Security (TLS)</titleabbrev>
+    </info>
+    <para>In &MESH;, Transport Layer Security (TLS) encrypts communication between the Envoy proxies
+        deployed on compute resources that are represented in &MESH; by &collective-resource-name;s,
+        such as <link linkend="virtual_nodes" endterm="virtual_nodes.title"/> and <link
+            linkend="virtual_gateways" endterm="virtual_gateways.title"/>. The proxy negotiates and
+        terminates TLS. When the proxy is deployed with an application, your application code is not
+        responsible for negotiating a TLS session. The proxy negotiates TLS on your application's
+        behalf. </para>
+    <para>&MESH; allows you to provide the TLS certificate to the proxy in the following
+        ways:</para>
+    <itemizedlist>
+        <listitem>
+            <para>A private certificate from &ACMlong; (&ACM;) that is issued by an &PCAlong;
+                (&PCA;).</para>
+        </listitem>
+        <listitem>
+            <para>A certificate stored on the local file system of a virtual node that is issued by
+                your own certificate authority (CA) </para>
+        </listitem>
+        <listitem>
+            <para>A certificate provided by a Secrets Discovery Service (SDS) endpoint over local Unix Domain Socket.</para>
+        </listitem>
+    </itemizedlist>
+    <para><link linkend="proxy-authorization" endterm="proxy-authorization.title"/> must be enabled
+        for the deployed Envoy proxy represented by a &collective-resource-name;. We recommend that
+        when you enable proxy authorization, you restrict access to only the
+        &collective-resource-name; that you're enabling encryption for.</para>
+    <section id="virtual-node-tls-prerequisites">
+        <info>
+            <title id="virtual-node-tls-prerequisites.title">Certificate requirements</title>
+        </info>
+        <para>One of the Subject Alternative Names (SANs) on the certificate must match specific
+            criteria, depending on how the actual service represented by a mesh endpoint is
+            discovered. </para>
+        <itemizedlist>
+            <listitem>
+                <para><emphasis role="bold">DNS</emphasis> &endash; One of the certificate SANs must
+                    match the value provided in the DNS service discovery settings. For an
+                    application with the service discovery name
+                            <code><replaceable>mesh-endpoint.apps.local</replaceable></code>, you
+                    can create a certificate matching that name, or a certificate with the wild card
+                            <code>*.<replaceable>apps.local</replaceable></code>.</para>
+
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">&CMAPlong;</emphasis> &endash; One of the certificate
+                    SANs must match the value provided in the &CMAP; service discovery settings
+                    using the format
+                        <code><replaceable>service-name.namespace-name</replaceable></code>. For an
+                    application with the &CMAP; service discovery settings of serviceName
+                            <code><replaceable>mesh-endpoint</replaceable></code> and the
+                    namespaceName <code><replaceable>apps.local</replaceable></code>, you can create
+                    a certificate matching the name
+                            <code><replaceable>mesh-endpoint.apps.local</replaceable></code>, or a
+                    certificate with the wild card
+                        <code>*.<replaceable>apps.local</replaceable>.</code></para>
+            </listitem>
+        </itemizedlist>
+        <para>For both discovery mechanisms, if none of the certificate SANs match the DNS service
+            discovery settings, the connection between Envoys fails with the following error
+            message, as seen from the client Envoy. </para>
+        <programlisting role="nocopy">TLS error: 268435581:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED</programlisting>
+    </section>
+    <section id="authentication-certificates">
+        <info>
+            <title id="authentication-certificates.title">TLS authentication certificates</title>
+        </info>
+        <para>&MESH; supports multiple sources for certificates when using TLS
+            authentication.</para>
+        <variablelist role="termdef">
+            <varlistentry>
+                <term>&PCA;</term>
+                <listitem>
+                    <para>The certificate must be stored in &ACM; in the same Region and &AWS; account
+                        as the &collective-resource-name; that will use the certificate. The CA's
+                        certificate does not need to be in the same &AWS; account, but it does still
+                        need to be in the same Region as the &collective-resource-name;. If you
+                        don't have an &PCAshort;, then you must <ulink type="documentation"
+                            url="acm-pca/latest/userguide/PcaCreateCa.html">create one</ulink>
+                        before you can request a certificate from it. For more information about
+                        requesting a certificate from an existing &PCA; using &ACM;, see <ulink
+                            type="documentation"
+                            url="acm/latest/userguide/gs-acm-request-private.html">Request a Private
+                            Certificate</ulink>. The certificate cannot be a public
+                        certificate.</para>
+                    <para>The private CAs that you use for TLS client policies must be root
+                        CAs.</para>
+                    <para>To configure a virtual node with certificates and CAs from &PCA;, the
+                        principal (such as a user or role) that you use to call &MESH; must have the
+                        following &IAM; permissions: </para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>For any certificates that you add to a listener's TLS
+                                configuration, the principal must have the
+                                    <code>acm:DescribeCertificate</code> permission.</para>
+                        </listitem>
+                        <listitem>
+                            <para>For any CAs configured on a TLS client policy, the principal must
+                                have the <code>acm-pca:DescribeCertificateAuthority</code>
+                                permission.</para>
+                        </listitem>
+                    </itemizedlist>
+                    <important>
+                        <para>Sharing CAs with other accounts may give those accounts unintended
+                            privileges to the CA. We recommend using resource-based policies to
+                            restrict access to just
+                                <code>acm-pca:DescribeCertificateAuthority</code> and
+                                <code>acm-pca:GetCertificateAuthorityCertificate</code> for accounts
+                            that do not need to issue certificates from the CA.</para>
+                    </important>
+                    <para>You can add these permissions to an existing &IAM; policy that is attached
+                        to a principal or create a new principal and policy and attach the policy to
+                        the principal. For more information, see <ulink type="documentation"
+                            url="IAM/latest/UserGuide/access_policies_manage-edit.html">Editing IAM
+                            Policies</ulink>, <ulink type="documentation"
+                            url="IAM/latest/UserGuide/access_policies_create-console.html">Creating
+                            &IAM; Policies</ulink>, and <ulink type="documentation"
+                            url="IAM/latest/UserGuide/access_policies_manage-attach-detach.html#add-policies-console"
+                            >Adding IAM Identity Permissions</ulink>.</para>
+                    <note>
+                        <para>You pay a monthly fee for the operation of each &PCA; until you delete
+                            it. You also pay for the private certificates you issue each month and
+                            private certificates that you export. For more information, see <ulink
+                                type="marketing" url="/certificate-manager/pricing/">&ACMlong;
+                                Pricing</ulink>.</para>
+                    </note>
+                    <para>When you enable <link linkend="proxy-authorization">proxy
+                            authorization</link> for the Envoy Proxy that a
+                        &collective-resource-name; represents, the &IAM; role that you use must be
+                        assigned the following &IAM; permissions:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>For any certificates configured on a virtual node’s listener, the
+                                role must have the <code>acm:ExportCertificate</code>
+                                permission.</para>
+                        </listitem>
+                        <listitem>
+                            <para>For any CAs configured on a TLS client policy, the role must have
+                                the <code>acm-pca:GetCertificateAuthorityCertificate</code>
+                                permission.</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>File System</term>
+                <listitem>
+                    <para>You can distribute certificates to Envoy using the file system. You can do
+                        this by making the certificate chain and the corresponding private key
+                        available on the file path. That way, these resources are reachable from the
+                        Envoy sidecar proxy. </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Envoy’s Secret Discovery Service (SDS)</term>
+                <listitem>
+                    <para>Envoy fetches secrets like TLS certificates from a specific endpoint
+                        through the Secrets Discovery protocol. For more information about this
+                        protocol, see Envoy's <ulink
+                            url="https://www.envoyproxy.io/docs/envoy/latest/configuration/security/secret"
+                            >SDS documentation</ulink>.</para>
+                    <para>App Mesh configures the Envoy proxy to use a Unix Domain Socket that's
+                        local to the proxy to serve as the Secret Discovery Service (SDS) endpoint
+                        when SDS serves as the source for your certificates and certificate chains.
+                        You can configure the path to this endpoint by using the
+                            <code>APPMESH_SDS_SOCKET_PATH</code> environment variable.</para>
+                    <important>
+                        <para>Local Secrets Discovery Service using Unix Domain Socket is supported
+                            on &MESH; Envoy proxy version 1.15.1.0 and later.</para>
+                        <para>&MESH; supports V2 SDS protocol using gRPC.</para>
+                    </important>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Integrating with SPIFFE Runtime Environment (SPIRE)</term>
+                <listitem>
+                    <para>You can use any sidecar implementation of the SDS API, including existing
+                        toolchains like <ulink url="https://github.com/spiffe/spire">SPIFFE Runtime
+                            Environment (SPIRE)</ulink>. SPIRE is designed to enable the deployment
+                        of mutual TLS authentication between multiple workloads in distributed
+                        systems. It attests the identity of workloads at runtime. SPIRE also
+                        delivers workload-specific, short-lived, and automatically rotating keys and
+                        certificates directly to workloads.</para>
+                    <para>You should configure the SPIRE Agent as an SDS provider for Envoy. Allow
+                        it to directly supply Envoy with the key material that it needs to provide
+                        mutual TLS authentication. Run SPIRE Agents in sidecars next to Envoy
+                        proxies. The Agent takes care of re-generating the short-lived keys and
+                        certificates as required. The Agent attests Envoy and determines which
+                        service identities and CA certificates that it should make available to
+                        Envoy when Envoy connects to the SDS server exposed by the SPIRE
+                        Agent.</para>
+                    <para>During this process, service identities and CA certificates are rotated,
+                        and updates are streamed back to Envoy. Envoy immediately applies them to
+                        new connections without any interruptions or downtime and without the
+                        private keys ever touching the file system.</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>&ACMlong;&endash; &PCAlong; (&PCA;) can be used along side SPIRE
+                                to serve as an upstream Certificate Authority. By using a Private
+                                Certificate Authority (PCA), private keys for the CAs are hardware
+                                based and not stored in the memory or on the disk. This adds an
+                                additional layer of security. For more information, see the <ulink
+                                    url="https://github.com/spiffe/spire/blob/master/doc/plugin_server_upstreamauthority_aws_pca.md"
+                                    >SPIRE documentation</ulink>.</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </section>
+    <section id="envoy-configuration-tls">
+        <info>
+            <title id="envoy-configuration-tls.title">How &MESH; configures Envoys to negotiate
+                TLS</title>
+        </info>
+        <para>&MESH; uses the &collective-resource-name; configuration of both the client and server
+            when determining how to configure the communication between Envoys in a mesh.</para>
+        <variablelist role="termdef">
+            <varlistentry>
+                <term>With client policies</term>
+                <listitem>
+                    <para>When a client policy is enforcing the use of TLS, and one of the ports in
+                        the client policy matches the port of the server's policy, the client policy
+                        is used to configure the TLS validation context of the client. For example,
+                        if a virtual gateway's client policy matches a virtual node's server policy,
+                        TLS negotiation will be attempted between the proxies using the settings
+                        defined in the virtual gateway's client policy. If the client policy does
+                        not match the port of the server's policy, TLS between the proxies may or
+                        may not be negotiated, depending on the server policy's TLS settings.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Without client policies</term>
+                <listitem>
+                    <para>If the client has not configured a client policy, or the client policy
+                        does not match the port of the server, &MESH; will use the server to
+                        determine whether or not to negotiate TLS from the client, and how. For
+                        example, if a virtual gateway has not specified a client policy, and a
+                        virtual node has not configured TLS termination, TLS will not be negotiated
+                        between the proxies. If a client has not specified a matching client policy,
+                        and a server has been configured with TLS modes <code>STRICT</code> or
+                            <code>PERMISSIVE</code>, the proxies will be configured to negotiate
+                        TLS. Depending on how the certificates have been provided for TLS
+                        termination, the following additional behavior applies.</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para><emphasis role="bold">&ACM;-managed TLS certificates</emphasis>
+                                &endash; When a server has configured TLS termination using an
+                                &ACM;-managed certificate, &MESH; automatically configures clients
+                                to negotiate TLS and validate the certificate against the root CA
+                                that the certificate chains up to.</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">File-based TLS certificates</emphasis>
+                                &endash; When a server has configured TLS termination using a
+                                certificate from the proxy's local file system, &MESH; automatically
+                                configures a client to negotiate TLS, but the certificate of the
+                                server is not validated.</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Subject alternative names</term>
+                <listitem>
+                    <para>You can optionally specify a list of Subject Alternative Names (SANs) to
+                        trust. SANs must be in the FQDN or URI format. If SANs are provided, Envoy
+                        verifies that the Subject Alternative Name of the presented certificate
+                        matches one of the names on this list.</para>
+                    <para>If you don't specify SANs on the terminating mesh endpoint, the Envoy
+                        proxy for that node doesn't verify the SAN on a peer client certificate. If
+                        you don't specify SANs on the originating mesh endpoint, the SAN on the
+                        certificate provided by the terminating endpoint must match the mesh
+                        endpoint service discovery configuration.</para>
+                    <para>For more information, see &MESH; <ulink
+                            url="https://docs.aws.amazon.com/app-mesh/latest/userguide/tls.html#virtual-node-tls-prerequisites"
+                            >TLS: Certificate requirements</ulink>.</para>
+                    <important>
+                        <para>&MESH; doesn't support wildcard DNS SANs. You need to provide exact
+                            names of the endpoints.</para>
+                    </important>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </section>
+    <section id="verify-encryption">
+        <info>
+            <title id="verify-encryption.title">Verify encryption</title>
+        </info>
+        <para>Once you've enabled TLS, you can query the Envoy proxy to confirm that communication
+            is encrypted. The Envoy proxy emits statistics on resources that can help you understand
+            if your TLS communication is working properly. For example, the Envoy proxy records
+            statistics on the number of successful TLS handshakes it has negotiated for a specified
+            &collective-resource-name;. Determine how many successful TLS handshakes there were for
+            a &collective-resource-name; named
+                <code><replaceable>my-mesh-endpoint</replaceable></code> with the following
+            command.</para>
+        <programlisting><userinput>curl -s 'http://<replaceable>my-mesh-endpoint.apps.local</replaceable>:9901/stats' | grep ssl.handshake</userinput></programlisting>
+        <para>In the following example returned output, there were three handshakes for the
+            &collective-resource-name;, so communication is encrypted.</para>
+        <programlisting role="nocopy">listener.0.0.0.0_15000.ssl.handshake: 3</programlisting>
+        <para>The Envoy proxy also emits statistics when TLS negotiation is failing. Determine
+            whether there were TLS errors for the &collective-resource-name;.</para>
+        <programlisting><userinput>curl -s 'http://<replaceable>my-mesh-endpoint.apps.local</replaceable>:9901/stats' | grep -e "ssl.*\(fail\|error\)"</userinput></programlisting>
+        <para>In the example returned output, there were zero errors for several statistics, so the
+            TLS negotiation succeeded.</para>
+        <programlisting role="nocopy">listener.0.0.0.0_15000.ssl.connection_error: 0
+listener.0.0.0.0_15000.ssl.fail_verify_cert_hash: 0
+listener.0.0.0.0_15000.ssl.fail_verify_error: 0
+listener.0.0.0.0_15000.ssl.fail_verify_no_cert: 0
+listener.0.0.0.0_15000.ssl.ssl.fail_verify_san: 0</programlisting>
+        <para>For more information about Envoy TLS statistics, see <ulink
+                url="https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/stats"
+                >Envoy Listener Statistics</ulink>.</para>
+    </section>
+    <section id="certificate-renewal">
+        <info>
+            <title id="certificate-renewal.title">Certificate renewal</title>
+        </info>
+        <formalpara>
+            <title>&PCA;</title>
+            <para>When you renew a certificate with &ACM;, the renewed certificate will be
+                automatically distributed to your connected proxies within 35 minutes of the renewal
+                completion. We recommend using managed renewal to automatically renew certificates
+                nearing the end of their validity period. For more information, see <ulink
+                    type="documentation" url="acm/latest/userguide/managed-renewal.html">Managed
+                    Renewal for ACM's Amazon-Issued Certificates</ulink> in the &ACMlong; User
+                Guide.</para>
+        </formalpara>
+        <formalpara>
+            <title>Your own certificate</title>
+            <para>When using a certificate from the local file system, Envoy will not automatically
+                reload the certificate when it changes. You may either restart or redeploy the Envoy
+                process to load a new certificate. You can also place a newer certificate at a
+                different file path and update the virtual node or gateway configuration with that
+                file path.</para>
+        </formalpara>
+    </section>
+    <section id="mtls-configure-ecs">
+        <info>
+            <title id="mtls-configure-ecs.title">Configure &ECS; workloads to use TLS authentication
+                with &MESHlong;</title>
+        </info>
+        <para>You can configure your mesh to use TLS authentication. Make sure that the certificates
+            are available to Envoy proxy sidecars that you add to your workloads. You can attach an
+            EBS or EFS volume to your Envoy sidecar, or you can store and retrieve certificates from
+            &AWS; &ASMshort;.</para>
+        <itemizedlist>
+            <listitem>
+                <para>If you use file-based certificate distribution, attach an EBS or EFS volume to
+                    your Envoy sidecar. Make sure that the path to the certificate and private key
+                    matches the one that is configured in &MESHlong;.</para>
+            </listitem>
+            <listitem>
+                <para>If you're using SDS-based distribution, add a sidecar that implements Envoy’s
+                    SDS API with access to the certificate.</para>
+            </listitem>
+        </itemizedlist>
+        <note>
+            <para>SPIRE is not supported on &ECS;.</para>
+        </note>
+    </section>
+    <section id="mtls-configure-kubernetes ">
+        <info>
+            <title id="mtls-configure-kubernetes.title">Configure Kubernetes workloads to use TLS
+                authentication with &MESHlong;</title>
+        </info>
+        <para>You can configure the &MESHlong; Controller for Kubernetes to enable TLS
+            authentication for virtual node and virtual gateway service backends and listeners. Make
+            sure that the certificates are available to the Envoy proxy sidecars that you add to
+            your workloads. You can see an example for each distribution type in the <ulink
+                url="https://docs.aws.amazon.com/app-mesh/latest/userguide/mutual-tls.html#mtls-walkthrough"
+                >walkthrough</ulink> section of Mutual TLS Authentication.</para>
+        <itemizedlist>
+            <listitem>
+                <para>If you use file-based certificate distribution, attach an EBS or EFS volume to
+                    your Envoy sidecar. Make sure that the path to the certificate and private key
+                    matches the one configured in the controller. Alternatively, you can use a
+                    Kubernetes Secret that is mounted on the file system.</para>
+            </listitem>
+            <listitem>
+                <para>If you’re using SDS-based distribution, you should setup a node local SDS
+                    provider that implements Envoy’s SDS API. Envoy will reach it over UDS. To
+                    enable SDS based mTLS support in the EKS AppMesh controller, set the
+                        <code>enable-sds</code> flag to <code>true</code> and provide the local SDS
+                    provider’s UDS path to the controller via the <code>sds-uds-path</code> flag. If
+                    you use helm, you set these as part of your controller installation:
+                    </para>
+                <programlisting>--set sds.enabled=true</programlisting>
+            </listitem>
+        </itemizedlist>
+        <note>
+            <para>You won't be able to use SPIRE to distribute your certificates if you're using
+                &EKSlong; (&EKS;) in &FARGATE; mode.</para>
+        </note>
+    </section>
+</section>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+<!--    <!ENTITY % phrases-s3 SYSTEM "../shared/phrases-s3.ent"> 
+    %phrases-s3; -->
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent"> 
+    %phrases-shared;     
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+
+<!ENTITY SERVICENAMElong '&MESHlong;'>
+<!ENTITY SERVICENAME '&MESH;'>  
+]>
+
+<!--The text in this template has been approved by the security and compliance team, therefore we highly recommend that you use this text as-is. However, if you have good reason to alter the wording for your specific service, you can.--> 
+
+<section id="infrastructure-security" role="topic">
+   <info>
+      <title id="infrastructure-security.title">Infrastructure security in &SERVICENAME;</title>
+      <titleabbrev>Infrastructure security</titleabbrev>
+      <abstract>
+         <para>Learn how &SERVICENAME; isolates service traffic.</para>
+      </abstract>
+   </info>
+   <para>As a managed service, &SERVICENAME; is protected by the &AWS; global network security
+      procedures that are described in the <ulink
+         url="https://d0.awsstatic.com/whitepapers/Security/AWS_Security_Whitepaper.pdf">&AWSlong;:
+         Overview of Security Processes</ulink> paper.</para>
+   <para>You use &AWS; published API calls to access &SERVICENAME; through the network. Clients must
+      support Transport Layer Security (TLS) 1.0 or later. We recommend TLS 1.2 or later. Clients
+      must also support cipher suites with perfect forward secrecy (PFS) such as Ephemeral
+      Diffie-Hellman (DHE) or Elliptic Curve Ephemeral Diffie-Hellman (ECDHE). Most modern systems
+      such as Java 7 and later support these modes.</para>
+   <para>Additionally, requests must be signed by using an access key ID and a secret access key
+      that is associated with an &IAM; principal. Or you can use the <ulink type="documentation"
+         url="STS/latest/APIReference/Welcome.html">&STSlong;</ulink> (&STS;) to generate temporary
+      security credentials to sign requests.</para>
+   <!--TODO: Does your service support resource-based access policies, which can include restrictions based on the source IP address? If yes, add the following-->
+   <!--Ideally, add an example. For example, see http://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies-vpc-endpoint.html. -->
+   <!--
+    <para>You can call these API operations from any network location, but &SERVICENAME; does support resource-based access policies, which can include restrictions based on the source IP address. You can also use &SERVICENAME; policies to control access from specific Amazon Virtual Private Cloud (Amazon VPC) endpoints or specific VPCs. Effectively, this isolates network access to a given &SERVICENAME; resource from only the specific VPC within the &AWS; network.</para>
+    -->
+   <para>The Envoy proxy is deployed with a microservice application that is running on an &AWS;
+      compute service. Each of the compute services are deployed within an &VPC;.</para>
+
+   <para>You can improve the security posture of your VPC by configuring &MESH; to use an interface
+      VPC endpoint. For more information, see
+         <link linkend="vpc-endpoints" endterm="vpc-endpoints.title"/>.</para>
+   <xi:include href="vpc-endpoints.xml"/>
+</section>

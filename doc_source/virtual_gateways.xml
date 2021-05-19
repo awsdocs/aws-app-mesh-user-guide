@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+    %phrases-shared;
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+]>
+<section role="topic" id="virtual_gateways">
+    <info>
+        <title id="virtual_gateways.title">Virtual gateways</title>
+    </info>
+    <para>A virtual gateway allows resources that are outside of your mesh to communicate to
+        resources that are inside of your mesh. The virtual gateway represents an Envoy proxy
+        running in an &ECS; service, in a Kubernetes service, or on an &EC2; instance. Unlike a
+        virtual node, which represents Envoy running with an application, a virtual gateway
+        represents Envoy deployed by itself. </para>
+    <para>External resources must be able to resolve a DNS name to an IP address assigned to the
+        service or instance that runs Envoy. Envoy can then access all of the &MESH; configuration
+        for resources that are inside of the mesh. The configuration for handling the incoming
+        requests at the Virtual Gateway are specified using <ulink
+            url="https://docs.aws.amazon.com/app-mesh/latest/userguide/gateway-routes.html">Gateway
+            Routes</ulink>.</para>
+    <important>
+        <para>A virtual gateway with a HTTP or HTTP2 listener rewrites the incoming request's
+            hostname to the Gateway Route target Virtual Service's name, and the matched prefix from
+            the Gateway Route is rewritten to <code>/</code>, by default. For example, if you have
+            configured the Gateway route match prefix to <code>/chapter</code>, and, if the incoming
+            request is <code>/chapter/1</code>, the request would be rewritten to <code>/1</code>.
+            For more details, refer to the <ulink
+                url="https://docs.aws.amazon.com/app-mesh/latest/userguide/gateway-routes.html#create-gateway-route"
+                >Creating a gateway route</ulink> section from Gateway Routes.</para>
+    </important>
+    <para>To complete an end-to-end walkthrough, see <ulink
+            url="https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-ingress-gateway"
+            >Configuring Inbound Gateway</ulink>.</para>
+    <section id="create-virtual-gateway">
+        <info>
+            <title id="create-virtual-gateway.title">Creating a virtual gateway</title>
+        </info>
+        <procedure>
+            <title>To create a virtual gateway using the &console;</title>
+            <note>
+                <para>When creating a Virtual Gateway, you must add a namespace selector with a
+                    label to identify the list of namespaces to associate Gateway Routes to the
+                    created Virtual Gateway.</para>
+            </note>
+            <para> To create a virtual gateway using the &CLI; version &aws_cli_min_version; or
+                higher, see the &CLI; reference for the <ulink type="documentation"
+                    url="cli/latest/reference/appmesh/create-virtual-gateway.html"
+                    >create-virtual-gateway</ulink> command.</para>
+            <step>
+                <para>&MESHConsoleSwitch;</para>
+            </step>
+            <step>
+                <para>Choose the mesh that you want to create the virtual gateway in. All of the
+                    meshes that you own and that have been <link linkend="sharing">shared</link>
+                    with you are listed.</para>
+            </step>
+            <step>
+                <para>Choose <guilabel>Virtual gateways</guilabel> in the left navigation.</para>
+            </step>
+            <step>
+                <para>Choose <guilabel>Create virtual gateway</guilabel>.</para>
+            </step>
+            <step>
+                <para>For <guilabel>Virtual gateway name</guilabel>, enter a name for your virtual
+                    gateway.</para>
+            </step>
+            <step>
+                <para>(Optional, but recommended) Configure <guilabel>Client policy
+                        defaults</guilabel>.</para>
+                <substeps>
+                    <step>
+                        <para>(Optional) Select <guilabel>Enforce TLS</guilabel> if you want the
+                            gateway to only communicate with virtual services using Transport Layer
+                            Security (TLS).</para>
+                    </step>
+                    <step>
+                        <para>(Optional) For <guilabel>Ports</guilabel>, specify one or more ports
+                            that you want to enforce TLS communication with virtual services
+                            on.</para>
+                    </step>
+                    <step>
+                        <para>For <guilabel>Validation method</guilabel>, select one of the
+                            following options. The certificate that you specify must already exist
+                            and meet specific requirements. For more information, see <xref
+                                linkend="virtual-node-tls-prerequisites"
+                                endterm="virtual-node-tls-prerequisites.title"/>.</para>
+                        <itemizedlist>
+                            <listitem>
+                                <para><emphasis role="bold">&PCAlong;</emphasis> hosting &endash;
+                                    Select one or more existing
+                                    <guilabel>Certificates</guilabel>.</para>
+                            </listitem>
+                            <listitem>
+                                <para><emphasis role="bold">Envoy Secret Discovery Service
+                                        (SDS)</emphasis> hosting &endash; Enter the name of the
+                                    secret Envoy will fetch using the Secret Discovery
+                                    Service.</para>
+                            </listitem>
+                            <listitem>
+                                <para><emphasis role="bold">Local file hosting</emphasis> &endash;
+                                    Specify the path to the <guilabel>Certificate chain</guilabel>
+                                    file on the file system where Envoy is deployed.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </step>
+                    <step>
+                        <para>(Optional) Enter a <guilabel>Subject Alternative Name</guilabel>. To
+                            add additional SANs, select <guilabel>Add SAN</guilabel>. SANs must be
+                            FQDN or URI formatted.</para>
+                    </step>
+                    <step>
+                        <para>(Optional) Select <emphasis role="bold">Provide client
+                                certificate</emphasis> and one of the options below to provide a
+                            client certificate when a server requests it and enable mutual TLS
+                            authentication. To learn more about mutual TLS, see the &MESH; <ulink
+                                url="https://docs.aws.amazon.com/app-mesh/latest/userguide/mutual-tls.html"
+                                >Mutual TLS Authentication</ulink> docs.</para>
+                        <itemizedlist>
+                            <listitem>
+                                <para><emphasis role="bold">Envoy Secret Discovery Service
+                                        (SDS)</emphasis> hosting &endash; Enter the name of the
+                                    secret Envoy will fetch using the Secret Discovery
+                                    Service.</para>
+                            </listitem>
+                            <listitem>
+                                <para><emphasis role="bold">Local file hosting</emphasis> &endash;
+                                    Specify the path to the <guilabel>Certificate chain</guilabel>
+                                    file, as well as the <guilabel>Private key</guilabel>, on the
+                                    file system where Envoy is deployed. For a complete, end-to-end
+                                    walk through of deploying a mesh with a sample application using
+                                    encryption with local files, see <ulink
+                                        url="https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-tls-file-provided"
+                                        >Configuring TLS with File Provided TLS Certificates</ulink>
+                                    on GitHub.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </step>
+                    <step>
+                        <para>Specify a <guilabel>Port</guilabel> and <guilabel>Protocol</guilabel>
+                            for the <guilabel>Listener</guilabel>. Each virtual gateway can have
+                            only one port and protocol specified. If you need the virtual gateway to
+                            route traffic over multiple ports and protocols, then you must create a
+                            virtual gateway for each port or prototol.</para>
+                    </step>
+                </substeps>
+            </step>
+            <step minimized="true">
+                <para>(Optional) To configure logging, selected <guilabel>Logging</guilabel>. Enter
+                    the <guilabel>HTTP access logs path</guilabel> that you want Envoy to use. We
+                    recommend the <filename>/dev/stdout</filename> path so that you can use Docker
+                    log drivers to export your Envoy logs to a service such as &CWLlong;.</para>
+                <note>
+                    <para>Logs must still be ingested by an agent in your application and sent to a
+                        destination. This file path only instructs Envoy where to send the logs.
+                    </para>
+                </note>
+            </step>
+            <step>
+                <para>Configure the <guilabel>Listener</guilabel>.</para>
+                <substeps>
+                    <step>
+                        <para>Select a <guilabel>Protocol</guilabel> and specify the
+                                <guilabel>Port</guilabel> that Envoy will listen for traffic on. The
+                                <guilabel>http</guilabel> listener permits connection transition to
+                            websockets.</para>
+                    </step>
+                    <step minimized="true">
+                        <para>(Optional) <guilabel>Enable connection pool</guilabel>
+                        </para>
+                        <para>Connection pooling limits the number of connections that an Envoy can
+                            concurrently establish with all the hosts in the upstream cluster. It is
+                            intended to protect your local application from being overwhelmed with
+                            connections and lets you adjust traffic shaping for the needs of your
+                            applications.</para>
+                        <para>You can configure destination-side connection pool settings for a
+                            virtual gateway listener. &MESH; sets the client-side connection pool
+                            settings to infinite by default, simplifying mesh configuration.</para>
+                        <note>
+                            <para>The connectionPool and portMapping protocols must be the same. If
+                                your listener protocol is grpc or http2, specify maxRequests only.
+                                If your listener protocol is http, you can specify both
+                                maxConnections and maxPendingRequests. </para>
+                        </note>
+                        <itemizedlist>
+                            <listitem>
+                                <para>For <guilabel>Maximum connections</guilabel>, specify the
+                                    maximum number of outbound connections.</para>
+                            </listitem>
+                            <listitem>
+                                <para>For <guilabel>Maximum requests</guilabel>, specify maximum
+                                    number of parallel requests that can occur to the upstream
+                                    cluster.</para>
+                            </listitem>
+                            <listitem>
+                                <para>(Optional) For <guilabel>Maximum pending requests</guilabel>,
+                                    specify the number of overflowing requests after
+                                        <guilabel>Maximum connections</guilabel> that an Envoy will
+                                    queue. The default value is <code>2147483647</code>.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </step>
+                    <step minimized="true">
+                        <para>(Optional) If you want to configure a health check for your listener,
+                            then select <guilabel>Enable health check</guilabel>.</para>
+                        <para>A health check policy is optional, but if you specify any values for a
+                            health policy, then you must specify values for <guilabel>Healthy
+                                threshold</guilabel>, <guilabel>Health check interval</guilabel>,
+                                <guilabel>Health check protocol</guilabel>, <guilabel>Timeout
+                                period</guilabel>, and <guilabel>Unhealthy
+                            threshold</guilabel>.</para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>For <guilabel>Health check protocol</guilabel>, choose a
+                                    protocol. If you select <guilabel>grpc</guilabel>, then your
+                                    service must conform to the <ulink
+                                        url="https://github.com/grpc/grpc/blob/master/doc/health-checking.md"
+                                        >GRPC Health Checking Protocol</ulink>.</para>
+                            </listitem>
+                            <listitem>
+                                <para>For <guilabel>Health check port</guilabel>, specify the port
+                                    that the health check should run on.</para>
+                            </listitem>
+                            <listitem>
+                                <para>For <guilabel>Healthy threshold</guilabel>, specify the number
+                                    of consecutive successful health checks that must occur before
+                                    declaring the listener healthy.</para>
+                            </listitem>
+                            <listitem>
+                                <para>For <guilabel>Health check interval</guilabel>, specify the
+                                    time period in milliseconds between each health check
+                                    execution.</para>
+                            </listitem>
+                            <listitem>
+                                <para>For <guilabel>Path</guilabel>, specify the destination path
+                                    for the health check request. This value is only used if the
+                                        <guilabel>Health check protocol</guilabel> is
+                                        <code>http</code> or <code>http2</code>. The value is
+                                    ignored for other protocols.</para>
+                            </listitem>
+                            <listitem>
+                                <para>For <guilabel>Timeout period</guilabel>, specify the amount of
+                                    time to wait when receiving a response from the health check, in
+                                    milliseconds.</para>
+                            </listitem>
+                            <listitem>
+                                <para>For <guilabel>Unhealthy threshold</guilabel>, specify the
+                                    number of consecutive failed health checks that must occur
+                                    before declaring the listener unhealthy.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </step>
+                    <step minimized="true">
+                        <para>(Optional) If you want to specify whether virtual nodes communicate
+                            with this virtual gateway using TLS, then select <guilabel>Enable TLS
+                                termination</guilabel>.</para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>For <guilabel>Mode</guilabel>, select the mode you want TLS to
+                                    be configured for on the listener.</para>
+                            </listitem>
+                            <listitem>
+                                <para>For <guilabel>Certificate method</guilabel>, select one of the
+                                    following options. The certificate must meet specific
+                                    requirements. For more information, see <xref
+                                        linkend="virtual-node-tls-prerequisites"
+                                        endterm="virtual-node-tls-prerequisites.title"/>.</para>
+                                <itemizedlist>
+                                    <listitem>
+                                        <para><guilabel>&ACMlong; hosting</guilabel> &endash; Select
+                                            an existing <guilabel>Certificate</guilabel>.</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><emphasis role="bold">Envoy Secret Discovery Service
+                                                (SDS)</emphasis> hosting &endash; Enter the name of
+                                            the secret Envoy will fetch using the Secret Discovery
+                                            Service.</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><guilabel>Local file hosting</guilabel> &endash;
+                                            Specify the path to the <guilabel>Certificate
+                                                chain</guilabel> and <guilabel>Private
+                                                key</guilabel> files on the file system where Envoy
+                                            is deployed.</para>
+                                    </listitem>
+                                </itemizedlist>
+                            </listitem>
+                            <listitem>
+                                <para>(Optional) Select <emphasis role="bold">Require client
+                                        certificate</emphasis> and one of the options below to
+                                    enable mutual TLS authentication if the client provides a
+                                    certificate. To learn more about mutual TLS, see the &MESH;
+                                        <ulink
+                                        url="https://docs.aws.amazon.com/app-mesh/latest/userguide/mutual-tls.html"
+                                        >Mutual TLS Authentication</ulink> docs.</para>
+                                <itemizedlist>
+                                    <listitem>
+                                        <para><emphasis role="bold">Envoy Secret Discovery Service
+                                                (SDS)</emphasis> hosting &endash; Enter the name of
+                                            the secret Envoy will fetch using the Secret Discovery
+                                            Service.</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><emphasis role="bold">Local file hosting</emphasis>
+                                            &endash; Specify the path to the <guilabel>Certificate
+                                                chain</guilabel> file on the file system where Envoy
+                                            is deployed.</para>
+                                    </listitem>
+                                </itemizedlist>
+                            </listitem>
+                            <listitem>
+                                <para>(Optional) Enter a <guilabel>Subject Alternative
+                                        Name</guilabel>. To add additional SANs, select
+                                        <guilabel>Add SAN</guilabel>. SANs must be FQDN or URI
+                                    formatted.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </step>
+                </substeps>
+            </step>
+            <step>
+                <para>Choose <guilabel>Create virtual gateway</guilabel> to finish.</para>
+            </step>
+        </procedure>
+    </section>
+    <section id="deploy-virtual-gateway">
+        <info>
+            <title id="deploy-virtual-gateway.title">Deploy virtual gateway</title>
+        </info>
+        <para>Deploy an &ECS; or Kubernetes service that contains only the <link linkend="envoy"
+                >Envoy container</link>. You can also deploy the Envoy container on an &EC2;
+            instance. For more information, see <ulink type="documentation"
+                url="app-mesh/latest/userguide/getting-started-ec2.html">Getting started with &MESH;
+                and &EC2;</ulink>. For more information on how to deploy on &ECS; see <ulink
+                type="documentation" url="app-mesh/latest/userguide/getting-started-ecs.html"
+                >Getting started with &MESH; and &ECS;</ulink> or <ulink type="documentation"
+                url="app-mesh/latest/userguide/getting-started-kubernetes.html">Getting started with
+                &AWS; App Mesh and Kubernetes</ulink> to deploy to Kubernetes. You need to set the
+                <code>APPMESH_RESOURCE_ARN</code> environment variable to
+                    <code>mesh/<replaceable>mesh-name</replaceable>/virtualGateway/<replaceable>virtual-gateway-name</replaceable></code>
+            and you must not specify proxy configuration so that the proxy's traffic doesn't get
+            redirected to itself. By default, &MESH; uses the name of the resource you specified in
+                <code>APPMESH_RESOURCE_ARN</code> when Envoy is referring to itself in metrics and
+            traces. You can override this behavior by setting the <code>APPMESH_RESOURCE_CLUSTER
+            </code>environment variable with your own name.</para>
+        <para>We recommend that you deploy multiple instances of the container and set up a Network
+            Load Balancer to load balance traffic to the instances. The service discovery name of
+            the load balancer is the name that you want external services to use to access resources
+            that are in the mesh, such as <replaceable>myapp.example.com</replaceable>. For more
+            information see <ulink type="documentation"
+                url="AmazonECS/latest/developerguide/create-network-load-balancer.html">Creating a
+                Network Load Balancer</ulink> (&ECS;), <ulink
+                url="https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/"
+                >Creating an External Load Balancer</ulink> (Kubernetes), or <ulink
+                type="documentation" url="AWSEC2/latest/UserGuide/ec2-increase-availability.html"
+                >Tutorial: Increase the availability of your application on &EC2;</ulink>. You can
+            also find more examples and walkthroughs in our <ulink
+                url="https://docs.aws.amazon.com/app-mesh/latest/userguide/examples.html">&MESH;
+                examples</ulink>.</para>
+        <para>Enable proxy authorization for Envoy. For more information, see <link
+                linkend="proxy-authorization" endterm="proxy-authorization.title"/>.</para>
+    </section>
+    <section id="delete-virtual-gateway">
+        <info>
+            <title id="delete-virtual-gateway.title">Deleting a virtual gateway</title>
+        </info>
+        <para>To delete a virtual gateway using the &CLI; version &aws_cli_min_version; or higher,
+            see the &CLI; reference for the <ulink type="documentation"
+                url="cli/latest/reference/appmesh/delete-virtual-gateway.html"
+                    ><code>delete-virtual-gateway</code></ulink> command.</para>
+        <procedure>
+            <title>To delete a virtual gateway using the &console;</title>
+            <step>
+                <para>&MESHConsoleSwitch;</para>
+            </step>
+            <step>
+                <para>Choose the mesh that you want to delete a virtual gateway from. All of the
+                    meshes that you own and that have been <link linkend="sharing">shared</link>
+                    with you are listed.</para>
+            </step>
+            <step>
+                <para>Choose <guilabel>Virtual gateways</guilabel> in the left navigation.</para>
+            </step>
+            <step>
+                <para>Choose the virtual gateway that you want to delete and select
+                        <guilabel>Delete</guilabel>. You cannot delete a virtual gateway if it has
+                    any associated gateway routes. You must delete any associated gateway routes
+                    first. You can only delete a virtual gateway where your account is listed as
+                        <guilabel>Resource owner</guilabel>.</para>
+            </step>
+            <step>
+                <para>In the confirmation box, type <userinput>delete</userinput> and then select
+                        <guilabel>Delete</guilabel>.</para>
+            </step>
+        </procedure>
+    </section>
+    <xi:include href="gateway-routes.xml"/>
+</section>

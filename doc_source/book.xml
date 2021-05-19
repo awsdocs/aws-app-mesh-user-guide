@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+    %phrases-shared;
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+]>
+<book id="top" xmlns:xi="http://www.w3.org/2001/XInclude">
+ <info>
+  <title>&AWS; App Mesh</title>
+  <subtitle>User Guide</subtitle>
+  <abstract>
+   <para>Describes key concepts and provides instructions for using the features of &AWS; App
+    Mesh.</para>
+  </abstract>
+  <!-- <edition>latest</edition> -->
+  <corpauthor>&AWS;</corpauthor>
+  <publisher>
+   <publishername>&AWS;</publishername>
+  </publisher>
+
+  <!-- Pull copyright information from phrases-shared.ent --> &copyright; <mediaobject>
+   <imageobject>
+    <imagedata fileref="images/AWS_LOGO_RGB_200px.png" format="PNG"/>
+   </imageobject>
+  </mediaobject>
+
+  <!-- Kindle epub cover -->
+
+  <mediaobject role="cover" buildtype="kindle">
+   <imageobject>
+    <imagedata id="aws_cover" fileref="images/aws_cover.jpg" role="front"/>
+   </imageobject>
+  </mediaobject>
+ </info>
+
+ <toc/>
+ <!-- <preface buildtype="html">
+  <para role="banner.info"><emphasis><emphasis role="bold">&MESHlong; is currently in public preview.</emphasis></emphasis></para>
+ </preface>-->
+ <xi:include href="what-is.xml"/>
+ <xi:include href="getting-started.xml"/>
+ <xi:include href="concepts.xml"/>
+ <xi:include href="best-practices.xml"/>
+ <xi:include href="security.xml"/>
+ <xi:include href="observability.xml"/>
+ <xi:include href="envoy.xml"/>
+ <xi:include href="tooling.xml"/>
+ <xi:include href="mesh-sharing.xml"/>
+ <xi:include href="integrations.xml"/>
+ <xi:include href="troubleshooting.xml"/>
+ <xi:include href="preview.xml"/>
+ <xi:include href="service-quotas.xml"/>
+ <xi:include href="doc-history.xml"/>
+</book>

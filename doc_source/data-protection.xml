@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+   
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent"> 
+    %phrases-shared;     
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;   
+
+<!ENTITY SERVICENAMElong '&MESHlong;'>
+<!ENTITY SERVICENAME '&MESH;'>  
+]>
+
+<!--The text in this template has been approved by the security and compliance team, therefore we highly recommend that you use this text as-is. However, if you have good reason to alter the wording for your specific service, you can.-->
+ 
+<!-- The text in this template is purposely generic. You should expound upon actions that the customer can take in your servcie to further protect thier data. Be sure to confirm with your service team what they are OK with putting into public-facing documentation. Some teams do not want certain internal processes/architecure exposed.-->
+
+
+<section role="topic" id="data-protection">
+  <info>
+    <title id="data-protection.title">Data protection in &SERVICENAMElong;</title>
+    <titleabbrev>Data protection</titleabbrev>
+    <abstract>
+      <para>Learn how the &AWS; shared responsibility model applies to data protection in
+        &SERVICENAMElong;.</para>
+    </abstract>
+  </info>
+  &aws_security_data-protection;
+
+  <section id="data-encryption">
+    <info>
+      <title id="data-encryption.title">Data encryption</title>
+    </info>
+    <para>Your data is encrypted when using &MESH;.</para>
+
+    <section id="encryption-at-rest">
+      <info>
+        <title id="encryption-at-rest.title">Encryption at rest</title>
+      </info>
+      <!-- From JS - 10/28/19 -->
+      <para>All of the data and configurations that you create are encrypted at rest.</para>
+    </section>
+
+    <section id="encryption-in-transit">
+      <info>
+        <title id="encryption-in-transit.title">Encryption in transit</title>
+      </info>
+      <!-- JD From security accelerator -->
+      <para>&MESH; endpoints use the HTTPS protocol. All communication between the Envoy proxy and
+        the &MESH; Envoy Management Service is encrypted.
+        <!-- You can also encrypt traffic
+        between virtual nodes in the same service mesh. For more information, see <link
+          linkend="virtual-node-tls" endterm="virtual-node-tls.title"/> -->
+        Communication between containers within virtual nodes is not encrypted, but this traffic
+        doesn’t leave the network namespace.</para>
+    </section>
+    <!--
+    <section id="key-management">
+      <info>
+        <title id="key-management">Key Management</title>
+      </info>
+      <para><replaceable>Text TBD.</replaceable></para>
+    </section>
+    -->
+  </section>
+  <!--
+  <section id="internetwork-traffic-privacy">
+    <info>
+      <title id="internetwork-traffic-privacy.title">Internetwork Traffic Privacy</title>
+          </info>
+    <para><replaceable>Text TBD.</replaceable></para>
+  </section> -->
+</section>

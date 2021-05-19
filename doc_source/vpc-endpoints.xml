@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent"> 
+    %phrases-shared;
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;  
+
+]>
+<section id="vpc-endpoints" role="topic">
+    <info>
+        <title id="vpc-endpoints.title">&MESH; Interface VPC Endpoints (&AWS; PrivateLink)</title>
+        <titleabbrev>Interface VPC Endpoints (&AWS; PrivateLink)</titleabbrev>
+        <abstract>
+            <para>You can use an <ulink type="documentation" url="vpc/latest/userguide/vpc-endpoints.html">interface VPC
+                    endpoint</ulink> to create a private connection between your &VPC; and &MESHlong;
+                without requiring access over the internet or through a NAT instance, a VPN
+                connection, or &AWS-DC;.</para>
+        </abstract>
+    </info>
+
+    <para>You can improve the security posture of your &VPC; by configuring &MESH; to use an
+        interface VPC endpoint. Interface endpoints are powered by &AWS; PrivateLink, a technology
+        that enables you to privately access &MESH; APIs by using private IP addresses. PrivateLink
+        restricts all network traffic between your &VPC; and &MESH; to the Amazon network.</para>
+
+    <para>You're not required to configure PrivateLink, but we recommend it. For more information
+        about PrivateLink and interface VPC endpoints, see <ulink type="documentation"
+            url="vpc/latest/userguide/what-is-amazon-vpc.html#what-is-privatelink">Accessing Services
+            Through &AWS; PrivateLink</ulink>.</para>
+
+    <section id="app-mesh-vpc-endpoint-considerations">
+        <info>
+            <title id="app-mesh-vpc-endpoint-considerations.title">Considerations for &MESH;
+                Interface VPC Endpoints</title>
+        </info>
+        <para>Before you set up interface VPC endpoints for &MESH;, be aware of the following
+            considerations:</para>
+        <itemizedlist>
+            <listitem>
+                <para>If your &VPC; doesn't have an internet gateway and your tasks use the
+                        <code>awslogs</code> log driver to send log information to &CWL;, you must
+                    create an interface VPC endpoint for &CWL;. For more information, see <ulink type="documentation"
+                        url="AmazonCloudWatch/latest/logs/cloudwatch-logs-and-interface-VPC.html">Using &CWL; with
+                        Interface VPC Endpoints</ulink> in the
+                    <emphasis>&guide-cwl-user;</emphasis>.</para>
+            </listitem>
+            <listitem>
+                <para>VPC endpoints don't support &AWS; cross-Region requests. Ensure that you
+                    create your endpoint in the same Region where you plan to issue your API calls
+                    to &MESH;.</para>
+            </listitem>
+            <listitem>
+                <para>VPC endpoints only support Amazon-provided DNS through &R53long;. If you want
+                    to use your own DNS, you can use conditional DNS forwarding. For more
+                    information, see <ulink type="documentation" url="vpc/latest/userguide/VPC_DHCP_Options.html">DHCP Options
+                        Sets</ulink> in the <emphasis role="italic"
+                    >&guide-vpc-user;</emphasis>.</para>
+            </listitem>
+            <listitem>
+                <para>The security group attached to the VPC endpoint must allow incoming
+                    connections on port 443 from the private subnet of the &VPC;.</para>
+            </listitem>
+            <listitem>
+                <para>Controlling access to &MESH; by attaching an endpoint policy to the VPC
+                    endpoint isn't supported. By default, full access to the service will be allowed
+                    through the endpoint. For more information, see <ulink type="documentation"
+                        url="vpc/latest/userguide/vpc-endpoints-access.html">Controlling Access to Services
+                        with VPC Endpoints</ulink> in the <emphasis role="italic"
+                        >&guide-vpc-user;</emphasis>.</para>
+            </listitem>
+        </itemizedlist>
+        <para>For additional considerations and limitations, see <ulink type="documentation"
+                url="vpc/latest/userguide/vpce-interface.html#vpce-interface-availability-zones"
+                >Interface Endpoint Availability Zone Considerations</ulink> and <ulink type="documentation"
+                    url="vpc/latest/userguide/vpce-interface.html#vpce-interface-limitations"
+                >Interface Endpoint Properties and Limitations</ulink>.</para>
+    </section>
+
+    <section id="app-mesh-setting-up-vpc-create">
+        <info>
+            <title id="app-mesh-setting-up-vpc-create.title">Create the Interface VPC Endpoint for
+                &MESH;</title>
+        </info>
+        <para>To create the interface VPC endpoint for the &MESH; service, use the <ulink
+                url="&url-vpc-user;vpce-interface.html#create-interface-endpoint">Creating an
+                Interface Endpoint</ulink> procedure in the <emphasis role="italic"
+                >&guide-vpc-user;</emphasis>. Specify
+                    <code>com.amazonaws.<replaceable>Region</replaceable>.appmesh-envoy-management</code>
+            for the service name.</para>
+        <note>
+            <para><replaceable>Region</replaceable> represents the &rande-autogen-region; identifier
+                for an &AWS; Region supported by &MESH;, such as <code>us-east-2</code> for the
+                &useast2-name;.</para>
+        </note>
+        <para>Though you can define an interface VPC endpoint for &MESH; in any
+            &rande-autogen-region; where &MESH; is supported, you may not be able to define an
+            endpoint for all Availability Zones in each &rande-autogen-region;. To find out which
+            Availability Zones are supported with interface VPC endpoints in a
+            &rande-autogen-region;, use the <ulink
+                url="&url-doc-domain;cli/latest/reference/ec2/describe-vpc-endpoint-services.html"
+                >describe-vpc-endpoint-services </ulink>command or use the &console;. For example,
+            the following command returns the availability zones to which you can deploy an &MESH;
+            interface VPC endpoint within the &useast2-name;: </para>
+        <programlisting><userinput>aws --region <replaceable>us-east-2</replaceable> ec2 describe-vpc-endpoint-services --query 'ServiceDetails[?ServiceName==`com.amazonaws.<replaceable>us-east-2</replaceable>.appmesh-envoy-management`].AvailabilityZones[]'</userinput></programlisting>
+    </section>
+</section>

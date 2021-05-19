@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+    %phrases-shared;
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;  
+]>
+<example>
+   <title>JSON for &ECS; task definition with &xraylong; - Fargate launch type</title>
+  <para>&xray; allows you to collect data about requests that an application serves and provides
+    tools that you can use to visualize traffic flow. Using the &xray; driver for Envoy enables
+    Envoy to report tracing information to &xray;. You can enable &xray; tracing using the <ulink
+       url="&url-mesh-user;envoy.html">Envoy configuration</ulink>. Based on the configuration, Envoy sends tracing
+    data to the &xray; daemon running as a <ulink
+      url="&url-xray-dev;xray-daemon-ecs.html">sidecar</ulink>
+    container and the daemon forwards the traces to the &xray; service. Once the traces are
+    published to &xray;, you can use the &xray; console to visualize the service call graph and
+    request trace details. The following JSON represents a task definition to enable &xray;
+    integration.</para>
+ 
+  <programlisting language="json">{
+   
+   
+   "family" : "<replaceable>taskB</replaceable>",
+   "memory" : "<replaceable>1024</replaceable>",
+   "cpu" : "<replaceable>512</replaceable>",
+   "proxyConfiguration" : {
+      "containerName" : "envoy",
+      "properties" : [
+         {
+            "name" : "ProxyIngressPort",
+            "value" : "15000"
+         },
+         {
+            "name" : "AppPorts",
+            "value" : "<replaceable>9080</replaceable>"
+         },
+         {
+            "name" : "EgressIgnoredIPs",
+            "value" : "169.254.170.2,169.254.169.254"
+         },
+         {
+            "name": "EgressIgnoredPorts",
+            "value": "<replaceable>22</replaceable>"
+         },
+         {
+            "name" : "IgnoredUID",
+            "value" : "<replaceable>1337</replaceable>"
+         },
+         {
+            "name" : "ProxyEgressPort",
+            "value" : "15001"
+         }
+      ],
+      "type" : "APPMESH"
+   },
+   "containerDefinitions" : [
+      {
+         "name" : "<replaceable>appName</replaceable>",
+         "image" : "<replaceable>appImage</replaceable>",
+         "portMappings" : [
+            {
+               "containerPort" : <replaceable>9080</replaceable>,
+               "protocol" : "tcp"
+            }
+         ],
+         "essential" : true,
+         "dependsOn" : [
+            {
+               "containerName" : "envoy",
+               "condition" : "HEALTHY"
+            }
+         ]
+      },
+      {
+         
+         "name" : "envoy",
+         "image" : "&envoy-image-replaceable-registry;",
+         "essential" : true,
+         "environment" : [
+            {
+               "name" : "APPMESH_VIRTUAL_NODE_NAME",
+               "value" : "mesh/<replaceable>apps</replaceable>/virtualNode/<replaceable>serviceB</replaceable>"
+            },
+            {
+               "name": "ENABLE_ENVOY_XRAY_TRACING",
+               "value": "1"
+            }
+         ],
+         "healthCheck" : {
+            "command" : [
+               "CMD-SHELL",
+               "curl -s http://localhost:9901/server_info | grep state | grep -q LIVE"
+            ],
+            "interval" : <replaceable>5</replaceable>,
+            "retries" : <replaceable>3</replaceable>,
+            "startPeriod" : <replaceable>10</replaceable>,
+            "timeout" : <replaceable>2</replaceable>
+         },
+         "memory" : "<replaceable>500</replaceable>",
+         "user" : "<replaceable>1337</replaceable>"
+      },
+      {
+         "name" : "xray-daemon",
+         "image" : "amazon/aws-xray-daemon",
+         "user" : "<replaceable>1337</replaceable>",
+         "essential" : true,
+         "cpu" : "<replaceable>32</replaceable>",
+         "memoryReservation" : "<replaceable>256</replaceable>",
+         "portMappings" : [
+            {
+               "containerPort" : 2000,
+               "protocol" : "udp"
+            }
+         ]
+      }
+   ],
+   "requiresCompatibilities" : [ "FARGATE" ],
+   "taskRoleArn" : "arn:aws:iam::<replaceable>123456789012</replaceable>:role/<replaceable>ecsTaskRole</replaceable>",
+   "executionRoleArn" : "arn:aws:iam::<replaceable>123456789012</replaceable>:role/<replaceable>ecsTaskExecutionRole</replaceable>",
+   "networkMode" : "awsvpc"
+}</programlisting>
+</example>

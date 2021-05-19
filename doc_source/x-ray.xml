@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+    %phrases-shared;
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+]>
+<section id="x-ray">
+    <info>
+        <title id="x-ray.title">Monitor &MESH; with &AWS; &xray;</title>
+        <titleabbrev>&xray;</titleabbrev>
+    </info>
+    <para>&AWS; &xray; is a service that provides tools that let you view, filter, and gain insights
+        into data collected from the requests your application serves. These insights help you
+        identify issues and opportunities to optimize your app. You can see detailed information
+        about requests and responses, and downstream calls your application makes to other &AWS;
+        services.</para>
+    <para>&xray; integrates with &MESH; to manage your Envoy microservices. Trace data from Envoy is
+        sent to the &xray; daemon running in your container.</para>
+    <para>Implement &xray; in your application code using the <ulink
+        url="https://docs.aws.amazon.com/xray/index.html">SDK</ulink> guide specific
+        to your language.</para>
+    <section id="enable-x-ray">
+        <info>
+            <title id="enable-x-ray.title">Enable &xray; tracing through &MESH;</title>
+        </info>
+        <itemizedlist>
+            <listitem>
+                <itemizedlist>
+                    <title>Depending on the type of service:</title>
+                    <listitem>
+                        <para><emphasis role="bold">ECS -</emphasis> In the Envoy proxy container
+                            definition, set the <code>ENABLE_ENVOY_XRAY_TRACING</code> environment
+                            variable to <code>1</code> and the <code>XRAY_DAEMON_PORT</code>
+                            environment variable to <code>2000</code>.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">EC2 -</emphasis> In the App Mesh Controller
+                            configuration, include <code>--set tracing.enabled=true</code> and
+                                <code>--set tracing.provider=x-ray</code>.</para>
+                    </listitem>
+                </itemizedlist>
+            </listitem>
+            <listitem>
+                <para>In your X-Ray container, expose port <code>2000</code> and run as user
+                        <code>1337</code>.</para>
+            </listitem>
+        </itemizedlist>
+    </section>
+    <section id="x-ray-examples">
+        <info>
+            <title id="x-ray-examples.title">&xray; examples</title>
+        </info>
+        <para>An Envoy container definition for &ECS;</para>
+        <programlisting>
+      {
+        "name": "envoy",
+        "image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.15.1.0-prod",
+        "essential": true,
+        "environment": [
+          {
+            "name": "APPMESH_VIRTUAL_NODE_NAME",
+            "value": "mesh/myMesh/virtualNode/myNode"
+          },
+          {
+            <emphasis role="bold">"name": "ENABLE_ENVOY_XRAY_TRACING",
+            "value": "1"</emphasis>
+           }
+        ],
+        "healthCheck": {
+          "command": [
+            "CMD-SHELL",
+            "curl -s http://localhost:9901/server_info | cut -d' ' -f3 | grep -q live"
+            ],
+           "startPeriod": 10,
+           "interval": 5,
+           "timeout": 2,
+           "retries": 3
+      }
+        </programlisting>
+        <para>Updating the &MESH; controller for &EC2;</para>
+        <programlisting>
+helm upgrade -i appmesh-controller eks/appmesh-controller \
+--namespace appmesh-system \
+--set region=${AWS_REGION} \
+--set serviceAccount.create=false \
+--set serviceAccount.name=appmesh-controller \
+<emphasis role="bold">--set tracing.enabled=true</emphasis> \
+<emphasis role="bold">--set tracing.provider=x-ray</emphasis>
+        </programlisting>
+    </section>
+    <section id="x-ray-walkthrough">
+        <info>
+            <title id="x-ray-walkthrough.title">Walkthroughs for using the &xray;</title>
+        </info>
+        <itemizedlist>
+
+            <listitem>
+                <para><ulink
+                        url="https://github.com/aws/aws-app-mesh-examples/tree/master/examples/apps/colorapp#monitor-with-aws-x-ray"
+                        >Monitor with &AWS; &xray;</ulink></para>
+            </listitem>
+            <listitem>
+                <para><ulink
+                        url="https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/eks/o11y-xray.md"
+                        >&MESH; with &EKS; - Observability: &xray;</ulink></para>
+            </listitem>
+            <listitem>
+                <para><ulink url="https://www.appmeshworkshop.com/x-ray/">Distributed tracing with
+                        X-Ray</ulink> in the &MESHlong; <ulink
+                        url="https://www.appmeshworkshop.com/introduction/">Workshop</ulink></para>
+            </listitem>
+        </itemizedlist>
+    </section>
+    <section id="x-ray-learn-more">
+        <info>
+            <title id="x-ray-learn-more.title">To learn more about &AWS; &xray;</title>
+        </info>
+        <itemizedlist>
+            <listitem>
+                <para><ulink url="https://docs.aws.amazon.com/xray/index.html">&AWS; &xray;
+                        documentation</ulink></para>
+            </listitem>
+        </itemizedlist>
+    </section>
+    <section id="x-ray-troubleshooting">
+        <info>
+            <title id="x-ray-troubleshooting.title">Troubleshooting &AWS; &xray; with &MESH;</title>
+        </info>
+        <itemizedlist>
+
+            <listitem>
+                <para><ulink
+                        url="https://docs.aws.amazon.com/app-mesh/latest/userguide/troubleshoot-observability.html"
+                    >Unable to see &AWS; &xray; traces for my applications.</ulink></para>
+            </listitem>
+        </itemizedlist>
+    </section>
+</section>

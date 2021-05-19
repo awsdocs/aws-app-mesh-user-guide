@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">              %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">  %phrases-shared; 
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+
+<!ENTITY SERVICENAMElong '&MESHlong;'>
+<!ENTITY SERVICENAME '&MESH;'>      
+]>
+
+<!--The text in this template has been approved by the security and compliance team, therefore we highly recommend that you use this text as-is. However, if you have good reason to alter the wording for your specific service, you can.--> 
+
+<chapter role="topic" id="security">
+    <info>
+        <title id="security.title">Security in &SERVICENAMElong;</title>
+        <titleabbrev>Securing Applications</titleabbrev>
+        <abstract>
+            <para>Configure &SERVICENAMElong; to meet your security and compliance objectives, and
+                learn how to use other &AWS; services that help you to secure your &SERVICENAME;
+                resources.</para>
+        </abstract>
+    </info>
+    <para>Cloud security at &AWS; is the highest priority. As an &AWS; customer, you benefit from a
+        data center and network architecture that is built to meet the requirements of the most
+        security-sensitive organizations.</para>
+    <para>Security is a shared responsibility between &AWS; and you. The <ulink type="marketing"
+            url="compliance/shared-responsibility-model/">shared responsibility model</ulink>
+        describes this as security <emphasis>of</emphasis> the cloud and security
+            <emphasis>in</emphasis> the cloud:</para>
+    <itemizedlist>
+        <listitem>
+            <para><emphasis role="bold">Security of the cloud</emphasis> &ndash; &AWS; is
+                responsible for protecting the infrastructure that runs &AWS; services in the &AWS;
+                Cloud. &AWS; also provides you with services that you can use securely. Third-party
+                auditors regularly test and verify the effectiveness of our security as part of the
+                    <ulink type="marketing" url="compliance/programs/">&AWS; compliance
+                    programs</ulink>. To learn about the compliance programs that apply to
+                &SERVICENAMElong;, see <ulink type="marketing" url="compliance/services-in-scope/"
+                    >&AWS; Services in Scope by Compliance Program</ulink>. &MESH; is responsible
+                for securely delivering configuration to local proxies, including secrets such as
+                TLS certificate private keys. </para>
+        </listitem>
+        <listitem>
+            <para><emphasis role="bold">Security in the cloud</emphasis> &ndash; Your responsibility
+                is determined by the &AWS; service that you use. You are also responsible for other
+                factors including:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>The sensitivity of your data, your company’s requirements, and applicable
+                        laws and regulations.</para>
+                </listitem>
+                <listitem>
+                    <para>The security configuration of the &MESH; data plane, including the
+                        configuration of the security groups that allow traffic to pass between
+                        services within your VPC.</para>
+                </listitem>
+                <listitem>
+                    <para>The configuration of your compute resources associated with &MESH;.</para>
+                </listitem>
+                <listitem>
+                    <para>The &IAM; policies associated with your compute resources and what
+                        configuration they are allowed to retrieve from the &MESH; control
+                        plane.</para>
+                </listitem>
+            </itemizedlist>
+        </listitem>
+    </itemizedlist>
+    <para>This documentation helps you understand how to apply the shared responsibility model when
+        using &SERVICENAME;. The following topics show you how to configure &SERVICENAME; to meet
+        your security and compliance objectives. You also learn how to use other &AWS; services that
+        help you to monitor and secure your &SERVICENAME; resources. </para>
+    <variablelist role="termdef">
+        <varlistentry>
+            <term>&MESH; security tenet</term>
+            <listitem>
+                <para>Customers should be able to tune the security to the extent they need.
+                    Platform should not block them from being more secure. Platform features are
+                    secure by default.</para>
+            </listitem>
+        </varlistentry>
+    </variablelist>
+    <para role="topiclist">Topics</para>
+    <remark>TODO: Include additional security XML files as you add them to your package.</remark>
+
+    <xi:include href="tls.xml"/>
+    <xi:include href="mutual-tls.xml"/>
+    <xi:include href="security-iam.xml"/>
+    <xi:include href="cloudtrail-logging.xml"/>
+    <xi:include href="data-protection.xml"/>
+    <xi:include href="compliance.xml"/>
+    <xi:include href="network-isolation.xml"/>
+    <xi:include href="disaster-recovery-resiliency.xml"/>
+    <section id="configuration-vulnerability-analysis" role="topic">
+        <info>
+            <title id="configuration-vulnerability-analysis.title">Configuration and vulnerability
+                analysis in &SERVICENAMElong;</title>
+            <titleabbrev>Configuration and vulnerability analysis</titleabbrev>
+        </info>
+        <para>&MESH; vends a managed <link linkend="envoy">Envoy proxy Docker container image</link>
+            that you deploy with your microservices. &MESH; ensures that the container image is
+            patched with the latest vulnerability and performance patches. &MESH; tests new Envoy
+            proxy releases against the &MESH; feature set before making the images available to you. </para>
+        <para>You must update your microservices to use the updated container image version.
+            Following is the latest version of the image.</para>
+        <programlisting>&envoy-image;</programlisting>
+    </section>
+    <!-- Nothing to list as of 10-18-19.
+    <section id="security-best-practices" role="topic">
+        <info>
+            <title id="security-best-practices.title">Security Best Practices for
+                &SERVICENAMElong;</title>
+            <titleabbrev>Security Best Practices</titleabbrev>
+        </info>
+        <para><replaceable>Text TBD.</replaceable></para>
+    </section>
+    -->
+</chapter>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"[
+<!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">              %xinclude;
+<!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">  %phrases-shared;
+<!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+<!ENTITY REGIONLINK '<ulink type="documentation" url="general/latest/gr/appmesh.html">&MESHlong; Endpoints and Quotas</ulink>'>
+]>
+<section id="using-service-linked-roles" role="topic">
+  <info>
+    <title id="using-service-linked-roles.title">Using service-linked roles for
+      &SERVICENAME;</title>
+    <titleabbrev>Using service-linked roles</titleabbrev>
+    <abstract>
+      <para>How to use service-linked roles to give &SERVICENAME; access to resources in your &AWS;
+        account.</para>
+    </abstract>
+  </info>
+  <para>&SERVICENAMElong; uses &IAMlong; (&IAM;)<ulink type="documentation"
+      url="IAM/latest/UserGuide/id_roles_terms-and-concepts.html#iam-term-service-linked-role">
+      service-linked roles</ulink>. A service-linked role is a unique type of &IAM; role that is
+    linked directly to &SERVICENAME;. Service-linked roles are predefined by &SERVICENAME; and
+    include all the permissions that the service requires to call other &AWS; services on your
+    behalf. </para>
+  <para>A service-linked role makes setting up &SERVICENAME; easier because you don’t have to
+    manually add the necessary permissions. &SERVICENAME; defines the permissions of its
+    service-linked roles, and unless defined otherwise, only &SERVICENAME; can assume its roles. The
+    defined permissions include the trust policy and the permissions policy, and that permissions
+    policy cannot be attached to any other &IAM; entity.</para>
+  <para>You can delete a service-linked role only after first deleting its related resources. This
+    protects your &SERVICENAME; resources because you can't inadvertently remove permission to
+    access the resources.</para>
+  <para>For information about other services that support service-linked roles, see <ulink type="documentation"
+      url="IAM/latest/UserGuide/reference_aws-services-that-work-with-iam.html">&AWS; Services That Work with
+      IAM</ulink> and look for the services that have <emphasis role="bold">Yes </emphasis>in the
+      <emphasis role="bold">Service-Linked Role</emphasis> column. Choose a <emphasis role="bold"
+      >Yes</emphasis> with a link to view the service-linked role documentation for that
+    service.</para>
+  <section id="slr-permissions">
+    <info>
+      <title id="slr-permissions.title">Service-linked role permissions for &SERVICENAME;</title>
+    </info>
+    <para>&SERVICENAME; uses the service-linked role named <guilabel>&SLR-NAME;</guilabel> &endash;
+      &SLR-DESCRIPTION;.</para>
+    <para>The &SLR-NAME; service-linked role trusts the <code>&TRUSTED-ENTITY-NAME;</code> service
+      to assume the role.</para>
+    <para>The role permissions policy allows &SERVICENAME; to complete the &PERMISSIONS-ACTION;
+      action on &PERMISSIONS-RESOURCE;.</para>
+    <para>You must configure permissions to allow an &IAM; entity (such as a user, group, or role)
+      to create, edit, or delete a service-linked role. For more information, see <ulink type="documentation"
+        url="IAM/latest/UserGuide/using-service-linked-roles.html#service-linked-role-permissions"
+        >Service-Linked Role Permissions</ulink> in the
+      <emphasis>&guide-iam-user;</emphasis>.</para>
+  </section>
+  <section id="create-slr">
+    <info>
+      <title id="create-slr.title">Creating a service-linked role for &SERVICENAME;</title>
+    </info>
+    <!-- IMPORTANT: If a service-linked role is created as a 'side effect' of creating a resource in your service, 
+      make sure that you add a note in the procedure for creating that resource. -->
+    
+    <para>If you created a mesh after &BACKFILLDATE; in the &console;, the &CLI;, or the &AWS; API,
+      &SERVICENAME; created the service-linked role for you. For the service-linked role to have
+      been created for you, the &IAM; account that you used to create the mesh must have had the
+        <ulink type="console"
+        url="iam/home#/policies/arn:aws:iam::aws:policy/AWSAppMeshFullAccess%24jsonEditor"
+          ><code>AWSAppMeshFullAccess</code></ulink> &IAM; policy attached to it, or a policy
+      attached to it that contained the <code>iam:CreateServiceLinkedRole</code> permission. If you
+      delete this service-linked role, and then need to create it again, you can use the same
+      process to recreate the role in your account. When you &INTRO-ACTION-IN-SERVICE;,
+      &SERVICENAME; creates the service-linked role for you again. If your account only contains
+      meshes created before &BACKFILLDATE; and you want to use the service-linked role with those
+      meshes, then you can create the role using the &IAM; console.</para>
+   
+    
+    <para>You can use the &IAM; console to create a service-linked role with the
+        <guilabel>&SLR-USECASE-NAME;</guilabel> use case. In the &CLI; or the &AWS; API, create a
+      service-linked role with the <code>&TRUSTED-ENTITY-NAME;</code> service name. For more
+      information, see <ulink type="documentation"
+        url="IAM/latest/UserGuide/using-service-linked-roles.html#create-service-linked-role">Creating a
+        Service-Linked Role</ulink> in the <emphasis>&guide-iam-user;</emphasis>. If you delete this
+      service-linked role, you can use this same process to create the role again.</para> 
+    
+    <!-- END IAM CREATION LINK -->
+  </section>
+
+  <section id="edit-slr">
+    <info>
+      <title id="edit-slr.title">Editing a service-linked role for &SERVICENAME;</title>
+    </info>
+    <para>&SERVICENAME; does not allow you to edit the &SLR-NAME; service-linked role. After you
+      create a service-linked role, you cannot change the name of the role because various entities
+      might reference the role. However, you can edit the description of the role using &IAM;. For
+      more information, see <ulink type="documentation"
+        url="IAM/latest/UserGuide/using-service-linked-roles.html#edit-service-linked-role">Editing a
+        Service-Linked Role</ulink> in the <emphasis>&guide-iam-user;</emphasis>.</para>
+  </section>
+  <section id="delete-slr">
+    <info>
+      <title id="delete-slr.title">Deleting a service-linked role for &SERVICENAME;</title>
+    </info>
+    <!-- IMPORTANT: If a service-linked role is deleted as a 'side effect' of removing a resource from your service, 
+      make sure that you add a note in the procedure for deleting that resource.
+
+NOTE: If your service supports automatic deletion using some, but not all methods (console, API, CLI), then you must use this template and you should keep all of the sections below. If your service does not support any automatic deletion methods, delete that section.-->
+    <para>If you no longer need to use a feature or service that requires a service-linked role, we
+      recommend that you delete that role. That way you don’t have an unused entity that is not
+      actively monitored or maintained. However, you must clean up the resources for your
+      service-linked role before you can manually delete it.</para>
+    <note>
+      <para>If the &SERVICENAME; service is using the role when you try to delete the resources,
+        then the deletion might fail. If that happens, wait for a few minutes and try the operation
+        again.</para>
+    </note>
+    <procedure>
+      <title>To delete &SERVICENAME; resources used by the &SLR-NAME;</title>
+      <step>
+        <para>Delete all <link linkend="routes" endterm="routes.title">routes</link> defined for all routers in the
+          mesh.</para>
+      </step>
+      <step>
+        <para>Delete all <link linkend="virtual_routers">virtual routers</link> in the mesh.</para>
+      </step>
+      <step>
+        <para>Delete all <link linkend="virtual_services">virtual services</link> in the
+          mesh.</para>
+      </step>
+      <step>
+        <para>Delete all <link linkend="virtual_nodes">virtual nodes</link> in the mesh.</para>
+      </step>
+      <step>
+        <para>Delete the <link linkend="meshes">mesh</link>.</para>
+      </step>
+    </procedure>
+    <para>Complete the previous steps for all meshes in your account.</para>
+    <para><emphasis role="bold">To manually delete the service-linked role using
+      &IAM;</emphasis></para>
+    <para>Use the &IAM; console, the &CLI;, or the &AWS; API to delete the &SLR-NAME; service-linked
+      role. For more information, see <ulink type="documentation"
+        url="IAM/latest/UserGuide/using-service-linked-roles.html#delete-service-linked-role">Deleting a
+        Service-Linked Role</ulink> in the <emphasis>&guide-iam-user;</emphasis>.</para>
+  </section>
+  <section id="slr-regions">
+    <info>
+      <title id="slr-regions.title">Supported Regions for &SERVICENAME; service-linked roles</title>
+    </info>
+    <para>&SERVICENAME; supports using service-linked roles in all of the Regions where the service
+      is available. For more information, see &REGIONLINK;.</para>
+  </section>
+</section>

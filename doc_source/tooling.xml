@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+    %phrases-shared;
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+]>
+<chapter role="topic" id="tooling">
+    <info>
+        <title id="tooling.title">&MESH; tooling</title>
+        <titleabbrev>Tooling</titleabbrev>
+    </info>
+    <para>&MESH; gives customers the ability to interact with its APIs indirectly using tools
+        such as:</para>
+    <itemizedlist>
+        <listitem>
+            <para>&CFN;</para>
+        </listitem>
+        <listitem>
+            <para>&CDKlong;</para>
+        </listitem>
+        <listitem>
+            <para>&MESH; Controller for Kubernetes</para>
+        </listitem>
+        <listitem>
+            <para>Terraform</para>
+        </listitem>
+    </itemizedlist>
+    <section id="aws-cf-app-mesh">
+        <info>
+            <title id="aws-cf-app-mesh.title">&MESH; and &CFN;</title>
+            <titleabbrev>&CFN;</titleabbrev>
+        </info>
+        <para>&CFN; is a service that lets you create a template with all the resources you need for
+            your application, and then &CFN; will configure and provision the resouces for you. It will
+            also configure all the dependencies, so you can focus more on you application and
+            less on managing resources.</para>
+        <para>For more information and examples on using &CFN; with &MESH;, see the <ulink
+            url="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appmesh-mesh.html"
+            >&CFN; documentation</ulink>.</para>
+    </section>
+    <section id="aws-cdk-app-mesh">
+        <info>
+            <title id="aws-cdk-app-mesh.title">&MESH; and &CDK;</title>
+            <titleabbrev>&CDK;</titleabbrev>
+        </info>
+        <para>&CDK; is a development framework for using code to define your cloud infrastructure and
+            using &CFN; to provision it. &CDK; supports multiple programming languages including
+            TypeScript, JavaScript, Python, Java, and C#/.Net.</para>
+        <para>For more information on using &CDK; with &MESH;, see the <ulink
+            url="https://docs.aws.amazon.com/cdk/api/latest/docs/aws-appmesh-readme.html"
+            >&CDK; documentation</ulink>.</para>
+    </section>
+    <section id="app-mesh-kubernetes-controller">
+        <info>
+            <title id="app-mesh-kubernetes-controller.title">&MESH; controller for Kubernetes</title>
+            <titleabbrev>&MESH; controller for Kubernetes</titleabbrev>
+        </info>
+        <para>The &MESH; controller for Kubernetes helps you to manage your &MESH; resources for a
+            Kubernetes cluster and inject sidecars into pods. This controller is specifically for use
+            with &EKS; and allows you to manage your resources in a manner that is native to Kubernetes.</para>
+        <para>For more information on the &MESH; controller, see the <ulink
+            url="https://aws.github.io/aws-app-mesh-controller-for-k8s/">&MESH; Controller documentation</ulink>.</para>
+        <para>To see a guide on implementing &MESH; with &EKS; using the &MESH; Controller for
+            Kubernetes, check out the <ulink
+                url="https://www.eksworkshop.com/advanced/320_servicemesh_with_appmesh/install_app_mesh_controller/"
+                >&EKS; Workshop</ulink>.</para>
+    </section>
+    <section id="app-mesh-terraform">
+        <info>
+            <title id="app-mesh-terraform.title">&MESH; and Terraform</title>
+            <titleabbrev>Terraform</titleabbrev>
+        </info>
+        <para><ulink url="https://www.terraform.io/">Terraform</ulink> is an open-source infrastructure
+            as code software tool. Terraform can manage cloud services using thier CLI and interacts
+            with APIs using declaritive configuration files.</para>
+        <para>To see more about using &MESH; with Terraform, check out the <ulink
+            url="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appmesh_mesh"
+            >Terraform documentation</ulink>.</para>
+    </section>
+</chapter>

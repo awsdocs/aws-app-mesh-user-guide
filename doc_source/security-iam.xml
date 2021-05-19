@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"[
+<!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">              %xinclude;
+<!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">  %phrases-shared; 
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh; 
+
+]>
+<section role="topic" id="security-iam">
+   <info>
+      <title id="security-iam.title">How &AA-SERVICENAMElong; works with IAM</title>
+      <titleabbrev>Identity and access management</titleabbrev>
+      <abstract>
+         <para>How to authenticate requests and manage access your &AA-SERVICENAME;
+            resources.</para>
+      </abstract>
+   </info>
+   <remark><emphasis role="bold">TODO:</emphasis> Before you begin using this template, send the
+      questions from the wiki to your service team. Use their answers to fill in the entities at the
+      top of this file. Then move the entities to your local entities. <emphasis role="bold"
+         >IMPORTANT:</emphasis> If you leave the entities in this file, the text will not be
+      localized. You can leave these "remark" tags in place if you like. They do not appear in the
+      output.</remark>
+   <!-- 
+      
+-->
+   <remark><emphasis role="bold">WIKI:</emphasis>
+      https://w.amazon.com/bin/view/AWSDocs/testing-and-publishing/add-cross-service-content/IAM/auth-access-control</remark>
+   <!-- 
+      
+-->
+   <remark><emphasis role="bold">ENTITIES:</emphasis> The entities used in this template are labeled
+      "DO NOT USE" to warn against non-template use. You can ignore "DO NOT USE" in this
+      template.</remark> &sec-iam-template-intro; <para role="topiclist"/>
+   <section id="security_iam_audience">
+      <info>
+         <title id="security_iam_audience.title">Audience</title>
+      </info> &sec-iam-template-audience; </section>
+   <section id="security_iam_authentication">
+      <info>
+         <title id="security_iam_authentication.title">Authenticating with identities</title>
+      </info> &sec-iam-template-identities-intro; <section id="security_iam_authentication-rootuser">
+         <info>
+            <title id="security_iam_authentication-rootuser.title">&rootlong-title;</title>
+         </info>
+         <para>&aws_sec_root_user_information-inline;</para>
+      </section>
+      <section id="security_iam_authentication-iamuser">
+         <info>
+            <title id="security_iam_authentication-iamuser.title">&IAM; users and groups</title>
+         </info> &sec-iam-template-identities-iamuser; </section>
+      <section id="security_iam_authentication-iamrole">
+         <info>
+            <title id="security_iam_authentication-iamrole.title">&IAM; roles</title>
+         </info> &sec-iam-template-identities-iamrole; </section>
+   </section>
+   <section id="security_iam_access-manage">
+      <info>
+         <title id="security_iam_access-manage.title">Managing access using policies</title>
+      </info> &sec-iam-template-access-intro; <section
+         id="security_iam_access-manage-id-based-policies">
+         <info>
+            <title id="security_iam_access-manage-id-based-policies.title">Identity-based
+               policies</title>
+         </info> &sec-iam-template-access-id-based-policies; </section>
+      <section id="security_iam_access-manage-resource-based-policies">
+         <info>
+            <title id="security_iam_access-manage-resource-based-policies.title">Resource-based
+               policies</title>
+         </info> &sec-iam-template-access-resource-based-policies; </section>
+
+      <section id="security_iam_access-manage-acl">
+         <info>
+            <title id="security_iam_access-manage-acl.title">Access control lists (ACLs)</title>
+         </info> &sec-iam-template-access-acl; </section>
+      <section id="security_iam_access-manage-other-policies">
+         <info>
+            <title id="security_iam_access-manage-other-policies.title">Other policy types</title>
+         </info> &sec-iam-template-access-other-policies; </section>
+      <section id="security_iam_access-manage-multiple-policies">
+         <info>
+            <title id="security_iam_access-manage-multiple-policies.title">Multiple policy
+               types</title>
+         </info> &sec-iam-template-access-multiple-policies; </section>
+   </section>
+
+   <section id="security_iam_service-with-iam" role="topic">
+      <info>
+         <title id="security_iam_service-with-iam.title">How &AA-SERVICENAMElong; works with
+            &IAM;</title>
+      </info>
+      <remark><emphasis role="bold">TO DO: This topic is customizeable and you own the contents on
+            this page</emphasis></remark>
+      <!-- TO DO:
+     Remember to request an update to the IAM docs if how your service works with IAM changes: https://w.amazon.com/bin/view/AWSDocs/IAM/ServicesThatWorkWithIAM/ 
+      -->
+      <para>Before you use &IAM; to manage access to &AA-SERVICENAME;, you should understand what
+         &IAM; features are available to use with &AA-SERVICENAME;. To get a high-level view of how
+         &AA-SERVICENAME; and other &AWS; services work with IAM, see <ulink type="documentation"
+            url="IAM/latest/UserGuide/reference_aws-services-that-work-with-iam.html">&AWS; Services That
+            Work with &IAM;</ulink> in the <emphasis>&guide-iam-user;</emphasis>.</para>
+      <para role="topiclist"/>
+      <section id="security_iam_service-with-iam-id-based-policies">
+         <info>
+            <title id="security_iam_service-with-iam-id-based-policies.title">&AA-SERVICENAME;
+               identity-based policies</title>
+         </info>
+         <para>With &IAM; identity-based policies, you can specify allowed or denied actions and
+            resources as well as the conditions under which actions are allowed or denied.
+            &AA-SERVICENAME; supports specific actions, resources, and condition keys. To learn
+            about all of the elements that you use in a JSON policy, see <ulink type="documentation"
+               url="IAM/latest/UserGuide/reference_policies_elements.html">&IAM; JSON Policy Elements
+               Reference</ulink> in the <emphasis>&guide-iam-user;</emphasis>.</para>
+         <section id="security_iam_service-with-iam-id-based-policies-actions">
+            <info>
+               <title id="security_iam_service-with-iam-id-based-policies-actions.title"
+                  >Actions</title>
+            </info> &sec-iam-template-policies-actions; <remark><emphasis role="bold">EXAMPLE: WRITE
+                  YOUR OWN CONTENT HERE</emphasis>: Help customers understand how to use your
+               actions. You can choose to list your actions manually, but provide additional
+               details, especially if any of your actions behave abnormally. For example, some
+               actions have additional action dependencies. However, it's best to use the link to
+               the SDF-automated &IAM; documentation at the bottom of this section.</remark>
+            <para>Policy actions in &AA-SERVICENAME; use the following prefix before the action:
+                  <code>&AA-SERVICEPREFIX;:</code>. For example, to grant someone permission to list
+               meshes in an account with the <code>&AA-SERVICEPREFIX;:ListMeshes</code> API
+               operation, you include the <code>&AA-SERVICEPREFIX;:ListMeshes</code> action in their
+               policy. Policy statements must include either an <code>Action</code> or
+                  <code>NotAction</code> element.</para>
+            <para>To specify multiple actions in a single statement, separate them with commas as
+               follows.</para>
+            <programlisting>"Action": [
+      "&AA-SERVICEPREFIX;:<emphasis role="italic">ListMeshes</emphasis>",
+      "&AA-SERVICEPREFIX;:<emphasis role="italic">ListVirtualNodes</emphasis>"
+]</programlisting>
+            <para>You can specify multiple actions using wildcards (*). For example, to specify all
+               actions that begin with the word <code>Describe</code>, include the following
+               action.</para>
+            <remark>Do NOT tell customers to use wildcards to specify all of the actions for a
+               service. Use the best practice of granting least privilige and narrow the permissions
+               used in a policy.</remark>
+            <programlisting><code>"Action": "&AA-SERVICEPREFIX;:Describe*"</code></programlisting>
+            <para><remark>Use this text to point to the &IAM; SDF-generated information. That page
+                  should link to your API operations. Alternatively, you can manually include a list
+                  of the actions available for your service (not recommended in most cases because
+                  it's hard to maintain.)</remark></para>
+            <para>To see a list of &AA-SERVICENAME; actions, see &AA-SERVICE-ACTIONS-URL; in the
+                  <emphasis>&guide-iam-user;</emphasis>.</para>
+         </section>
+         <section id="security_iam_service-with-iam-id-based-policies-resources">
+            <info>
+               <title id="security_iam_service-with-iam-id-based-policies-resources.title"
+                  >Resources</title>
+            </info>
+            &sec-iam-template-policies-resources;
+            <para><remark><emphasis role="bold">EXAMPLE: WRITE YOUR OWN CONTENT HERE</emphasis>:
+                  Provide customers with details about the resources they can create in your
+                  service. Include either a list or table of those resources here, or link to the
+                  location of that list elsewhere in your documentation. If you don't have either
+                  yet, you can <emphasis role="bold">temporarily</emphasis> use the link to the
+                  &IAM; documentation at the bottom of this section.</remark></para>
+            <para>The &MESH; <code>mesh</code> resource has the following ARN.</para>
+            <programlisting>arn:${Partition}:appmesh:${Region}:${Account}:mesh/${MeshName}</programlisting>
+            <para>For more information about the format of ARNs, see <ulink type="documentation"
+                  url="general/latest/gr/aws-arns-and-namespaces.html"
+                  >Amazon Resource Names (ARNs) and &AWS; Service Namespaces</ulink>.</para>
+            <para>For example, to specify the mesh named <replaceable>apps</replaceable> in the
+                  <replaceable>Region-code</replaceable> Region in your statement, use the following
+               ARN.</para>
+            <programlisting>arn:aws:appmesh:<replaceable>Region-code</replaceable>:<replaceable>&ExampleAWSAccountNo1;</replaceable>:mesh/<replaceable>apps</replaceable></programlisting>
+            <para>To specify all instances that belong to a specific account, use the wildcard
+               (*).</para>
+            <programlisting>"Resource": "arn:aws:appmesh:<replaceable>Region-code</replaceable>:<replaceable>&ExampleAWSAccountNo1;</replaceable>:mesh/*"</programlisting>
+            <para>Some &AA-SERVICENAME; actions, such as those for creating resources, cannot be
+               performed on a specific resource. In those cases, you must use the wildcard
+               (*).</para>
+            <programlisting>"Resource": "*"</programlisting>
+            <para>Many &MESH; API actions involve multiple resources. For example,
+                  <code>CreateRoute</code> creates a route with a virtual node target, so an &IAM;
+               user must have permissions to use the route and the virtual node. To specify multiple
+               resources in a single statement, separate the ARNs with commas. </para>
+            <programlisting>"Resource": [
+      "<emphasis role="italic">arn:aws:appmesh:<replaceable>Region-code</replaceable>:<replaceable>&ExampleAWSAccountNo1;</replaceable>:mesh/<replaceable>apps</replaceable>/virtualRouter/<replaceable>serviceB</replaceable>/route/*</emphasis>",
+      "<emphasis role="italic">arn:aws:appmesh:<replaceable>Region-code</replaceable>:<replaceable>&ExampleAWSAccountNo1;</replaceable>:mesh/<replaceable>apps</replaceable>/virtualNode/<replaceable>serviceB</replaceable></emphasis>"
+]</programlisting>
+            <para>To see a list of &AA-SERVICENAME; resource types and their ARNs, see
+               &AA-SERVICE-RESOURCES-URL; in the <emphasis>&guide-iam-user;</emphasis>. To learn
+               with which actions you can specify the ARN of each resource, see
+               &AA-SERVICE-ACTIONS-URL;.</para>
+         </section>
+         <section id="security_iam_service-with-iam-id-based-policies-conditionkeys">
+            <info>
+               <title id="security_iam_service-with-iam-id-based-policies-conditionkeys.title"
+                  >Condition keys</title>
+            </info>
+            <!-- <para>&AA-SERVICENAME; does not provide any service-specific condition keys, but it does
+               support using some global condition keys. To see all &AWS; global condition keys, see
+                  <ulink url="&url-iam-user;reference_policies_condition-keys.html">&AWS; Global
+                  Condition Context Keys</ulink> in the
+               <emphasis>&guide-iam-user;</emphasis>.</para>
+             <remark>If your service supports its own condition keys, <emphasis role="bold">KEEP
+               </emphasis> this conceptual para. However, <emphasis role="bold">if your service does
+                  not support</emphasis> its own keys, state that here so that customers aren't
+               stuck guessing or looking for the information. <emphasis role="bold">Comment out the
+                  contents of this section </emphasis>and use the following text: "&AA-SERVICENAME;
+               does not provide any service-specific condition keys, but it does support using some
+               global condition keys. To see all &AWS; global condition keys, see <ulink
+                  url="&url-iam-user;reference_policies_condition-keys.html">&AWS; Global Condition
+                  Context Keys</ulink> in the <emphasis>&guide-iam-user;</emphasis>."</remark>
+            &sec-iam-template-policies-conditions; -->
+            <para>&AA-SERVICENAME; supports using some global condition keys. To see all &AWS;
+               global condition keys, see <ulink type="documentation"
+                  url="IAM/latest/UserGuide/reference_policies_condition-keys.html">&AWS; Global Condition
+                  Context Keys</ulink> in the <emphasis>&guide-iam-user;</emphasis>. To see a list
+               of the global condition keys that &AA-SERVICENAME; supports, see
+               &AA-SERVICE-CONDITIONS-URL; in the <emphasis>&guide-iam-user;</emphasis>. To learn
+               with which actions and resources you can use with a condition key, see
+               &AA-SERVICE-ACTIONS-URL;.</para>
+         </section>
+         <section id="security_iam_service-with-iam-id-based-policies-examples">
+            <info>
+               <title id="security_iam_service-with-iam-id-based-policies-examples.title"
+                  >Examples</title>
+            </info>
+            <para><remark><emphasis role="bold">DO NOT ADD EXAMPLES HERE.</emphasis> This is a link
+                  to the examples page. Having a separate page for examples makes it easier for
+                  customers to find and to review.</remark></para>
+            <para>To view examples of &AA-SERVICENAME; identity-based policies, see <xref
+                  linkend="security_iam_id-based-policy-examples"
+                  endterm="security_iam_id-based-policy-examples.title"/>.</para>
+         </section>
+      </section>
+      <section id="security_iam_service-with-iam-resource-based-policies">
+         <info>
+            <title id="security_iam_service-with-iam-resource-based-policies.title">&AA-SERVICENAME;
+               resource-based policies</title>
+         </info>
+         <para>&AA-SERVICENAME; does not support resource-based policies.</para>
+         <!-- <remark><emphasis role="bold">EXAMPLE: WRITE YOUR OWN CONTENT HERE.</emphasis> If your
+            service does not support resource-based policies, state that here so that customers
+            aren't stuck guessing or looking for the information. <emphasis role="bold">Comment out
+               the contents of this section</emphasis> and use the following text: "&AA-SERVICENAME;
+            does not support resource-based policies." To view an example of a detailed
+            resource-based policy page, see <ulink
+               url="https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html"
+            />.</remark>
+         <para>Resource-based policies are JSON policy documents that specify what actions a
+            specified principal can perform on the &AA-SERVICENAME; resource and under what
+            conditions. &S3; supports resource-based permissions policies for &S3;
+               <replaceable>buckets</replaceable>. Resource-based policies let you grant usage
+            permission to other accounts on a per-resource basis. You can also use a resource-based
+            policy to allow an &AWS; service to access your &S3;
+            <replaceable>buckets</replaceable>.</para>
+         <para>To enable cross-account access, you can specify an entire account or &IAM; entities
+            in another account as the <ulink
+               url="&url-iam-user;reference_policies_elements_principal.html">principal in a
+               resource-based policy</ulink>. Adding a cross-account principal to a resource-based
+            policy is only half of establishing the trust relationship. When the principal and the
+            resource are in different &AWS; accounts, you must also grant the principal entity
+            permission to access the resource. Grant permission by attaching an identity-based
+            policy to the entity. However, if a resource-based policy grants access to a principal
+            in the same account, no additional identity-based policy is required. For more
+            information, see <ulink url="&url-iam-user;id_roles_compare-resource-policies.html">How
+               &IAM; Roles Differ from Resource-based Policies </ulink>in the
+               <emphasis>&guide-iam-user;</emphasis>.</para>
+         <para>The &S3; service supports only one type of resource-based policy called a <emphasis
+               role="italic"><replaceable>bucket</replaceable> policy</emphasis>, which is attached
+            to a <replaceable>bucket</replaceable>. This policy defines which principal entities
+            (accounts, users, roles, and federated users) can perform actions on the
+               <replaceable>widget</replaceable>.</para>
+         <para>To learn how to attach a resource-based policy to a
+            <replaceable>bucket</replaceable>, see <replaceable><emphasis role="bold">ADD XREF TO
+                  YOUR DOCS HERE</emphasis></replaceable>.</para> -->
+         <!-- <section id="security_iam_service-with-iam-resource-based-policies-examples">
+            <info>
+               <title id="security_iam_service-with-iam-resource-based-policies-examples.title"
+                  >Examples</title>
+            </info>
+            <para><remark><emphasis role="bold">DO NOT ADD EXAMPLES HERE.</emphasis> This is a link
+                  to the examples page. Having a separate page for examples makes it easier for
+                  customers to find and to review. <emphasis role="bold">If your service does not
+                     support</emphasis> resource-based policies, <emphasis role="bold">COMMENT
+                     OUT</emphasis> this entire section. Then, if your service adds this feature in
+                  the future, it's easier to add the content..</remark></para>
+            <para>To view examples of &AA-SERVICENAME; resource-based policies, see <xref
+                  linkend="security_iam_resource-based-policy-examples"
+                  endterm="security_iam_resource-based-policy-examples.title"/>,</para> 
+         </section> -->
+      </section>
+      <!-- <section id="security_iam_service-with-iam-acls">
+         <info>
+            <title id="security_iam_service-with-iam-acls.title">Access Control Lists (ACLs)</title>
+         </info>
+         <remark><emphasis role="bold">EXAMPLE: WRITE YOUR OWN CONTENT</emphasis> If your service
+            does not support ACLs, <emphasis role="bold">COMMENT OUT</emphasis> this entire section.
+            Then, if your service adds this feature in the future, it's easier to add the
+            content.</remark>
+         <para>Access control lists (ACLs) are lists of grantees that you can attach to resources.
+            They grant accounts permissions to access the resource to which they are attached. You
+            can attach ACLs to an &S3; <replaceable>bucket</replaceable> resource. For more
+            information about attaching ACLs to <replaceable>buckets</replaceable>, see
+                  <replaceable><emphasis role="bold">ADD XREF TO YOUR DOCS
+               HERE</emphasis></replaceable>.</para>
+         <para>With &S3; access control lists (ACLs), you can manage access to
+               <replaceable>bucket</replaceable> resources. Each <replaceable>bucket</replaceable>
+            has an ACL attached to it as a subresource. It defines which &AWS; accounts, &IAM; users
+            or groups of users, or &IAM; roles are granted access and the type of access. When a
+            request is received for a resource, &AWS; checks the corresponding ACL to verify that
+            the requester has the necessary access permissions.</para>
+         <para>When you create a <replaceable>bucket</replaceable> resource, &S3; creates a default
+            ACL that grants the resource owner full control over the resource. In the following
+            example <replaceable>bucket</replaceable> ACL, John Doe is listed as the owner of the
+               <replaceable>bucket</replaceable> and is granted full control over that
+               <replaceable>bucket</replaceable>. An ACL can have up to 100 grantees.</para>
+         <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;AccessControlPolicy xmlns="http://&AA-SERVICEPREFIX;.amazonaws.com/doc/2006-03-01/">
+  &lt;Owner>
+    &lt;ID><replaceable>c1daexampleaaf850ea79cf0430f33d72579fd1611c97f7ded193374c0b163b6</replaceable>&lt;/ID>
+    &lt;DisplayName><replaceable>john-doe</replaceable>&lt;/DisplayName>
+  &lt;/Owner>
+  &lt;AccessControlList>
+    &lt;Grant>
+      &lt;Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xsi:type="Canonical User">
+        &lt;ID><replaceable>c1daexampleaaf850ea79cf0430f33d72579fd1611c97f7ded193374c0b163b6</replaceable>&lt;/ID>
+        &lt;DisplayName><replaceable>john-doe</replaceable>&lt;/DisplayName>
+      &lt;/Grantee>
+      &lt;Permission>FULL_CONTROL&lt;/Permission>
+    &lt;/Grant>
+  &lt;/AccessControlList>
+&lt;/AccessControlPolicy> </programlisting>
+         <para>The ID field in the ACL is the &AWS; account canonical user ID. To learn how to view
+            this ID in an account that you own, see <ulink
+               url="&url-aws-gen;acct-identifiers.html#FindingCanonicalId">Finding an &AWS; Account
+               Canonical User ID</ulink>. </para>
+      </section> -->
+      <section id="security_iam_service-with-iam-tags">
+         <info>
+            <title id="security_iam_service-with-iam-tags.title">Authorization based on
+               &AA-SERVICENAME; tags</title>
+         </info>
+         <!-- <remark><emphasis role="bold">EXAMPLE: WRITE YOUR OWN CONTENT.</emphasis> If your service
+            does not support authorization based on tags, state that here so that customers aren't
+            stuck guessing or looking for the information. <emphasis role="bold">Comment out the
+               contents of this section</emphasis> and use the following text: "&AA-SERVICENAME;
+            does not support tagging resources or controlling access based on tags."</remark> -->
+         <para>You can attach tags to &AA-SERVICENAME; resources or pass tags in a request to
+            &AA-SERVICENAME;. To control access based on tags, you provide tag information in the
+            <ulink type="documentation" url="IAM/latest/UserGuide/reference_policies_elements_condition.html">condition
+               element</ulink> of a policy using the
+                  <code>&AA-SERVICEPREFIX;:ResourceTag/<replaceable>key-name</replaceable></code>,
+                  <code>aws:RequestTag/<replaceable>key-name</replaceable></code>, or
+               <code>aws:TagKeys</code> condition keys. For more information about tagging
+            &AA-SERVICENAME; resources, see <ulink type="documentation"
+               url="general/latest/gr/aws_tagging.html">Tagging
+               &AWS; Resources</ulink>.</para>
+         <para>To view an example identity-based policy for limiting access to a resource based on
+            the tags on that resource, see <xref
+               linkend="security_iam_id-based-policy-examples-view-widget-tags"
+               endterm="security_iam_id-based-policy-examples-view-widget-tags.title"/>.</para>
+      </section>
+      <section id="security_iam_service-with-iam-roles">
+         <info>
+            <title id="security_iam_service-with-iam-roles.title">&AA-SERVICENAME; &IAM;
+               roles</title>
+         </info>
+         <remark><emphasis role="bold">EXAMPLE: WRITE YOUR OWN CONTENT .</emphasis><remark> You can
+               edit the sections below <emphasis role="bold">If your service does not support
+               </emphasis> one or more of the role features below, state that fact so that customers
+               aren't stuck guessing or looking for the information. For example, change
+               "&AA-SERVICENAME; supports service-linked roles." to "&AA-SERVICENAME; does not
+               support service-linked roles."</remark></remark>
+         <para>An <ulink type="documentation" url="IAM/latest/UserGuide/id_roles.html">&IAM; role</ulink> is an entity within
+            your &AWS; account that has specific permissions.</para>
+         <section id="security_iam_service-with-iam-roles-tempcreds">
+            <info>
+               <title id="security_iam_service-with-iam-roles-tempcreds.title">Using temporary
+                  credentials with &AA-SERVICENAME;</title>
+            </info>
+            <para>You can use temporary credentials to sign in with federation, assume an &IAM;
+               role, or to assume a cross-account role. You obtain temporary security credentials by
+               calling &STSshort; API operations such as <ulink type="documentation"
+                  url="STS/latest/APIReference/API_AssumeRole.html">AssumeRole</ulink> or <ulink type="documentation"
+                     url="STS/latest/APIReference/API_GetFederationToken.html">GetFederationToken</ulink>. </para>
+            <para>&AA-SERVICENAME; supports using temporary credentials. </para>
+         </section>
+         <section id="security_iam_service-with-iam-roles-service-linked">
+            <info>
+               <title id="security_iam_service-with-iam-roles-service-linked.title">Service-linked
+                  roles</title>
+            </info>
+            <para><ulink type="documentation"
+                  url="IAM/latest/UserGuide/id_roles_terms-and-concepts.html#iam-term-service-linked-role"
+                  >Service-linked roles</ulink> allow &AWS; services to access resources in other
+               services to complete an action on your behalf. Service-linked roles appear in your
+               &IAM; account and are owned by the service. An &IAM; administrator can view but not
+               edit the permissions for service-linked roles.</para>
+            <para>&AA-SERVICENAME; supports service-linked roles. For details about creating or
+               managing &AA-SERVICENAME; service-linked roles, see <link
+                  linkend="using-service-linked-roles" endterm="using-service-linked-roles.title"/>.</para>
+            <remark><emphasis role="bold">TODO</emphasis> - To add your service-linked role docs in
+               the TOC, remove the comment from around the &lt;xinclude> tag at the bottom of this
+               file.</remark>
+         </section>
+         <section id="security_iam_service-with-iam-roles-service">
+            <info>
+               <title id="security_iam_service-with-iam-roles-service.title">Service roles</title>
+            </info>
+            <para>This feature allows a service to assume a <ulink type="documentation"
+               url="IAM/latest/UserGuide/id_roles_terms-and-concepts.html#iam-term-service-role">service
+                  role</ulink> on your behalf. This role allows the service to access resources in
+               other services to complete an action on your behalf. Service roles appear in your
+               &IAM; account and are owned by the account. This means that an &IAM; administrator
+               can change the permissions for this role. However, doing so might break the
+               functionality of the service.</para>
+            <para>&AA-SERVICENAME; does not support service roles.</para>
+         </section>
+      </section>
+   </section>
+   <section id="security_iam_id-based-policy-examples" role="topic">
+      <info>
+         <title id="security_iam_id-based-policy-examples.title">&AA-SERVICENAMElong; identity-based
+            policy examples</title>
+         <titleabbrev>Identity-Based Policy Examples</titleabbrev>
+      </info>
+      <remark><emphasis role="bold">TO DO: This topic is customizable</emphasis></remark>
+      <para>By default, &IAM; users and roles don't have permission to create or modify
+         &AA-SERVICENAME; resources. They also can't perform tasks using the &console;, &CLI;, or
+         &AWS; API. An &IAM; administrator must create &IAM; policies that grant users and roles
+         permission to perform specific API operations on the specified resources they need. The
+         administrator must then attach those policies to the &IAM; users or groups that require
+         those permissions.</para>
+      <para>To learn how to create an &IAM; identity-based policy using these example JSON policy
+         documents, see <ulink type="documentation"
+            url="IAM/latest/UserGuide/access_policies_create.html#access_policies_create-json-editor"
+            >Creating Policies on the JSON Tab</ulink> in the
+         <emphasis>&guide-iam-user;</emphasis>.</para>
+      <para role="topiclist"/>
+      <section id="security_iam_service-with-iam-policy-best-practices">
+         <info>
+            <title id="security_iam_service-with-iam-policy-best-practices.title">Policy best
+               practices</title>
+         </info>
+         <remark><emphasis role="bold">DO NOT EDIT</emphasis> these best practices</remark>
+         &sec-iam-template-policy-best-practices; </section>
+      <section id="security_iam_id-based-policy-examples-console">
+         <info>
+            <title id="security_iam_id-based-policy-examples-console.title">Using the
+               &AA-SERVICENAME; console</title>
+            <titleabbrev>Using the Console</titleabbrev>
+         </info>
+         <remark><emphasis role="bold">EXAMPLE ONLY - Replace this with a managed policy or example
+               policy for accessing your console</emphasis></remark>
+         <para>To access the &AA-SERVICENAMElong; console, you must have a minimum set of
+            permissions. These permissions must allow you to list and view details about the
+            &AA-SERVICENAME; resources in your &AWS; account. If you create an identity-based policy
+            that is more restrictive than the minimum required permissions, the console won't
+            function as intended for entities (&IAM; users or roles) with that policy. You can
+            attach the <filename><ulink type="console"
+                  url="iam/home#/policies/arn:aws:iam::aws:policy/AWSAppMeshReadOnly%24jsonEditor"
+                  >AWSAppMeshReadOnly</ulink></filename> managed policy to users. For more
+            information, see <ulink type="documentation"
+               url="IAM/latest/UserGuide/id_users_change-permissions.html#users_change_permissions-add-console"
+               >Adding Permissions to a User</ulink> in the
+            <emphasis>&guide-iam-user;</emphasis>.</para>
+         <para>You don't need to allow minimum console permissions for users that are making calls
+            only to the &CLI; or the &AWS; API. Instead, allow access to only the actions that match
+            the API operation that you're trying to perform.</para>
+      </section>
+      <section id="security_iam_id-based-policy-examples-view-own-permissions">
+         <info>
+            <title id="security_iam_id-based-policy-examples-view-own-permissions.title">Allow users
+               to view their own permissions</title>
+         </info>
+         <remark><emphasis role="bold">DO NOT REMOVE</emphasis> this example. Keep this to help
+            admins allow their users to determine what permissions they have.</remark>
+         &sec-iam-template-id-based-policy-examples-view-own-permissions; </section>
+      <section id="policy_example1">
+         <info>
+            <title id="policy_example1.title">Create a mesh</title>
+         </info>
+         <para>This example shows how you can create a policy that allows a user to create a mesh
+            for an account, in any Region.</para>
+         <programlisting>{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "appmesh:CreateMesh",
+            "Resource": "arn:aws:appmesh:*:<replaceable>&account_id_example;</replaceable>:CreateMesh"
+        }
+    ]
+}
+         </programlisting>
+      </section>
+      <section id="policy_example2">
+         <info>
+            <title id="policy_example2.title">List and describe all meshes</title>
+         </info>
+         <para>This example shows how you can create a policy that allows a user read-only access to
+            list and describe all meshes.</para>
+         <programlisting>{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "appmesh:DescribeMesh",
+                "appmesh:ListMeshes"
+            ],
+            "Resource": "*"
+        }
+    ]
+}         </programlisting>
+      </section>
+      <!-- <remark><emphasis role="bold">EXAMPLE ONLY - Replace this with your own policy, including
+               its section ID</emphasis></remark>
+         <para>In this example, you want to grant an &IAM; user in your &AWS; account access to one
+            of your &S3; buckets, <code>examplebucket</code>. You also want to allow the user to
+            add, update, and delete objects.</para>
+         <para>In addition to granting the <code>s3:PutObject</code>, <code>s3:GetObject</code>, and
+               <code>s3:DeleteObject</code> permissions to the user, the policy also grants the
+               <code>s3:ListAllMyBuckets</code>, <code>s3:GetBucketLocation</code>, and
+               <code>s3:ListBucket</code> permissions. These are the additional permissions required
+            by the console. Also, the <code>s3:PutObjectAcl</code> and the
+               <code>s3:GetObjectAcl</code> actions are required to be able to copy, cut, and paste
+            objects in the console. For an example walkthrough that grants permissions to users and
+            tests them using the console, see <ulink url="&url-s3-dev;walkthrough1.html">An Example
+               Walkthrough: Using user policies to control access to your bucket</ulink>.</para>
+         <programlisting>{
+   "Version":"2012-10-17",
+   "Statement":[
+      {
+         "Sid":"ListBucketsInConsole",
+         "Effect":"Allow",
+         "Action":[
+            "s3:ListAllMyBuckets"
+         ],
+         "Resource":"&region-arn;s3:::*"
+      },
+      {
+         "Sid":"ViewSpecificBucketInfo",
+         "Effect":"Allow",
+         "Action":[
+            "s3:ListBucket",
+            "s3:GetBucketLocation"
+         ],
+         "Resource":"&region-arn;s3:::examplebucket"
+      },
+      {
+         "Sid":"ManageBucketContents",
+         "Effect":"Allow",
+         "Action":[
+            "s3:PutObject",
+            "s3:PutObjectAcl",
+            "s3:GetObject",
+            "s3:GetObjectAcl",
+            "s3:DeleteObject"
+         ],
+         "Resource":"&region-arn;s3:::examplebucket/*"
+      }
+   ]
+}</programlisting> -->
+ <section id="security_iam_id-based-policy-examples-view-widget-tags">
+         <info>
+            <title id="security_iam_id-based-policy-examples-view-widget-tags.title">Creating
+               &AA-SERVICENAME; meshes with restricted tags</title>
+         </info>
+         <remark><emphasis role="bold">EXAMPLE ONLY</emphasis> - Replace this with your own policy.
+            Don't forget to change the section ID.</remark>
+         <para>You can use tags in your IAM policies to control what tags can be passed in the IAM
+            request. You can specify which tag key-value pairs can be added, changed, or removed
+            from an IAM user or role. This example shows how you might create a policy that allows
+            creating a mesh, but only if the mesh is created with a tag named
+                  <replaceable>teamName</replaceable> and a value of
+                  <replaceable>booksTeam</replaceable>.</para>
+         <programlisting>{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "appmesh:CreateMesh",
+            "Resource": "*",
+            "Condition": {
+                "ForAnyValue:StringEquals": {
+                    "aws:RequestTag/<replaceable>teamName</replaceable>": "<replaceable>booksTeam</replaceable>"
+                }
+            }
+        }
+    ]
+}</programlisting>
+         <para>You can attach this policy to the &IAM; users in your account. If a user attempts to
+            create a mesh, the mesh must include a tag named <code>teamName</code> and a value of
+               <code>booksTeam</code>. If the mesh does not include this tag and value, the attempt
+            to create the mesh fails. For more information, see <ulink type="documentation"
+               url="IAM/latest/UserGuide/reference_policies_elements_condition.html">&IAM; JSON Policy
+               Elements: Condition</ulink> in the <emphasis role="italic"
+               >&guide-iam-user;</emphasis>.</para>
+      </section>
+   </section>
+   <xi:include href="using-service-linked-roles.xml"/>
+   <xi:include href="proxy-authorization.xml"/>
+   <!-- <section id="security_iam_resource-based-policy-examples" role="topic">
+      <info>
+         <title id="security_iam_resource-based-policy-examples.title">&AA-SERVICENAMElong;
+            Resource-Based Policy Examples</title>
+         <titleabbrev>Resource-Based Policy Examples</titleabbrev>
+      </info>
+      <remark><emphasis role="bold">TO DO: </emphasis>This topic is fully customizable and you own
+         the contents on this page. <emphasis role="bold">If your service does not
+            support</emphasis> resource-based policies, <emphasis role="bold">COMMENT OUT</emphasis>
+         this entire section. Then, if your service adds this feature in the future, it's easier to
+         add the content..</remark>
+      <para>To learn how to create a <replaceable>widget</replaceable>, see <replaceable><emphasis
+               role="bold">ADD XREF TO YOUR DOCS HERE</emphasis></replaceable>.</para>
+      <para role="topiclist"/>
+      <section id="security_iam_resource-based-policy-examples-restrict-bucket-by-ip">
+         <info>
+            <title id="security_iam_id-based-policy-examples-restrict-bucket-by-ip.title"
+               ><replaceable>Resource-based policy example</replaceable></title>
+         </info>
+         
+         <remark><emphasis role="bold">EXAMPLE ONLY</emphasis> - Replace this with your own policy.
+            Don't forget to change the section ID.</remark>
+         <para>The following example grants permissions to any user to perform any &S3; operations
+            on objects in the specified bucket. However, the request must originate from the range
+            of IP addresses specified in the condition.</para>
+         <para>The condition in this statement identifies the 54.240.143.* range of allowed Internet
+            Protocol version 4 (IPv4) IP addresses, with one exception: 54.240.143.188.</para>
+         <para>The <code>Condition</code> block uses the <code>IpAddress</code> and
+               <code>NotIpAddress</code> conditions and the <code>aws:SourceIp</code> condition key,
+            which is an &AWS;-wide condition key. For more information about these condition keys,
+            see <ulink url="&url-s3-dev;amazon-s3-policy-keys.html">Specifying Conditions in a
+               Policy</ulink>. The<code>aws:sourceIp</code> IPv4 values use the standard CIDR
+            notation. For more information, see <ulink
+               url="&url-iam-user;reference_policies_elements_condition_operators.html#Conditions_IPAddress"
+               >IP Address Condition Operators</ulink> in the <emphasis role="italic"
+               >&guide-iam-user;</emphasis>.</para> 
+         <para><replaceable>Example TBD. Replace the following with the example.</replaceable></para>
+         <programlisting>{
+  "Version": "2012-10-17",
+  "Id": "S3PolicyId1",
+  "Statement": [
+    {
+      "Sid": "IPAllow",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": "&region-arn;s3:::examplebucket/*",
+      "Condition": {
+         "IpAddress": {"aws:SourceIp": "54.240.143.0/24"},
+         "NotIpAddress": {"aws:SourceIp": "54.240.143.188/32"} 
+      } 
+    } 
+  ]
+}</programlisting>
+      </section>
+
+   </section>-->
+   <section id="security_iam_troubleshoot" role="topic">
+      <info>
+         <title id="security_iam_troubleshoot.title">Troubleshooting &AA-SERVICENAMElong; identity
+            and access</title>
+         <titleabbrev>Troubleshooting</titleabbrev>
+      </info>
+      <remark><emphasis role="bold">TO DO: This topic is customizable.</emphasis> Add new
+         troubleshooting sections as you learn about issues related to authentication and
+         authorization that your customers are experiencing.</remark>
+      <para>Use the following information to help you diagnose and fix common issues that you might
+         encounter when working with &AA-SERVICENAME; and &IAM;.</para>
+      <para role="topiclist"/>
+      <section id="security_iam_troubleshoot-no-permissions">
+         <info>
+            <title id="security_iam_troubleshoot-no-permissions.title">I am not authorized to
+               perform an action in &AA-SERVICENAME;</title>
+         </info>
+         <remark><emphasis role="bold">TO DO: This topic is customizable</emphasis>. Update the
+            example with a resource from your own service.</remark>
+         <para>If the &console; tells you that you're not authorized to perform an action, then you
+            must contact your administrator for assistance. Your administrator is the person that
+            provided you with your user name and password.</para>
+         <para>The following error occurs when the <code>mateojackson</code> &IAM; user tries to use
+            the console to create a virtual node named <replaceable>my-virtual-node</replaceable> in
+            the mesh named <replaceable>my-mesh</replaceable> but does not have the
+               <code>&AA-SERVICEPREFIX;:CreateVirtualNode</code> permission.</para>
+         <screen>User: &region-arn;iam::&account_id_example;:user/mateojackson is not authorized to perform: <code>&AA-SERVICEPREFIX;:CreateVirtualNode</code> on resource: &region-arn;&AA-SERVICEPREFIX;:&region_api_default;:&account_id_example;:mesh/<replaceable>my-mesh</replaceable>/virtualNode/<replaceable>my-virtual-node</replaceable></screen>
+         <para>In this case, Mateo asks his administrator to update his policies to allow him to
+            create a virtual node using the <code>&AA-SERVICEPREFIX;:CreateVirtualNode</code>
+            action.</para>
+         <note><para>Since a virtual node is created within a mesh, Mateo's account also requires the
+                  <code>&AA-SERVICEPREFIX;:DescribeMesh</code> and
+                  <code>&AA-SERVICEPREFIX;:ListMeshes</code> actions to create the virtual node in
+               the console.</para></note>
+      </section>
+      <!-- 
+      <section id="security_iam_troubleshoot-passrole">
+         <info>
+            <title id="security_iam_troubleshoot-passrole.title">I Am Not Authorized to Perform
+               iam:PassRole</title>
+         </info> &sec-iam-template-troubleshoot-passrole; </section> -->
+      <section id="security_iam_troubleshoot-access-keys">
+         <info>
+            <title id="security_iam_troubleshoot-access-keys.title">I want to view my access
+               keys</title>
+         </info> &sec-iam-template-troubleshoot-access-keys; </section>
+      <section id="security_iam_troubleshoot-admin-delegate">
+         <info>
+            <title id="security_iam_troubleshoot-admin-delegate.title">I'm an administrator and want
+               to allow others to access &AA-SERVICENAME;</title>
+         </info> &sec-iam-template-troubleshoot-admin-delegate; </section>
+      <section id="security_iam_troubleshoot-cross-account-access">
+         <info>
+            <title id="security_iam_troubleshoot-cross-account-access.title">I want to allow people
+               outside of my &AWS; account to access my &AA-SERVICENAME; resources</title>
+         </info> &sec-iam-template-troubleshoot-cross-account-access; </section>
+   </section>
+</section>

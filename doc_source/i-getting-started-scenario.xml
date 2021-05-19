@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+  <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+  %xinclude;
+  <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+  %phrases-shared;
+<!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+]>
+
+<section id="scenario">
+    <info>
+        <title id="scenario.title">Scenario</title>
+    </info>
+    <para>To illustrate how to use &MESH;, assume that you have an application with the
+        following characteristics:</para>
+    <itemizedlist>
+        <listitem>
+            <para>Consists of two services named <code>serviceA</code> and
+                <code>serviceB</code>. </para>
+        </listitem>
+        <listitem>
+            <para>Both services are registered to a namespace named
+                <code>apps.local</code>.</para>
+        </listitem>
+        <listitem>
+            <para><code>ServiceA</code> communicates with <code>serviceB</code> over HTTP/2,
+                port 80.</para>
+        </listitem>
+        <listitem>
+            <para> You have already deployed version 2 of <code>serviceB</code> and registered
+                it with the name <code>serviceBv2</code> in the <code>apps.local</code>
+                namespace.</para>
+        </listitem>
+    </itemizedlist>
+    <para>You have the following requirements:</para>
+    <itemizedlist>
+        <listitem>
+            <para>You want to send 75 percent of the traffic from <code>serviceA</code> to
+                    <code>serviceB</code> and 25 percent of the traffic to <code>serviceBv2</code>
+                to validate that <code>serviceBv2</code> is bug free before you send 100 percent of
+                the traffic from <code>serviceA</code> to it. </para>
+        </listitem>
+        <listitem>
+            <para>You want to be able to easily adjust the traffic weighting so that 100 percent
+                of the traffic goes to <code>serviceBv2</code> once it is proven to be reliable.
+                Once all traffic is being sent to <code>serviceBv2</code>, you want to discontinue
+                <code>serviceB</code>.</para>
+        </listitem>
+        <listitem>
+            <para>You do not want to have to change any existing application code or service
+                discovery registration for your actual services to meet the previous
+                requirements. </para>
+        </listitem>
+    </itemizedlist>
+    <para>To meet your requirements, you have decided to create an &MESH; service mesh with
+        virtual services, virtual nodes, a virtual router, and a route. After implementing your
+        mesh, you update your services to use the Envoy proxy. Once updated, your services
+        communicate with each other through the Envoy proxy rather than directly with each
+        other.</para>
+</section>

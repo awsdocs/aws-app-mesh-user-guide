@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+    <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+    <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent"> 
+    %phrases-shared;
+    <!ENTITY % phrases-appmesh SYSTEM "../shared/phrases-app-mesh.ent"> 
+    %phrases-appmesh;
+
+]>
+<chapter id="appmesh-integrations" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <info>
+        <title id="appmesh-integrations.title">&AWS; services integrated with &MESH;</title>
+        <titleabbrev>Working with other services</titleabbrev>
+    </info>
+    <para>&MESH; works with other &AWS; services to provide additional solutions for your business
+        challenges. This topic identifies services that either use &MESH; to add functionality, or
+        services that &MESH; uses to perform tasks.</para>
+    <para role="topiclist">Contents</para>
+    <section role="topic" id="creating-resources-with-cloudformation">
+        <info>
+            <title id="creating-resources-with-cloudformation.title">Creating &MESH; resources with
+                &CFNlong;</title>
+            <abstract>
+                <para>Learn about how to create resources for &MESH; using an &CFNlong;
+                    template.</para>
+            </abstract>
+        </info>
+        <para>&MESH; is integrated with &CFNlong;, a service that helps you model and set up your
+            &AWS; resources so that you can spend less time creating and managing your resources and
+            infrastructure. You create a template that describes all the &AWS; resources that you
+            want, for example an &MESH; mesh, and &CFN; takes care of provisioning and configuring
+            those resources for you. </para>
+        <para>When you use &CFN;, you can reuse your template to set up your &MESH; resources
+            consistently and repeatedly. Just describe your resources once, and then provision the
+            same resources over and over in multiple &AWS; accounts and Regions.</para>
+        <section id="working-with-templates">
+            <info>
+                <title id="working-with-templates.title">&MESH; and &CFN; templates</title>
+            </info>
+            <para>To provision and configure resources for &MESH; and related services, you must
+                understand <ulink type="documentation"
+                    url="AWSCloudFormation/latest/UserGuide/template-guide.html">&CFN;
+                    templates</ulink>. Templates are formatted text files in JSON or YAML. These
+                templates describe the resources that you want to provision in your &CFN; stacks. If
+                you're unfamiliar with JSON or YAML, you can use &CFN; Designer to help you get
+                started with &CFN; templates. For more information, see <ulink type="documentation"
+                    url="AWSCloudFormation/latest/UserGuide/working-with-templates-cfn-designer.html"
+                    >What is &CFN; Designer?</ulink> in the
+                <emphasis>&guide-cfn-user;</emphasis>.</para>
+            <para>&MESH; supports creating meshes, routes, virtual nodes, virtual routers, and
+                virtual services
+                <!-- and list any additional resources for your service, if your service has multiple resource types supported in 
+  CloudFormation -->
+                in &CFN;. For more information, including examples of JSON and YAML templates for
+                your &MESH; resources, see <ulink type="documentation"
+                    url="AWSCloudFormation/latest/UserGuide/AWS_AppMesh.html">&MESH; resource type
+                    reference</ulink> in the <emphasis>&guide-cfn-user;</emphasis>.</para>
+            <!-- You can also create templates that
+   create related resources, such as <replaceable>related-resource-1</replaceable> and <replaceable>related-resource-2</replaceable>. -->
+        </section>
+        <!-- Bonus points: Add another section that covers a particularly interesting use case for your service and CloudFormation, including example templates. -->
+        <section id="learn-more-cloudformation">
+            <info>
+                <title id="learn-more-cloudformation.title">Learn more about &CFN;</title>
+            </info>
+            <para>To learn more about &CFN;, see the following resources:</para>
+            <itemizedlist>
+                <listitem>
+                    <para><ulink url="cloudformation/" type="marketing">&CFNLong;</ulink></para>
+                </listitem>
+                <listitem>
+                    <para><ulink type="documentation"
+                            url="AWSCloudFormation/latest/UserGuide/Welcome.html">&CFNLong; User
+                            Guide</ulink></para>
+                </listitem>
+                <listitem>
+                    <para><ulink type="documentation"
+                            url="cloudformation-cli/latest/userguide/what-is-cloudformation-cli.html"
+                            >&CFNLong; Command Line Interface User Guide</ulink></para>
+                </listitem>
+            </itemizedlist>
+        </section>
+    </section>
+    <xi:include href="outposts.xml"/>
+</chapter>
