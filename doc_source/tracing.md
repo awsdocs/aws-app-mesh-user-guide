@@ -17,7 +17,7 @@ Implement X\-Ray in your application code using the [SDK](https://docs.aws.amazo
 
 **Depending on the type of service:**
   + **ECS \-** In the Envoy proxy container definition, set the `ENABLE_ENVOY_XRAY_TRACING` environment variable to `1` and the `XRAY_DAEMON_PORT` environment variable to `2000`\.
-  + **EC2 \-** In the App Mesh Controller configuration, include `--set tracing.enabled=true` and `--set tracing.provider=x-ray`\.
+  + **EKS \-** In the App Mesh Controller configuration, include `--set tracing.enabled=true` and `--set tracing.provider=x-ray`\.
 + In your X\-Ray container, expose port `2000` and run as user `1337`\.
 
 ### X\-Ray examples<a name="x-ray-examples"></a>
@@ -51,7 +51,7 @@ An Envoy container definition for Amazon ECS
       }
 ```
 
-Updating the App Mesh controller for Amazon EC2
+Updating the App Mesh controller for Amazon EKS
 
 ```
 helm upgrade -i appmesh-controller eks/appmesh-controller \
