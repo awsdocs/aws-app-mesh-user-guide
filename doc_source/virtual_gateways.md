@@ -57,13 +57,13 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
    1. \(Optional\) **Enable connection pool** 
 
-      Connection pooling limits the number of connections that an Envoy can concurrently establish with all the hosts in the upstream cluster\. It is intended to protect your local application from being overwhelmed with connections and lets you adjust traffic shaping for the needs of your applications\.
+      Connection pooling limits the number of connections that the Virtual Gateway Envoy can concurrently establish\. It is intended to protect your Envoy instance from being overwhelmed with connections and lets you adjust traffic shaping for the needs of your applications\.
 
       You can configure destination\-side connection pool settings for a virtual gateway listener\. App Mesh sets the client\-side connection pool settings to infinite by default, simplifying mesh configuration\.
 **Note**  
 The connectionPool and portMapping protocols must be the same\. If your listener protocol is grpc or http2, specify maxRequests only\. If your listener protocol is http, you can specify both maxConnections and maxPendingRequests\. 
       + For **Maximum connections**, specify the maximum number of outbound connections\.
-      + For **Maximum requests**, specify maximum number of parallel requests that can occur to the upstream cluster\.
+      + For **Maximum requests**, specify maximum number of parallel requests that can be established with the Virtual Gateway Envoy\.
       + \(Optional\) For **Maximum pending requests**, specify the number of overflowing requests after **Maximum connections** that an Envoy will queue\. The default value is `2147483647`\.
 
    1. \(Optional\) If you want to configure a health check for your listener, then select **Enable health check**\.
