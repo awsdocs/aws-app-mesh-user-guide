@@ -68,13 +68,13 @@ Logs must still be ingested by an agent in your application and sent to a destin
       + If your virtual node expects inbound traffic, specify a **Port** and **Protocol** for the **Listener**\. The **http** listener permits connection transition to websockets\.
       + \(Optional\) **Enable connection pool** 
 
-        Connection pooling limits the number of connections that an Envoy can concurrently establish with all the hosts in the upstream cluster\. It is intended to protect your local application from being overwhelmed with connections and lets you adjust traffic shaping for the needs of your applications\.
+        Connection pooling limits the number of connections that an Envoy can concurrently establish with the local application cluster\. It is intended to protect your local application from being overwhelmed with connections and lets you adjust traffic shaping for the needs of your applications\.
 
         You can configure destination\-side connection pool settings for a virtual node listener\. App Mesh sets the client\-side connection pool settings to infinite by default, simplifying mesh configuration\.
 **Note**  
 The connectionPool and portMapping protocols must be the same\. If your listener protocol is tcp, specify maxConnections only\. If your listener protocol is grpc or http2, specify maxRequests only\. If your listener protocol is http, you can specify both maxConnections and maxPendingRequests\. 
         + For **Maximum connections**, specify the maximum number of outbound connections\.
-        + For **Maximum requests**, specify maximum number of parallel requests that can occur to the upstream cluster\.
+        + For **Maximum requests**, specify maximum number of parallel requests that can be established with the local application\.
         + \(Optional\) For **Maximum pending requests**, specify the number of overflowing requests after **Maximum connections** that an Envoy will queue\. The default value is `2147483647`\.
       + \(Optional\) **Enable outlier detection **
 
