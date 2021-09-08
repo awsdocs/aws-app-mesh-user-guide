@@ -1,4 +1,4 @@
-# App Mesh observability troubleshooting<a name="troubleshoot-observability"></a>
+# App Mesh observability troubleshooting<a name="troubleshooting-observability"></a>
 
 This topic details common issues that you may experience with App Mesh observability\.
 
@@ -35,6 +35,36 @@ If your issue is still not resolved, then consider opening a [GitHub issue](http
 Your application is using X\-Ray tracing, but you are unable to configure sampling rules for your traces\.
 
 **Resolution**  
-This is a known issue\. For more information, see the [Support Dynamic X\-Ray sampling configuration](https://github.com/aws/aws-app-mesh-roadmap/issues/95) issue on GitHub\. The Envoy proxy allows configuration of sampling rules through static configuration\. For more information, see [AWS X\-Ray Tracer configuration](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/xray.proto.html?highlight=tracing) in the Envoy documentation\. The Envoy proxy cannot currently be configured to dynamically configure sampling rules through the App Mesh service APIs\. 
+Since App Mesh Envoy currently does not support **Dynamic X\-Ray sampling configuration**, the following workarounds are available\.
+
+If your Envoy version is `1.19.1` or later, you have the following options\.
++ To only set the sampling rate, use the `XRAY_SAMPLING_RATE` environment variable on the Envoy container\. The value should be specified as a decimal between `0` and `1.00` \(100%\)\. For more information, see [AWS X\-Ray variables](envoy-config.md#envoy-xray-config)\.
++ To configure the localized custom sampling rules for the X\-Ray tracer use the `XRAY_SAMPLING_RULE_MANIFEST` environment variable to specify a file path in the Envoy container file system\. For more information, see [Sampling rules](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-go-configuration.html#xray-sdk-go-configuration-sampling) in the *AWS X\-Ray Developer Guide*\.
+
+If your Envoy version is prior to `1.19.1`, then do the following\.
++ Use the `ENVOY_TRACING_CFG_FILE` environment variable to change your sampling rate\. For more information, see [Envoy configuration variables](envoy-config.md)\. Specify a custom tracing configuration and define local sampling rules\. For more information, see [Envoy X\-Ray config](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/xray.proto.html#config-trace-v3-xrayconfig)\.
++ Custom tracing configuration for the `ENVOY_TRACING_CFG_FILE` environment variable example:
+
+  ```
+  tracing:
+     http:
+       name: envoy.tracers.xray
+       typedConfig:
+         "@type": type.googleapis.com/envoy.config.trace.v3.XRayConfig
+         segmentName: foo/bar
+         segmentFields:
+           origin: AWS::AppMesh::Proxy
+           aws:
+             app_mesh:
+               mesh_name: foo
+               virtual_node_name: bar
+         daemonEndpoint:
+               protocol: UDP
+               address: 127.0.0.1
+               portValue: 2000
+         samplingRuleManifest:
+               filename: /tmp/sampling-rules.json
+  ```
++ For details on configuration for the sampling rule manifest in the `samplingRuleManifest` property, see [Configuring the X\-Ray SDK for Go](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-go-configuration.html#xray-sdk-go-configuration-sampling)\.
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.

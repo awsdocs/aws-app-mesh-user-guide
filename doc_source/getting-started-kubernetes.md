@@ -102,14 +102,16 @@ The command creates an AWS IAM role with an auto\-generated name\. You are not a
        --set serviceAccount.name=appmesh-controller
    ```
 **Important**  
-If your cluster is in the `me-south-1` or `ap-east-1` Regions, then you need to add the following option to the previous command:  
+If your cluster is in the `me-south-1`, `ap-east-1`, `eu-south-1`, or `af-south-1` Regions, then you need to add the following option to the previous command:  
 
    ```
    --set sidecar.image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/aws-appmesh-envoy
    ```
 Replace *account\-id* and *Region\-code* with one of the appropriate sets of values\.  
-772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.18\.3\.0\-prod
-856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.18\.3\.0\-prod
+772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.19\.1\.0\-prod
+856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.19\.1\.0\-prod
+422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.19\.1\.0\-prod
+924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.19\.1\.0\-prod
 **Important**  
 Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
 

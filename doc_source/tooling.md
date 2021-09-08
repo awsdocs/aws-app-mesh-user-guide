@@ -2,7 +2,7 @@
 
 App Mesh gives customers the ability to interact with its APIs indirectly using tools such as:
 + AWS CloudFormation
-+ AWS Cloud Development Kit \(AWS CDK\)
++ AWS Cloud Development Kit \(CDK\)
 + App Mesh Controller for Kubernetes
 + Terraform
 

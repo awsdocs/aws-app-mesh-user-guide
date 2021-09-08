@@ -1,4 +1,4 @@
-# Metrics<a name="metrics"></a>
+# Exporting metrics<a name="metrics"></a>
 
 Envoy emits many statistics on both its own operation and various dimensions on inbound and outbound traffic\. To learn more about Envoy statistics, see [Statistics](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/observability/statistics) in the Envoy documentation\. These metrics are available through the `/stats` endpoint on the proxy’s administration port, which is typically `9901`\. For more information about the stats endpoint, see [Statistics endpoint](https://www.envoyproxy.io/docs/envoy/latest/operations/admin#get--stats) in the Envoy documentation\. For more information about the administration interface, see [Enable the Envoy proxy administration interface](troubleshooting-best-practices.md#ts-bp-enable-proxy-admin-interface)\.
 

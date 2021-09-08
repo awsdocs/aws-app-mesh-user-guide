@@ -1,7 +1,7 @@
 # AWS App Mesh User Guide
 
 -----
-*****Copyright &copy; 2020 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
+*****Copyright &copy; Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
 
 -----
 Amazon's trademarks and trade dress may not be used in 
@@ -48,7 +48,8 @@ Amazon's trademarks and trade dress may not be used in
    + [Configuration and vulnerability analysis in AWS App Mesh](configuration-vulnerability-analysis.md)
 + [App Mesh observability](observability.md)
    + [Logging](envoy-logs.md)
-   + [Metrics](metrics.md)
+   + [Monitoring your application using Envoy metrics](envoy-metrics.md)
+      + [Exporting metrics](metrics.md)
    + [Tracing](tracing.md)
 + [Envoy image](envoy.md)
    + [Envoy configuration variables](envoy-config.md)
@@ -62,9 +63,9 @@ Amazon's trademarks and trade dress may not be used in
 + [App Mesh troubleshooting](troubleshooting.md)
    + [App Mesh troubleshooting best practices](troubleshooting-best-practices.md)
    + [App Mesh setup troubleshooting](troubleshooting-setup.md)
-   + [App Mesh connectivity troubleshooting](troubleshoot-connectivity.md)
+   + [App Mesh connectivity troubleshooting](troubleshooting-connectivity.md)
    + [App Mesh scaling troubleshooting](troubleshooting-scaling.md)
-   + [App Mesh observability troubleshooting](troubleshoot-observability.md)
+   + [App Mesh observability troubleshooting](troubleshooting-observability.md)
    + [App Mesh security troubleshooting](troubleshooting-security.md)
    + [App Mesh Kubernetes troubleshooting](troubleshooting-kubernetes.md)
 + [App Mesh Preview Channel](preview.md)

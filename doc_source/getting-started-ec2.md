@@ -132,7 +132,9 @@ Create the following resources:
 
 1. For **Route type**, choose **http2**\.
 
-1. For **Virtual node name** under **Route configuration**, select `serviceB` and enter **100** for **Weight**\.
+1. For **Virtual node name** under **Target configuration**, select `serviceB` and enter **100** for **Weight**\.
+
+1. Under **Match configuration**, choose a **Method**\.
 
 1. To continue, choose **Next**\.
 
@@ -569,19 +571,19 @@ After creating your mesh, you need to complete the following tasks:
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.18.3.0-prod
+     -u 1337 --network host 840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.19.1.0-prod
      ```
    + `me-south-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.18.3.0-prod
+     -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.19.1.0-prod
      ```
    + `ap-east-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.18.3.0-prod
+     -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.19.1.0-prod
      ```
 **Note**  
 The `APPMESH_RESOURCE_ARN` property requires version `1.15.0` or later of the Envoy image\. For more information, see [Envoy image](envoy.md)\.

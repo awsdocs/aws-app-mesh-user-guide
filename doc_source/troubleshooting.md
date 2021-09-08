@@ -5,8 +5,8 @@ This chapter discusses troubleshooting best practices and common issues that you
 **Topics**
 + [App Mesh troubleshooting best practices](troubleshooting-best-practices.md)
 + [App Mesh setup troubleshooting](troubleshooting-setup.md)
-+ [App Mesh connectivity troubleshooting](troubleshoot-connectivity.md)
++ [App Mesh connectivity troubleshooting](troubleshooting-connectivity.md)
 + [App Mesh scaling troubleshooting](troubleshooting-scaling.md)
-+ [App Mesh observability troubleshooting](troubleshoot-observability.md)
++ [App Mesh observability troubleshooting](troubleshooting-observability.md)
 + [App Mesh security troubleshooting](troubleshooting-security.md)
 + [App Mesh Kubernetes troubleshooting](troubleshooting-kubernetes.md)

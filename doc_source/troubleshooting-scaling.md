@@ -36,7 +36,7 @@ The Envoy proxy has likely breached the operating system's default nofile ulimit
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 
-## Increase in default resources is not reflected in service limits<a name="default-resources-increase"></a>
+## Increase in default resources is not reflected in Service Limits<a name="default-resources-increase"></a>
 
 **Symptoms**  
 After increasing the default limit of App Mesh resources, the new value is not reflected when you look at your service limits

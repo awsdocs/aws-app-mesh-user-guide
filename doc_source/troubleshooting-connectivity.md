@@ -1,4 +1,4 @@
-# App Mesh connectivity troubleshooting<a name="troubleshoot-connectivity"></a>
+# App Mesh connectivity troubleshooting<a name="troubleshooting-connectivity"></a>
 
 This topic details common issues that you may experience with App Mesh connectivity\.
 
@@ -9,7 +9,7 @@ Your application is unable to resolve the DNS name of a virtual service that it 
 
 **Resolution**  
 This is a known issue\. For more information, see the [Name VirtualServices by any hostname or FQDN](https://github.com/aws/aws-app-mesh-roadmap/issues/65) GitHub issue\. Virtual services in App Mesh can be named anything\. As long as there is a DNS `A` record for the virtual service name and the application can resolve the virtual service name, the request will be proxied by Envoy and routed to its appropriate destination\. To resolve the issue, add a DNS `A` record to any non\-loopback IP address, such as `10.10.10.10`, for the virtual service name\. The DNS `A` record can be added under the following conditions:
-+ In Amazon Route 53, if the name is suffixed by your private hosted zone name
++ In Amazon Route 53 , if the name is suffixed by your private hosted zone name
 + Within the application container's `/etc/hosts` file
 + In a third\-party DNS server that you manage
 
@@ -62,12 +62,14 @@ ERROR 2013 (HY000): Lost connection to MySQL server at 'reading initial communic
 **Resolution**  
 This is a known issue that is resolved by using App Mesh image version 1\.15\.0 or later\. For more information, see the [Unable to connect to MySQL with App Mesh](https://github.com/aws/aws-app-mesh-roadmap/issues/62) GitHub issue\. This error occurs because the outbound listener in Envoy configured by App Mesh adds the Envoy TLS Inspector listener filter\. For more information, see [TLS Inspector](https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/listener_filters/tls_inspector#config-listener-filters-tls-inspector) in the Envoy documentation\. This filter evaluates whether or not a connection is using TLS by inspecting the first packet sent from the client\. With MySQL and SMTP, however, the server sends the first packet after connection\. For more information about MySQL, see [Initial Handshake](https://dev.mysql.com/doc/internals/en/initial-handshake.html) in the MySQL documentation\. Because the server sends the first packet, inspection at the filter fails\.
 
-To work around this issue, either upgrade your Envoy version to AppMesh image 1\.15\.0 \(or later version\), or use the following instructions: add port `3306` to the list of values for the `APPMESH_EGRESS_IGNORED_PORTS` in your services for MySQL, and the port you are using for STMP\.
+**To work around this issue depending on your version of Envoy:**
++ If your App Mesh image Envoy version is 1\.15\.0 or later, do not model external services such as **MySQL**, **SMTP**, **MSSQL**, etc\. as a backend for your application's virtual node\.
++ If your App Mesh image Envoy version is prior to 1\.15\.0, add port `3306` to the list of values for the `APPMESH_EGRESS_IGNORED_PORTS` in your services for **MySQL** and as the port you are using for **STMP**\.
 
 **Important**  
 While the standard SMTP ports are `25`, `587`, and `465`, you should only add the port you are using to `APPMESH_EGRESS_IGNORED_PORTS` and not all three\.
 
-For more information, see [Update services](https://docs.aws.amazon.com/eks/latest/userguide/appmesh-getting-started.html#update-services) for Kubernetes , [Update services](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/appmesh-getting-started.html#update-services) for Amazon ECS, or [Update services](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-getting-started.html#update-services) for Amazon EC2\. 
+For more information, see [Update services](https://docs.aws.amazon.com/app-mesh/latest/userguide/getting-started-kubernetes.html#create-update-services) for Kubernetes , [Update services](https://docs.aws.amazon.com/app-mesh/latest/userguide/getting-started-ecs.html#update-services) for Amazon ECS, or [Update services](https://docs.aws.amazon.com/app-mesh/latest/userguide/getting-started-ec2.html#update-services) for Amazon EC2\. 
 
 If your issue is still not resolved, then you can provide us with details on what you're experiencing using the existing [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/62) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 

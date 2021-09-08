@@ -53,6 +53,12 @@ Enables X\-Ray tracing using `127.0.0.1:2000` as the default daemon endpoint\. T
 `XRAY_DAEMON_PORT`  
 Specify a port value to override the default X\-Ray daemon port: `2000`\.
 
+`XRAY_SAMPLING_RATE`  
+Specify a sampling rate to override the X\-Ray tracer's default sampling rate of `0.05` \(5%\)\. The value should be specified as a decimal between `0` and `1.00` \(100%\)\. This will be overridden if `XRAY_SAMPLING_RULE_MANIFEST` is specified\. This variable is supported with Envoy image version `v1.19.1.0-prod` or later\.
+
+`XRAY_SAMPLING_RULE_MANIFEST`  
+Specify a file path in the Envoy container file system to configure the localized custom sampling rules for the X\-Ray tracer\. For more information, see [Sampling rules](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-go-configuration.html#xray-sdk-go-configuration-sampling) in the *AWS X\-Ray Developer Guide*\. This variable is supported with Envoy image version `v1.19.1.0-prod` or later\.
+
 #### Datadog tracing variables<a name="datadog-tracing"></a>
 
 The following environment variables help you configure App Mesh with the Datadog agent tracer\. For more information, see [Agent Configuration](https://docs.datadoghq.com/tracing/send_traces/) in the Datadog documentation\.
@@ -65,6 +71,9 @@ Specify a port value to override the default Datadog agent port: `8126`\.
 
 `DATADOG_TRACER_ADDRESS`  
 Specify an IP address to override the default Datadog agent address: `127.0.0.1`\.
+
+`DD_SERVICE`  
+Specify a service name for traces to override the default Datadog service name: `envoy-meshName`/`virtualNodeName`\. This variable is supported with Envoy image version `v1.18.3.0-prod` or later\.
 
 #### Jaeger tracing variables<a name="jaeger-tracing"></a>
 
@@ -84,7 +93,8 @@ Specify an IP address to override the default Jaeger address: `127.0.0.1`\.
 The following environment variable enables you to use your own tracing configuration\. 
 
 `ENVOY_TRACING_CFG_FILE`  
-Specify a file path in the Envoy container file system\. For more information, see [https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/http_tracer.proto#envoy-v3-api-msg-config-trace-v3-tracing](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/http_tracer.proto#envoy-v3-api-msg-config-trace-v3-tracing) in the Envoy documentation\.
+Specify a file path in the Envoy container file system\. For more information, see [https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/http_tracer.proto#envoy-v3-api-msg-config-trace-v3-tracing](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/http_tracer.proto#envoy-v3-api-msg-config-trace-v3-tracing) in the Envoy documentation\.  
+If the tracing configuration requires specifying a tracing cluster, be sure to also configure the associated cluster configuration under `static_resources` in the same tracing config file\. For example, Zipkin has a [ `collector_cluster`](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig) field for the cluster name that hosts the trace collectors, and that cluster needs to be statically defined\.
 
 ### DogStatsD variables<a name="envoy-dogstatsd-config"></a>
 
@@ -98,6 +108,9 @@ Specify a port value to override the default DogStatsD daemon port\.
 
 `STATSD_ADDRESS`  
 Specify an IP address value to override the default DogStatsD daemon IP address\. Default: `127.0.0.1`\. This variable can only be used with version `1.15.0` or later of the Envoy image\.
+
+`STATSD_SOCKET_PATH`  
+Specify a unix domain socket for the DogStatsD daemon\. If this variable is not specified, and if DogStatsD is enabled, then this value defaults to the DogStatsD daemon IP address port of `127.0.0.1:8125`\. If the `ENVOY_STATS_SINKS_CFG_FILE` variable is specified containing a stats sinks configuration, it will override all of the DogStatsD variables\. This variable is supported with Envoy image version `v1.19.1.0-prod` or later\.
 
 ### App Mesh variables<a name="envoy-appmesh-variables"></a>
 
@@ -117,7 +130,8 @@ The following environment variables help you to configure App Mesh with Envoy St
 Enables the use of App Mesh defined tags `appmesh.mesh` and `appmesh.virtual_node`\. For more information, see [config\.metrics\.v3\.TagSpecifier](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/metrics/v3/stats.proto#config-metrics-v3-tagspecifier) in the Envoy documentation\. To enable, set the value to `1`\.
 
 `ENVOY_STATS_CONFIG_FILE`  
-Specify a file path in the Envoy container file system to override the default Stats tags configuration file with your own\. For more information, see [config\.metrics\.v3\.StatsConfig](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/metrics/v3/stats.proto#config-metrics-v3-statsconfig)\.
+Specify a file path in the Envoy container file system to override the default Stats tags configuration file with your own\. For more information, see [config\.metrics\.v3\.StatsConfig](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/metrics/v3/stats.proto#config-metrics-v3-statsconfig)\.  
+Setting a customized stats configuration that includes stats filters might lead Envoy to enter a state where it will no longer properly synchronize with the App Mesh state of the world\. This is a [bug](https://github.com/envoyproxy/envoy/issues/9856) in Envoy\. Our recommendation is to not perform any filtering of statistics in Envoy\. If filtering is absolutely necessary, we have a listed a couple of workarounds in this [issue](https://github.com/aws/aws-app-mesh-roadmap/issues/283) on our roadmap\.
 
 `ENVOY_STATS_SINKS_CFG_FILE`  
 Specify a file path in the Envoy container file system to override the default configuration with your own\. For more information, see [config\.metrics\.v3\.StatsSink](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/metrics/v3/stats.proto#config-metrics-v3-statssink) in the Envoy documentation\.

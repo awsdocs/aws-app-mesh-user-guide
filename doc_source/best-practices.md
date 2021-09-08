@@ -26,6 +26,8 @@ When using rolling deployments, reduce the overall deployment velocity\. By defa
 
 When configured with these deployment constraints, container orchestrators may enter a state where they are simultaneously hiding all old destinations and making all new destinations visible\. Because your Envoy dataplane is eventually consistent, this can result in periods where the set of destinations visible in your dataplane have diverged from the orchestrator’s point of view\. To mitigate this, we recommend maintaining a minimum of 100 percent healthy tasks, but lowering total tasks to 125 percent\. This will reduce divergence and improve the reliability of retries\. We recommend the following settings for different container runtimes:
 
+
+
 **Amazon ECS**  
 If your service has a desired count of two or three, set `maximumPercent` to 150 percent\. Otherwise, set `maximumPercent` to 125 percent\.
 
