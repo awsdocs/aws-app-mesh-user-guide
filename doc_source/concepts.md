@@ -6,4 +6,3 @@
 + [Virtual gateways](virtual_gateways.md)
 + [Virtual nodes](virtual_nodes.md)
 + [Virtual routers](virtual_routers.md)
-+ [App Mesh Preview Channel only – Multiple listeners](multiple-listeners.md)

@@ -4,8 +4,6 @@ The following table describes the major updates and new features for the *AWS Ap
 
 | Change | Description | Date | 
 | --- |--- |--- |
-| [Multiple listeners for App Mesh](https://docs.aws.amazon.com/app-mesh/latest/userguide/multiple-listeners.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) You can implement multiple listeners for App Mesh\. | November 23, 2021 | 
-| [ARM64 support for App Mesh](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy.html) | App Mesh now supports ARM64\. | November 19, 2021 | 
 | [Metrics extension for App Mesh](https://docs.aws.amazon.com/app-mesh/latest/userguide/metrics.html#metrics-extension) | You can implement metrics extensions for App Mesh\. | October 29, 2021 | 
 | [Implement incoming traffic enhancements](https://aws.amazon.com/about-aws/whats-new/2021/06/aws-app-mesh-introduces-enhanced-ingress-traffic-management-capabilities/) | You can implement host name and header match and rewrites for host name and path\. | June 14, 2021 | 
 | [Implement mutual TLS authentication](https://aws.amazon.com/about-aws/whats-new/2021/02/aws-app-mesh-supports-mutual-tls-authentication/) | You can implement mutual TLS authentication\. | February 4, 2021 | 

@@ -37,7 +37,7 @@ Your application is using X\-Ray tracing, but you are unable to configure sampli
 **Resolution**  
 Since App Mesh Envoy currently does not support **Dynamic X\-Ray sampling configuration**, the following workarounds are available\.
 
-If your Envoy version is `1.19.1` or later, you have the following options\.
+If your Envoy version is `1.19.1` or later, you have the following option\.
 + To only set the sampling rate, use the `XRAY_SAMPLING_RATE` environment variable on the Envoy container\. The value should be specified as a decimal between `0` and `1.00` \(100%\)\. For more information, see [AWS X\-Ray variables](envoy-config.md#envoy-xray-config)\.
 + To configure the localized custom sampling rules for the X\-Ray tracer use the `XRAY_SAMPLING_RULE_MANIFEST` environment variable to specify a file path in the Envoy container file system\. For more information, see [Sampling rules](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-go-configuration.html#xray-sdk-go-configuration-sampling) in the *AWS X\-Ray Developer Guide*\.
 
