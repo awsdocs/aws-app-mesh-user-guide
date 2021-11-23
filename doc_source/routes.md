@@ -37,6 +37,9 @@ To create a route using the AWS CLI version 1\.18\.116 or later, see the example
      + \(Optional\) **Method** ‐ specifies the method header to be matched in the incoming **http**/**http2** requests\.
      + \(Optional\) **Prefix/Exact/Regex path** ‐ method of matching the path of the URL\.
        + **Prefix match** ‐ a matched request by a gateway route is rewritten to the target virtual service's name and the matched prefix is rewritten to `/`, by default\. Depending on how you configure your virtual service, it could use a virtual router to route the request to different virtual nodes, based on specific prefixes or headers\. 
+**Note**  
+If you enable **Path**/**Prefix** based matching, App Mesh enables path normalization \([normalize\_path](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/http_connection_manager/v3/http_connection_manager.proto#envoy-v3-api-field-extensions-filters-network-http-connection-manager-v3-httpconnectionmanager-normalize-path) and [merge\_slashes](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/http_connection_manager/v3/http_connection_manager.proto#envoy-v3-api-field-extensions-filters-network-http-connection-manager-v3-httpconnectionmanager-merge-slashes)\) to minimize the probability of path confusion vulnerabilities\.  
+Path confusion vulnerabilities occur when parties participating in the request use different path representations\.
        + **Exact match** ‐ the exact param disables the partial matching for a route and makes sure that it only returns the route if the path is an EXACT match to the current url\.
        + **Regex match** ‐ used to describe patterns where multiple URLs may actually identify a single page on the website\.
      + \(Optional\) **Query parameters** ‐ this field allows you to match on the query parameters\.

@@ -10,35 +10,36 @@ You can choose either a Regional image from the list below or an image from our 
 
 **Important**  
 Version `1.17` was a significant update to Envoy\. See [Updating/migrating to Envoy 1\.17](https://docs.aws.amazon.com/app-mesh/latest/userguide/1.17-migration.html) for more details\.
+Version `1.20.0.1` is `ARM64` compatible\.
 + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\. You can replace *Region\-code* with any Region other than `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\. 
 
   ```
-  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.19.1.0-prod
+  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.20.0.1-prod
   ```
 + `me-south-1` Region:
 
   ```
-  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.19.1.0-prod
+  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.20.0.1-prod
   ```
 + `ap-east-1` Region:
 
   ```
-  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.19.1.0-prod
+  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.20.0.1-prod
   ```
 + `eu-south-1` Region:
 
   ```
-  422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.19.1.0-prod
+  422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.20.0.1-prod
   ```
 + `af-south-1` Region:
 
   ```
-  924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.19.1.0-prod
+  924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.20.0.1-prod
   ```
 + `Public repository`
 
   ```
-  public.ecr.aws/appmesh/aws-appmesh-envoy:v1.19.1.0-prod
+  public.ecr.aws/appmesh/aws-appmesh-envoy:v1.20.0.1-prod
   ```
 
 **Important**  

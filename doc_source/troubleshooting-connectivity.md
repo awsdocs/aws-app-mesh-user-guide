@@ -9,7 +9,7 @@ Your application is unable to resolve the DNS name of a virtual service that it 
 
 **Resolution**  
 This is a known issue\. For more information, see the [Name VirtualServices by any hostname or FQDN](https://github.com/aws/aws-app-mesh-roadmap/issues/65) GitHub issue\. Virtual services in App Mesh can be named anything\. As long as there is a DNS `A` record for the virtual service name and the application can resolve the virtual service name, the request will be proxied by Envoy and routed to its appropriate destination\. To resolve the issue, add a DNS `A` record to any non\-loopback IP address, such as `10.10.10.10`, for the virtual service name\. The DNS `A` record can be added under the following conditions:
-+ In Amazon Route 53 , if the name is suffixed by your private hosted zone name
++ In Amazon Route 53, if the name is suffixed by your private hosted zone name
 + Within the application container's `/etc/hosts` file
 + In a third\-party DNS server that you manage
 
@@ -133,5 +133,45 @@ If your issue is still not resolved, then consider opening a [GitHub issue](http
 
 **Resolution**  
 This is a known issue\. From more information, see [iptables rules setup](https://github.com/aws/aws-app-mesh-roadmap/issues/166) issue on Github\. The Envoy proxy only intercepts inbound traffic to the port of which its corresponding virtual node is listening on\. Requests to any other port will bypass the Envoy proxy and reach to the service behind it directly\. In order to let the Envoy proxy intercept the inbound traffic for your service you need to set your virtual node and service to listen on the same port\.
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
+
+## Setting the `HTTP_PROXY`/`HTTPS_PROXY` environment variables at container level doesn't work as expected\.<a name="http-https-proxy"></a>
+
+**Symptoms**  
+When HTTP\_PROXY/HTTPS\_PROXY is set as an environment variable at the:
++ App container in the task definition with App Mesh enabled, requests being sent to the namespace of the App Mesh services will get `HTTP 500` error responses from the Envoy sidecar\.
++ Envoy container in task definition with App Mesh enabled, requests coming out of Envoy sidecar will not go through the `HTTP`/`HTTPS` proxy server, and the environment variable will not work\.
+
+**Resolution**  
+For the app container:
+
+App Mesh functions by having traffic within your task go through the Envoy proxy\. `HTTP_PROXY`/`HTTPS_PROXY` configuration overrides this behavior by configuring container traffic to go through a different external proxy\. The traffic will still be intercepted by Envoy, but it doesn't support proxying the mesh traffic using an external proxy\.
+
+If you want to proxy all non\-mesh traffic, please set `NO_PROXY` to include your mesh's CIDR/namespace, localhost, and the credential's endpoints like in the following example\.
+
+```
+NO_PROXY=localhost,127.0.0.1,169.254.169.254,169.254.170.2,10.0.0.0/16
+```
+
+For the Envoy container:
+
+Envoy doesn't support a generic proxy\. We do not recommend setting these variables\.
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
+
+## Upstream request timeouts even after setting the timeout for routes\.<a name="upstream-timeout-request"></a>
+
+**Symptoms**  
+You defined the timeout for:
++ The routes, but you are still getting an upstream request timeout error\.
++ The virtual node listener and the timeout and the retry timeout for the routes, but you are still getting an upstream request timeout error\.
+
+**Resolution**  
+For the high latency requests greater than 15 seconds to complete successfully, you need to specify a timeout at both the route and virtual node listener level\.
+
+If you specify a route timeout that is greater than the default 15 seconds, make sure that the timeout is also specified for the listener for all participating virtual nodes\. However, if you decrease the timeout to a value that is lower than the default, it's optional to update the timeouts at virtual nodes\. For more information about options when setting up virtual nodes and routes, see [virtual nodes](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_nodes.html) and [routes](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html)\.
+
+If you specified a **retry policy**, the duration that you specify for the request timeout should always be greater than or equal to the *retry timeout* multiplied by the *max retries* that you defined in the **retry policy**\. This allows your request with all the retries to complete successfully\. For more information, see [routes](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html)\.
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.

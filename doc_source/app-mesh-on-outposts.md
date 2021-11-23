@@ -12,7 +12,7 @@ AWS Outposts enables native AWS services, infrastructure, and operating models i
 ## Limitations<a name="app-mesh-outposts-limit"></a>
 
 The following are the limitations of using App Mesh on AWS Outposts:
-+ AWS Identity and Access Management, Application Load Balancer, Network Load Balancer, Classic Load Balancer, and Amazon Route 53 run in the AWS Region, not on Outposts\. This will increase latencies between these services and the containers\.
++ AWS Identity and Access Management, Application Load Balancer, Network Load Balancer, Classic Load Balancer, and Amazon Route 53 run in the AWS Region, not on Outposts\. This will increase latencies between these services and the containers\.
 
 ## Network connectivity considerations<a name="app-mesh-outposts-considerations"></a>
 

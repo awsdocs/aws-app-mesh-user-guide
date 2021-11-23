@@ -37,6 +37,9 @@ To create a gateway route using the AWS CLI version 1\.18\.116 or later, see the
 **Important**  
 You can't specify either `/aws-appmesh*` or `/aws-app-mesh*` for **Prefix match**\. These prefixes are reserved for future App Mesh internal use\.
 If multiple gateway routes are defined, then a request is matched to the route with the longest prefix\. For example, if two gateway routes existed, with one having a prefix of `/chapter` and one having a prefix of `/`, then a request for `www.example.com/chapter/` would be matched to the gateway route with the `/chapter` prefix\.
+**Note**  
+If you enable **Path**/**Prefix** based matching, App Mesh enables path normalization \([normalize\_path](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/http_connection_manager/v3/http_connection_manager.proto#envoy-v3-api-field-extensions-filters-network-http-connection-manager-v3-httpconnectionmanager-normalize-path) and [merge\_slashes](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/http_connection_manager/v3/http_connection_manager.proto#envoy-v3-api-field-extensions-filters-network-http-connection-manager-v3-httpconnectionmanager-merge-slashes)\) to minimize the probability of path confusion vulnerabilities\.  
+Path confusion vulnerabilities occur when parties participating in the request use different path representations\.
        + **Exact match** ‐ the exact param disables the partial matching for a route and makes sure that it only returns the route if the path is an EXACT match to the current url\.
        + **Regex match** ‐ used to describe patterns where multiple URLs may actually identify a single page on the website\.
      + \(Optional\) **Query parameters** ‐ this field allows you to match on the query parameters\.

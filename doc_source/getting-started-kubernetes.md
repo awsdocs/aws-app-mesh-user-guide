@@ -76,7 +76,7 @@ Install the integration components one time to each cluster that hosts pods that
        --approve
    ```
 
-1. Create an IAM role, attach the [AWSAppMeshFullAccess](https://console.aws.amazon.com/iam/home?#policies/arn:aws:iam::aws:policy/AWSAppMeshFullAccess$jsonEditor) and [AWSCloudMapFullAccess](https://console.aws.amazon.com/iam/home?#policies/arn:aws:iam::aws:policy/AWSCloudMapFullAccess$jsonEditor) AWS managed policies to it, and bind it to the `appmesh-controller` Kubernetes service account\. The role enables the controller to add, remove, and change App Mesh resources\.
+1. Create an IAM role, attach the [https://console.aws.amazon.com/iam/home?#policies/arn:aws:iam::aws:policy/AWSAppMeshFullAccess$jsonEditor](https://console.aws.amazon.com/iam/home?#policies/arn:aws:iam::aws:policy/AWSAppMeshFullAccess$jsonEditor) and [https://console.aws.amazon.com/iam/home?#policies/arn:aws:iam::aws:policy/AWSCloudMapFullAccess$jsonEditor](https://console.aws.amazon.com/iam/home?#policies/arn:aws:iam::aws:policy/AWSCloudMapFullAccess$jsonEditor) AWS managed policies to it, and bind it to the `appmesh-controller` Kubernetes service account\. The role enables the controller to add, remove, and change App Mesh resources\.
 **Note**  
 The command creates an AWS IAM role with an auto\-generated name\. You are not able to specify the IAM role name that is created\.
 
@@ -108,10 +108,10 @@ If your cluster is in the `me-south-1`, `ap-east-1`, `eu-south-1`, or `af-south-
    --set sidecar.image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/aws-appmesh-envoy
    ```
 Replace *account\-id* and *Region\-code* with one of the appropriate sets of values\.  
-772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.19\.1\.0\-prod
-856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.19\.1\.0\-prod
-422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.19\.1\.0\-prod
-924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.19\.1\.0\-prod
+772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.20\.0\.1\-prod
+856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.20\.0\.1\-prod
+422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.20\.0\.1\-prod
+924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.20\.0\.1\-prod
 **Important**  
 Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
 

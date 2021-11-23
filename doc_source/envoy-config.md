@@ -122,6 +122,9 @@ Set the value to `1` to connect to the App Mesh Preview Channel endpoint\. For m
 `APPMESH_RESOURCE_CLUSTER`  
 By default App Mesh uses the name of the resource you specified in `APPMESH_RESOURCE_ARN` when Envoy is referring to itself in metrics and traces\. You can override this behavior by setting the `APPMESH_RESOURCE_CLUSTER` environment variable with your own name\. This variable can only be used with version `1.15.0` or later of the Envoy image\.
 
+`APPMESH_METRIC_EXTENSION_VERSION`  
+Set the value to `1` to enable the App Mesh metrics extension\. For more information about using the App Mesh metrics extension, see [Metrics extension for App Mesh](metrics.md)\.
+
 ### Envoy stats variables<a name="envoy-stats-config"></a>
 
 The following environment variables help you to configure App Mesh with Envoy Stats\. For more information, see the [Envoy Stats](https://www.envoyproxy.io/docs/envoy/v1.6.0/api-v2/config/metrics/v2/stats.proto) documentation\.

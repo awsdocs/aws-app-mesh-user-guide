@@ -39,9 +39,21 @@ If your issue is still not resolved, then consider opening a [GitHub issue](http
 ## Increase in default resources is not reflected in Service Limits<a name="default-resources-increase"></a>
 
 **Symptoms**  
-After increasing the default limit of App Mesh resources, the new value is not reflected when you look at your service limits
+After increasing the default limit of App Mesh resources, the new value is not reflected when you look at your service limits\.
 
 **Resolution**  
 While the new limits aren't currently shown, customers can still exercise them\.
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
+
+## Application crashes due to a huge number of health checks calls\.<a name="crash-health-checks"></a>
+
+**Symptoms**  
+After enabling active health checks for a virtual node, there is an uptick in the number of health check calls\. The application crashes due to the greatly increased volume of health check calls made to the application\.
+
+**Resolution**  
+When active health checking is enabled, each Envoy endpoint of the downstream \(client\) sends health requests to each endpoint of the upstream cluster \(server\) in order to make routing decisions\. As a result the total number of health check requests would be `number of client Envoys` \* `number of server Envoys` \* `active health check frequency`\.
+
+To resolve this issue, modify the frequency of the health check probe, which would reduce the total volume of health check probes\. In addition to active health checks, App Mesh allows configuring [outlier detection](https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_OutlierDetection.html) as means of passive health checking\. Use outlier detection to configure when to remove a particular host based on consecutive `5xx` responses\.
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
