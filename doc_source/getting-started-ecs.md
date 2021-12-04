@@ -277,7 +277,7 @@ To complete the scenario, you need to:
 
 1. Choose **Create virtual node** again\. Enter **serviceA** for the **Virtual node name**\. For **Service discovery method**, choose **DNS**, and for **DNS hostname**, enter **servicea\.apps\.local**\.
 
-1. For **Enter a virtual service name** under **New backend**, enter **servicea\.apps\.local**\.
+1. For **Enter a virtual service name** under **New backend**, enter **serviceb\.apps\.local**\.
 
 1. Under **Listener configuration**, choose **http2** for **Protocol**, enter **80** for **Port**, and then choose **Create virtual node**\.
 
