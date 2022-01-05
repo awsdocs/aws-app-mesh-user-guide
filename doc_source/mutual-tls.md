@@ -78,6 +78,6 @@ cluster.cds_egress_my-mesh_my-backend-node_http_9080.ssl.fail_verify_san: 5
 ```
 
 ## App Mesh mutual TLS authentication walkthroughs<a name="mtls-walkthrough"></a>
-+  [Mutual TLS authentication walkthrough](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-mutual-tls-file-provided): This walkthrough describes how you can use the App Mesh CLI to build a color app with mutual TLS authentication\. 
-+  [Amazon EKS mutual TLS SDS\-based walkthrough](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-k8s-mtls-sds-based): This walkthrough shows how you can use mutual TLS SDS\-based authentication with Amazon EKS and SPIFFE Runtime Environment \(SPIRE\)\. 
-+  [Amazon EKS mutual TLS file\-based walkthrough](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-k8s-mtls-file-based): This walkthrough shows how you can use mutual TLS file\-based authentication with Amazon EKS and SPIFFE Runtime Environment \(SPIRE\)\. 
++  [Mutual TLS authentication walkthrough](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-mutual-tls-file-provided): This walkthrough describes how you can use the App Mesh CLI to build a color app with mutual TLS authentication\. 
++  [Amazon EKS mutual TLS SDS\-based walkthrough](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-k8s-mtls-sds-based): This walkthrough shows how you can use mutual TLS SDS\-based authentication with Amazon EKS and SPIFFE Runtime Environment \(SPIRE\)\. 
++  [Amazon EKS mutual TLS file\-based walkthrough](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-k8s-mtls-file-based): This walkthrough shows how you can use mutual TLS file\-based authentication with Amazon EKS and SPIFFE Runtime Environment \(SPIRE\)\. 

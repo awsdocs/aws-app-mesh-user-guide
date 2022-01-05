@@ -33,7 +33,7 @@ helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
 ```
 
 ### Walkthrough for using the Prometheus<a name="prometheus-walkthrough"></a>
-+ [App Mesh with EKS—Observability: Prometheus](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/eks/o11y-prometheus.md)
++ [App Mesh with EKS—Observability: Prometheus](https://github.com/aws/aws-app-mesh-examples/blob/main/walkthroughs/eks/o11y-prometheus.md)
 
 ### To learn more about Prometheus and Prometheus with Amazon EKS<a name="prometheus-eks"></a>
 + [Prometheus Documentation](https://prometheus.io/docs/introduction/overview/)
@@ -42,7 +42,7 @@ helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
 ## CloudWatch for App Mesh<a name="cloudwatch"></a>
 
 **Emitting Envoy stats to CloudWatch from Amazon EKS**  
-You can install the CloudWatch Agent to your cluster and configure it to collect a subset of metrics from your proxies\. If you do not already have an Amazon EKS cluster, then you can create one with the steps in [Walkthrough: App Mesh with Amazon EKS](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/eks) on GitHub\. You can install a sample application onto the cluster by following the same walkthrough\.
+You can install the CloudWatch Agent to your cluster and configure it to collect a subset of metrics from your proxies\. If you do not already have an Amazon EKS cluster, then you can create one with the steps in [Walkthrough: App Mesh with Amazon EKS](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/eks) on GitHub\. You can install a sample application onto the cluster by following the same walkthrough\.
 
 To set the appropriate IAM permissions for your cluster and install the agent, follow the steps in [Install the CloudWatch Agent with Prometheus Metrics Collection](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-Setup.html)\. The default installation contains a Prometheus scrape configuration which pulls a useful subset of Envoy stats\. For more information, see [Prometheus Metrics for App Mesh](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-metrics.html#ContainerInsights-Prometheus-metrics-appmesh)\.
 
@@ -60,7 +60,7 @@ You can find a sample configuration of CloudWatch in our [AWS Samples repository
 
 ### Walkthroughs for using CloudWatch<a name="cloudwatch-walkthrough"></a>
 + [Add monitoring and logging capabilities](https://www.appmeshworkshop.com/monitoring/) in our [App Mesh workshop](https://www.appmeshworkshop.com/introduction/)\.
-+ [App Mesh with EKS—Observability: CloudWatch](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/eks/o11y-cloudwatch.md)
++ [App Mesh with EKS—Observability: CloudWatch](https://github.com/aws/aws-app-mesh-examples/blob/main/walkthroughs/eks/o11y-cloudwatch.md)
 + [Using App Mesh's metrics extension on ECS](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-metrics-extension-ecs)
 
 ## Metrics extension for App Mesh<a name="metrics-extension"></a>
