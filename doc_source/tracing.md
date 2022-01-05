@@ -64,8 +64,8 @@ helm upgrade -i appmesh-controller eks/appmesh-controller \
 ```
 
 ### Walkthroughs for using the X\-Ray<a name="x-ray-walkthrough"></a>
-+ [Monitor with AWS X\-Ray](https://github.com/aws/aws-app-mesh-examples/tree/master/examples/apps/colorapp#monitor-with-aws-x-ray)
-+ [App Mesh with Amazon EKS \- Observability: X\-Ray](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/eks/o11y-xray.md)
++ [Monitor with AWS X\-Ray](https://github.com/aws/aws-app-mesh-examples/tree/main/examples/apps/colorapp#monitor-with-aws-x-ray)
++ [App Mesh with Amazon EKS \- Observability: X\-Ray](https://github.com/aws/aws-app-mesh-examples/blob/main/walkthroughs/eks/o11y-xray.md)
 + [Distributed tracing with X\-Ray](https://www.appmeshworkshop.com/x-ray/) in the AWS App Mesh [Workshop](https://www.appmeshworkshop.com/introduction/)
 
 ### To learn more about AWS X\-Ray<a name="x-ray-learn-more"></a>
@@ -109,7 +109,7 @@ helm upgrade -i appmesh-controller eks/appmesh-controller \
 ```
 
 ### Walkthrough for using the Jaeger<a name="jaeger-walkthrough"></a>
-+ [App Mesh with EKS—Observability: Jaeger](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/eks/o11y-jaeger.md)
++ [App Mesh with EKS—Observability: Jaeger](https://github.com/aws/aws-app-mesh-examples/blob/main/walkthroughs/eks/o11y-jaeger.md)
 
 ### To learn more about Jaeger<a name="jaeger-eks"></a>
 + [Jaeger Documentation](https://www.jaegertracing.io/)

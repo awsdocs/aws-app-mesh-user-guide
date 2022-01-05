@@ -131,7 +131,7 @@ If you view the log for the running container, you may see a line that includes 
 
 ## Step 2: Deploy App Mesh resources<a name="configure-app-mesh"></a>
 
-When you deploy an application in Kubernetes, you also create the Kubernetes custom resources so that the controller can create the corresponding App Mesh resources\. The following procedure helps you deploy App Mesh resources with some of their features\. You can find example manifests for deploying other App Mesh resource features in the `v1beta2` sub\-folders of many of the feature folders listed at [App Mesh walkthroughs](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs) on GitHub\.
+When you deploy an application in Kubernetes, you also create the Kubernetes custom resources so that the controller can create the corresponding App Mesh resources\. The following procedure helps you deploy App Mesh resources with some of their features\. You can find example manifests for deploying other App Mesh resource features in the `v1beta2` sub\-folders of many of the feature folders listed at [App Mesh walkthroughs](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs) on GitHub\.
 
 **Important**  
 Once the controller has created an App Mesh resource, we recommend that you only make changes to, or delete the App Mesh resource, using the controller\. If you make changes to or delete the resource using App Mesh, the controller won't change or recreate the changed or deleted App Mesh resource for ten hours, by default\. You can configure this duration to be less\. For more information, see [Configuration](https://github.com/aws/eks-charts/blob/master/stable/appmesh-controller/README.md#configuration) on GitHub\.
@@ -668,7 +668,7 @@ Even though the name of the virtual node created in Kubernetes is `my-service-a`
       }
       ```
 
-Though not covered in this tutorial, the controller can also deploy App Mesh [Virtual gateways](virtual_gateways.md) and [Gateway routes](gateway-routes.md)\. For a walkthrough of deploying these resources with the controller, see [Configuring Inbound Gateway](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-k8s-ingress-gateway), or a [sample manifest](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/howto-k8s-ingress-gateway/v1beta2/manifest.yaml.template) that includes the resources on GitHub\.
+Though not covered in this tutorial, the controller can also deploy App Mesh [Virtual gateways](virtual_gateways.md) and [Gateway routes](gateway-routes.md)\. For a walkthrough of deploying these resources with the controller, see [Configuring Inbound Gateway](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-k8s-ingress-gateway), or a [sample manifest](https://github.com/aws/aws-app-mesh-examples/blob/main/walkthroughs/howto-k8s-ingress-gateway/v1beta2/manifest.yaml.template) that includes the resources on GitHub\.
 
 ## Step 3: Create or update services<a name="create-update-services"></a>
 
@@ -764,7 +764,7 @@ Any pods that you want to use with App Mesh must have the App Mesh sidecar conta
               - containerPort: 80
       ```
 **Important**  
-The value for the `app` `matchLabels` `selector` in the spec must match the value that you specified when you created the virtual node in sub\-step `3` of [Step 2: Deploy App Mesh resources](#configure-app-mesh), or the sidecar containers won't be injected into the pod\. In the previous example, the value for the label is `my-app-1`\. If you deploy a virtual gateway, rather than a virtual node, then the `Deployment` manifest should include only the Envoy container\. For more information about the image to use, see [Envoy image](envoy.md)\. For a sample manfest, see the [deployment example](https://github.com/aws/aws-app-mesh-examples/blob/master/walkthroughs/howto-k8s-ingress-gateway/v1beta2/manifest.yaml.template#L585) on GitHub\.
+The value for the `app` `matchLabels` `selector` in the spec must match the value that you specified when you created the virtual node in sub\-step `3` of [Step 2: Deploy App Mesh resources](#configure-app-mesh), or the sidecar containers won't be injected into the pod\. In the previous example, the value for the label is `my-app-1`\. If you deploy a virtual gateway, rather than a virtual node, then the `Deployment` manifest should include only the Envoy container\. For more information about the image to use, see [Envoy image](envoy.md)\. For a sample manfest, see the [deployment example](https://github.com/aws/aws-app-mesh-examples/blob/main/walkthroughs/howto-k8s-ingress-gateway/v1beta2/manifest.yaml.template#L585) on GitHub\.
 
    1. Deploy the service\.
 

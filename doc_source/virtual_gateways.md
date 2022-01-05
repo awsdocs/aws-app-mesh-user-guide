@@ -8,7 +8,7 @@ External resources must be able to resolve a DNS name to an IP address assigned 
 A virtual gateway with a HTTP or HTTP2 listener rewrites the incoming request's hostname to the Gateway Route target Virtual Service's name, and the matched prefix from the Gateway Route is rewritten to `/`, by default\. For example, if you have configured the Gateway route match prefix to `/chapter`, and, if the incoming request is `/chapter/1`, the request would be rewritten to `/1`\. To configure rewrites, refer to the [Creating a gateway route](https://docs.aws.amazon.com/app-mesh/latest/userguide/gateway-routes.html#create-gateway-route) section from Gateway Routes\.  
 When creating a virtual gateway, `proxyConfiguration` and `user` should not be configured\.
 
-To complete an end\-to\-end walkthrough, see [Configuring Inbound Gateway](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-ingress-gateway)\.
+To complete an end\-to\-end walkthrough, see [Configuring Inbound Gateway](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-ingress-gateway)\.
 
 ## Creating a virtual gateway<a name="create-virtual-gateway"></a>
 
@@ -43,7 +43,7 @@ When creating a Virtual Gateway, you must add a namespace selector with a label 
 
    1. \(Optional\) Select **Provide client certificate** and one of the options below to provide a client certificate when a server requests it and enable mutual TLS authentication\. To learn more about mutual TLS, see the App Mesh [Mutual TLS Authentication](https://docs.aws.amazon.com/app-mesh/latest/userguide/mutual-tls.html) docs\.
       + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret Envoy will fetch using the Secret Discovery Service\.
-      + **Local file hosting** – Specify the path to the **Certificate chain** file, as well as the **Private key**, on the file system where Envoy is deployed\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with local files, see [Configuring TLS with File Provided TLS Certificates](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-tls-file-provided) on GitHub\.
+      + **Local file hosting** – Specify the path to the **Certificate chain** file, as well as the **Private key**, on the file system where Envoy is deployed\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with local files, see [Configuring TLS with File Provided TLS Certificates](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-tls-file-provided) on GitHub\.
 
    1. Specify a **Port** and **Protocol** for the **Listener**\. Each virtual gateway can have only one port and protocol specified\. If you need the virtual gateway to route traffic over multiple ports and protocols, then you must create a virtual gateway for each port or prototol\.
 
