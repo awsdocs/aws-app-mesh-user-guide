@@ -7,7 +7,7 @@ An AWS Identity and Access Management account can be a mesh resource owner, a me
 + An organizational unit inside its organization in AWS Organizations
 + Its entire organization in AWS Organizations
 
-For an end\-to\-end walk through of sharing a mesh, see [Cross\-account mesh walk through](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs/howto-cross-account) on GitHub\.
+For an end\-to\-end walk through of sharing a mesh, see [Cross\-account mesh walk through](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-cross-account) on GitHub\.
 
 ## Shared mesh permissions<a name="sharing-permissions"></a>
 
