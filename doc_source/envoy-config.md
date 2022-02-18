@@ -54,7 +54,7 @@ Enables X\-Ray tracing using `127.0.0.1:2000` as the default daemon endpoint\. T
 Specify a port value to override the default X\-Ray daemon port: `2000`\.
 
 `XRAY_SAMPLING_RATE`  
-Specify a sampling rate to override the X\-Ray tracer's default sampling rate of `0.05` \(5%\)\. The value should be specified as a decimal between `0` and `1.00` \(100%\)\. This will be overridden if `XRAY_SAMPLING_RULE_MANIFEST` is specified\. This variable is supported with Envoy image version `v1.19.1.0-prod` or later\.
+Specify a sampling rate to override the X\-Ray tracer's default sampling rate of `0.05` \(5%\)\. The value should be specified as a decimal between `0` and `1.00` \(100%\)\. This will be overridden if `XRAY_SAMPLING_RULE_MANIFEST` is specified\. This variable is supported with Envoy image version `v1.19.1.1-prod` or later\.
 
 `XRAY_SAMPLING_RULE_MANIFEST`  
 Specify a file path in the Envoy container file system to configure the localized custom sampling rules for the X\-Ray tracer\. For more information, see [Sampling rules](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-go-configuration.html#xray-sdk-go-configuration-sampling) in the *AWS X\-Ray Developer Guide*\. This variable is supported with Envoy image version `v1.19.1.0-prod` or later\.
@@ -94,7 +94,7 @@ The following environment variable enables you to use your own tracing configura
 
 `ENVOY_TRACING_CFG_FILE`  
 Specify a file path in the Envoy container file system\. For more information, see [https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/http_tracer.proto#envoy-v3-api-msg-config-trace-v3-tracing](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/http_tracer.proto#envoy-v3-api-msg-config-trace-v3-tracing) in the Envoy documentation\.  
-If the tracing configuration requires specifying a tracing cluster, be sure to also configure the associated cluster configuration under `static_resources` in the same tracing config file\. For example, Zipkin has a [ `collector_cluster`](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig) field for the cluster name that hosts the trace collectors, and that cluster needs to be statically defined\.
+If the tracing configuration requires specifying a tracing cluster, be sure to also configure the associated cluster configuration under `static_resources` in the same tracing config file\. For example, Zipkin has a [https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig) field for the cluster name that hosts the trace collectors, and that cluster needs to be statically defined\.
 
 ### DogStatsD variables<a name="envoy-dogstatsd-config"></a>
 

@@ -32,7 +32,7 @@ helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
 --set persistentVolumeClaim.claimName=prometheus
 ```
 
-### Walkthrough for using the Prometheus<a name="prometheus-walkthrough"></a>
+### Walkthrough for using Prometheus<a name="prometheus-walkthrough"></a>
 + [App Mesh with EKS—Observability: Prometheus](https://github.com/aws/aws-app-mesh-examples/blob/main/walkthroughs/eks/o11y-prometheus.md)
 
 ### To learn more about Prometheus and Prometheus with Amazon EKS<a name="prometheus-eks"></a>

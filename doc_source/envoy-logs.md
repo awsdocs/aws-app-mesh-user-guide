@@ -54,4 +54,4 @@ Envoy also writes various debugging logs from its filters to `stdout`\. These lo
 
 [Firelens](https://aws.amazon.com/about-aws/whats-new/2019/11/aws-launches-firelens-log-router-for-amazon-ecs-and-aws-fargate/#:~:text=FireLens%20is%20a%20container%20log,for%20log%20analytics%20and%20storage.&text=This%20means%20you%20can%20use,your%20own%20Fluentd%20output%20plugin.) is a container log router you can use to collect logs for Amazon ECS and AWS Fargate\. You can find an example of using Firelens in our [AWS Samples repository](https://github.com/aws-samples/amazon-ecs-firelens-examples)\.
 
-You can use CloudWatch to gather logging information as well as metrics\. You can find more information on CloudWatch in our [Metrics](https://docs.aws.amazon.com/app-mesh/latest/userguide/metrics.html#cloudwatch) section of the App Mesh docs\.
+You can use CloudWatch to gather logging information as well as metrics\. You can find more information on CloudWatch in our [Exporting metrics](https://docs.aws.amazon.com/app-mesh/latest/userguide/metrics.html#cloudwatch) section of the App Mesh docs\.

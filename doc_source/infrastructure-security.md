@@ -8,6 +8,6 @@ Additionally, requests must be signed by using an access key ID and a secret acc
 
 The Envoy proxy is deployed with a microservice application that is running on an AWS compute service\. Each of the compute services are deployed within an Amazon VPC\.
 
-Customers are advised to leverage security groups to protect the Envoy management port from unauthorized access\. The management port is required to establish the health of the Envoy container, and by default is available to hosts in the same VPC\. If tasks are publicly accessible this port will be accessible also\. Unless explicitly required for troubleshooting, this port should be closed to all access\.
+Customers are advised to leverage security groups to protect the Envoy management port from unauthorized access\. The management port is required to establish the health of the Envoy container, and by default is available to hosts in the same VPC\. If tasks are publicly accessible, this port will be accessible also\. Unless explicitly required for troubleshooting, this port should be closed to all access\.
 
 You can improve the security posture of your VPC by configuring App Mesh to use an interface VPC endpoint\. For more information, see [App Mesh Interface VPC Endpoints \(AWS PrivateLink\)](vpc-endpoints.md)\.
