@@ -9,6 +9,7 @@ Your application in App Mesh is not displaying X\-Ray tracing information in the
 
 **Resolution**  
 To use X\-Ray in App Mesh, you must correctly configure components to enable communication between your application, sidecar containers, and the X\-Ray service\. Take the following steps to confirm that X\-Ray has been set up correctly:
++ Make sure the App Mesh Virtual Node listener protocol is not set as `TCP`\.
 + Make sure that the X\-Ray container that is deployed with your application exposes UDP port `2000` and runs as user `1337`\. For more information, see the [Amazon ECS X\-Ray example](https://github.com/aws/aws-app-mesh-examples/blob/main/walkthroughs/howto-ecs-basics/deploy/2-meshify.yaml#L374-L386) on GitHub\.
 + Make sure that the Envoy container has tracing enabled\. If you are using the [App Mesh Envoy image](envoy.md), you can enable X\-Ray by setting the `ENABLE_ENVOY_XRAY_TRACING` environment variable to a value of `1` and the `XRAY_DAEMON_PORT` environment variable to `2000`\.
 + If you’ve instrumented X\-Ray in your application code with one of the [language\-specific SDKs ](https://docs.aws.amazon.com/xray/index.html), then make sure that it is configured correctly by following the guides for your language\.

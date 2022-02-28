@@ -56,6 +56,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Envoy configuration variables](envoy-config.md)
    + [Envoy defaults set by App Mesh](envoy-defaults.md)
    + [Updating/migrating to Envoy 1.17](1.17-migration.md)
+   + [Agent for Envoy](appmesh-agent.md)
 + [App Mesh tooling](tooling.md)
 + [Working with shared meshes](sharing.md)
 + [AWS services integrated with App Mesh](appmesh-integrations.md)

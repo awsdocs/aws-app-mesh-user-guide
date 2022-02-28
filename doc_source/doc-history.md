@@ -4,6 +4,7 @@ The following table describes the major updates and new features for the *AWS Ap
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [App Mesh Agent for Envoy](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-agent.html) | App Mesh now supports Agent for Envoy\. | February 25, 2022 | 
 | [Multiple listeners for App Mesh](https://docs.aws.amazon.com/app-mesh/latest/userguide/multiple-listeners.html) | \([App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) only\) You can implement multiple listeners for App Mesh\. | November 23, 2021 | 
 | [ARM64 support for App Mesh](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy.html) | App Mesh now supports ARM64\. | November 19, 2021 | 
 | [Metrics extension for App Mesh](https://docs.aws.amazon.com/app-mesh/latest/userguide/metrics.html#metrics-extension) | You can implement metrics extensions for App Mesh\. | October 29, 2021 | 
