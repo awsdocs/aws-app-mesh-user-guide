@@ -5,7 +5,7 @@ A service mesh is a logical boundary for network traffic between the services th
 ## Creating a service mesh<a name="create-mesh"></a>
 
 **Note**  
-When creating a Mesh, you must add a namespace selector\. If the namespace selector is empty, it selects all namespaces\. To restrict the namespaces, use a label to associate AppMesh resources to the created mesh\.
+When creating a Mesh, you must add a namespace selector\. If the namespace selector is empty, it selects all namespaces\. To restrict the namespaces, use a label to associate App Mesh resources to the created mesh\.
 
 To create a service mesh using the AWS CLI version 1\.18\.116 or higher, see the example in the AWS CLI reference for the [create\-mesh](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-mesh.html) command\.
 
@@ -17,7 +17,7 @@ To create a service mesh using the AWS CLI version 1\.18\.116 or higher, see the
 
 1. For **Mesh name**, specify a name for your service mesh\.
 
-1. \(Optional\) Choose **Allow external traffic**\. By default, proxies in the mesh will only forward traffic between each other\. If you allow external traffic, the proxies in the mesh will also forward TCP traffic directly to services that aren't deployed with a proxy that is defined in the mesh\.
+1. \(Optional\) Choose **Allow external traffic**\. By default, proxies in the mesh only forward traffic between each other\. If you allow external traffic, the proxies in the mesh also forward TCP traffic directly to services that aren't deployed with a proxy that is defined in the mesh\.
 
 1. Choose **Create mesh** to finish\.
 

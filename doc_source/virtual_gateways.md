@@ -14,13 +14,13 @@ To complete an end\-to\-end walkthrough, see [Configuring Inbound Gateway](https
 
 **To create a virtual gateway using the AWS Management Console**
 **Note**  
-When creating a Virtual Gateway, you must add a namespace selector with a label to identify the list of namespaces to associate Gateway Routes to the created Virtual Gateway\.
+When creating a Virtual Gateway, you must add a namespace selector with a label to identify the list of namespaces with which to associate Gateway Routes to the created Virtual Gateway\.
 
  To create a virtual gateway using the AWS CLI version 1\.18\.116 or higher, see the AWS CLI reference for the [create\-virtual\-gateway](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-gateway.html) command\.
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\. 
 
-1. Choose the mesh that you want to create the virtual gateway in\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
+1. Choose the mesh in which you want to create the virtual gateway\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 
 1. Choose **Virtual gateways** in the left navigation\.
 
@@ -32,17 +32,17 @@ When creating a Virtual Gateway, you must add a namespace selector with a label 
 
    1. \(Optional\) Select **Enforce TLS** if you want the gateway to only communicate with virtual services using Transport Layer Security \(TLS\)\.
 
-   1. \(Optional\) For **Ports**, specify one or more ports that you want to enforce TLS communication with virtual services on\.
+   1. \(Optional\) For **Ports**, specify one or more ports on which you want to enforce TLS communication with virtual services\.
 
    1. For **Validation method**, select one of the following options\. The certificate that you specify must already exist and meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
       + **AWS Certificate Manager Private Certificate Authority** hosting – Select one or more existing **Certificates**\.
-      + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret Envoy will fetch using the Secret Discovery Service\.
+      + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret that Envoy fetches using the Secret Discovery Service\.
       + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where Envoy is deployed\.
 
    1. \(Optional\) Enter a **Subject Alternative Name**\. To add additional SANs, select **Add SAN**\. SANs must be FQDN or URI formatted\.
 
    1. \(Optional\) Select **Provide client certificate** and one of the options below to provide a client certificate when a server requests it and enable mutual TLS authentication\. To learn more about mutual TLS, see the App Mesh [Mutual TLS Authentication](https://docs.aws.amazon.com/app-mesh/latest/userguide/mutual-tls.html) docs\.
-      + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret Envoy will fetch using the Secret Discovery Service\.
+      + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret that Envoy fetches using the Secret Discovery Service\.
       + **Local file hosting** – Specify the path to the **Certificate chain** file, as well as the **Private key**, on the file system where Envoy is deployed\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with local files, see [Configuring TLS with File Provided TLS Certificates](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-tls-file-provided) on GitHub\.
 
    1. Specify a **Port** and **Protocol** for the **Listener**\. Each virtual gateway can have only one port and protocol specified\. If you need the virtual gateway to route traffic over multiple ports and protocols, then you must create a virtual gateway for each port or prototol\.
@@ -53,7 +53,7 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. Configure the **Listener**\.
 
-   1. Select a **Protocol** and specify the **Port** that Envoy will listen for traffic on\. The **http** listener permits connection transition to websockets\.
+   1. Select a **Protocol** and specify the **Port** on which Envoy listens for traffic\. The **http** listener permits connection transition to websockets\.
 
    1. \(Optional\) **Enable connection pool** 
 
@@ -61,10 +61,10 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
       You can configure destination\-side connection pool settings for a virtual gateway listener\. App Mesh sets the client\-side connection pool settings to infinite by default, simplifying mesh configuration\.
 **Note**  
-The connectionPool and portMapping protocols must be the same\. If your listener protocol is grpc or http2, specify maxRequests only\. If your listener protocol is http, you can specify both maxConnections and maxPendingRequests\. 
+The `connectionPool` and `connectionPool`portMapping protocols must be the same\. If your listener protocol is `grpc` or `http2`, specify `maxRequests` only\. If your listener protocol is `http`, you can specify both `maxConnections` and `maxPendingRequests`\. 
       + For **Maximum connections**, specify the maximum number of outbound connections\.
       + For **Maximum requests**, specify maximum number of parallel requests that can be established with the Virtual Gateway Envoy\.
-      + \(Optional\) For **Maximum pending requests**, specify the number of overflowing requests after **Maximum connections** that an Envoy will queue\. The default value is `2147483647`\.
+      + \(Optional\) For **Maximum pending requests**, specify the number of overflowing requests after **Maximum connections** that an Envoy queues\. The default value is `2147483647`\.
 
    1. \(Optional\) If you want to configure a health check for your listener, then select **Enable health check**\.
 
@@ -74,17 +74,17 @@ The connectionPool and portMapping protocols must be the same\. If your listener
       + For **Healthy threshold**, specify the number of consecutive successful health checks that must occur before declaring the listener healthy\.
       + For **Health check interval**, specify the time period in milliseconds between each health check execution\.
       + For **Path**, specify the destination path for the health check request\. This value is only used if the **Health check protocol** is `http` or `http2`\. The value is ignored for other protocols\.
-      + For **Timeout period**, specify the amount of time to wait when receiving a response from the health check, in milliseconds\.
+      + For **Timeout period**, specify the amount of time to wait when receiving a response from the health check in milliseconds\.
       + For **Unhealthy threshold**, specify the number of consecutive failed health checks that must occur before declaring the listener unhealthy\.
 
    1. \(Optional\) If you want to specify whether virtual nodes communicate with this virtual gateway using TLS, then select **Enable TLS termination**\.
-      + For **Mode**, select the mode you want TLS to be configured for on the listener\.
+      + For **Mode**, select the mode that you want TLS to be configured for on the listener\.
       + For **Certificate method**, select one of the following options\. The certificate must meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
         + **AWS Certificate Manager hosting** – Select an existing **Certificate**\.
-        + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret Envoy will fetch using the Secret Discovery Service\.
+        + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret that Envoy fetches using the Secret Discovery Service\.
         + **Local file hosting** – Specify the path to the **Certificate chain** and **Private key** files on the file system where Envoy is deployed\.
       + \(Optional\) Select **Require client certificate** and one of the options below to enable mutual TLS authentication if the client provides a certificate\. To learn more about mutual TLS, see the App Mesh [Mutual TLS Authentication](https://docs.aws.amazon.com/app-mesh/latest/userguide/mutual-tls.html) docs\.
-        + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret Envoy will fetch using the Secret Discovery Service\.
+        + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret that Envoy fetches using the Secret Discovery Service\.
         + **Local file hosting** – Specify the path to the **Certificate chain** file on the file system where Envoy is deployed\.
       + \(Optional\) Enter a **Subject Alternative Name**\. To add additional SANs, select **Add SAN**\. SANs must be FQDN or URI formatted\.
 
@@ -106,7 +106,7 @@ To delete a virtual gateway using the AWS CLI version 1\.18\.116 or higher, see 
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\. 
 
-1. Choose the mesh that you want to delete a virtual gateway from\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
+1. Choose the mesh from which you want to delete a virtual gateway\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 
 1. Choose **Virtual gateways** in the left navigation\.
 

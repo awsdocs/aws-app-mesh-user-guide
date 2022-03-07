@@ -15,7 +15,7 @@ You have the following requirements:
 + You want to be able to easily adjust the traffic weighting so that 100 percent of the traffic goes to `serviceBv2` once it is proven to be reliable\. Once all traffic is being sent to `serviceBv2`, you want to discontinue `serviceB`\.
 + You do not want to have to change any existing application code or service discovery registration for your actual services to meet the previous requirements\. 
 
-To meet your requirements, you have decided to create an App Mesh service mesh with virtual services, virtual nodes, a virtual router, and a route\. After implementing your mesh, you update your services to use the Envoy proxy\. Once updated, your services communicate with each other through the Envoy proxy rather than directly with each other\.
+To meet your requirements, you decide to create an App Mesh service mesh with virtual services, virtual nodes, a virtual router, and a route\. After implementing your mesh, you update your services to use the Envoy proxy\. Once updated, your services communicate with each other through the Envoy proxy rather than directly with each other\.
 
 ## Prerequisites<a name="prerequisites"></a>
 
@@ -65,7 +65,7 @@ You can use the AWS Management Console or the AWS CLI version 1\.18\.116 or high
 
 A virtual node acts as a logical pointer to an actual service\. For more information, see [Virtual nodes](virtual_nodes.md)\. 
 
-Create a virtual node named `serviceB`, since one of the virtual nodes represents the actual service named `serviceB`\. The actual service that the virtual node represents is discoverable through `DNS` with a hostname of `serviceb.apps.local`\. Alternately, you can discover actual services using AWS Cloud Map\. The virtual node will listen for traffic using the HTTP/2 protocol on port 80\. Other protocols are also supported, as are health checks\. You will create virtual nodes for `serviceA` and `serviceBv2` in a later step\.
+Create a virtual node named `serviceB`, since one of the virtual nodes represents the actual service named `serviceB`\. The actual service that the virtual node represents is discoverable through `DNS` with a hostname of `serviceb.apps.local`\. Alternately, you can discover actual services using AWS Cloud Map\. The virtual node listens for traffic using the HTTP/2 protocol on port 80\. Other protocols are also supported, as are health checks\. You create virtual nodes for `serviceA` and `serviceBv2` in a later step\.
 
 ------
 #### [ AWS Management Console ]
@@ -118,8 +118,8 @@ Create a virtual node named `serviceB`, since one of the virtual nodes represent
 Virtual routers route traffic for one or more virtual services within your mesh\. For more information, see [Virtual routers](virtual_routers.md) and [Routes](routes.md)\.
 
 Create the following resources:
-+ A virtual router named `serviceB`, since the `serviceB.apps.local` virtual service does not initiate outbound communication with any other service\. Remember that the virtual service that you created previously is an abstraction of your actual `serviceb.apps.local` service\. The virtual service sends traffic to the virtual router\. The virtual router will listen for traffic using the HTTP/2 protocol on port 80\. Other protocols are also supported\. 
-+ A route named `serviceB`\. It will route 100 percent of its traffic to the `serviceB` virtual node\. You will change the weight in a later step once you have added the `serviceBv2` virtual node\. Though not covered in this guide, you can add additional filter criteria for the route and add a retry policy to cause the Envoy proxy to make multiple attempts to send traffic to a virtual node when it experiences a communication problem\.
++ A virtual router named `serviceB`, since the `serviceB.apps.local` virtual service does not initiate outbound communication with any other service\. Remember that the virtual service that you created previously is an abstraction of your actual `serviceb.apps.local` service\. The virtual service sends traffic to the virtual router\. The virtual router listens for traffic using the HTTP/2 protocol on port 80\. Other protocols are also supported\. 
++ A route named `serviceB`\. It routes 100 percent of its traffic to the `serviceB` virtual node\. The weight is in a later step once you add the `serviceBv2` virtual node\. Though not covered in this guide, you can add additional filter criteria for the route and add a retry policy to cause the Envoy proxy to make multiple attempts to send traffic to a virtual node when it experiences a communication problem\.
 
 ------
 #### [ AWS Management Console ]
@@ -253,8 +253,8 @@ aws appmesh describe-route --mesh-name apps \
 ## Step 5: Create additional resources<a name="create-additional-resources"></a>
 
 To complete the scenario, you need to:
-+ Create one virtual node named `serviceBv2` and another named `serviceA`\. Both virtual nodes listen for requests over HTTP/2 port 80\. For the `serviceA` virtual node, configure a backend of `serviceb.apps.local`, since all outbound traffic from the `serviceA` virtual node is sent to the virtual service named `serviceb.apps.local`\. Though not covered in this guide, you can also specify a file path to write access logs to for a virtual node\.
-+ Create one additional virtual service named `servicea.apps.local`, which will send all traffic directly to the `serviceA` virtual node\.
++ Create one virtual node named `serviceBv2` and another named `serviceA`\. Both virtual nodes listen for requests over HTTP/2 port 80\. For the `serviceA` virtual node, configure a backend of `serviceb.apps.local`\. All outbound traffic from the `serviceA` virtual node is sent to the virtual service named `serviceb.apps.local`\. Though not covered in this guide, you can also specify a file path to write access logs to for a virtual node\.
++ Create one additional virtual service named `servicea.apps.local`, which sends all traffic directly to the `serviceA` virtual node\.
 + Update the `serviceB` route that you created in a previous step to send 75 percent of its traffic to the `serviceB` virtual node and 25 percent of its traffic to the `serviceBv2` virtual node\. Over time, you can continue to modify the weights until `serviceBv2` receives 100 percent of the traffic\. Once all traffic is sent to `serviceBv2`, you can shut down and discontinue the `serviceB` virtual node and actual service\. As you change weights, your code does not require any modification, because the `serviceb.apps.local` virtual and actual service names don't change\. Recall that the `serviceb.apps.local` virtual service sends traffic to the virtual router, which routes the traffic to the virtual nodes\. The service discovery names for the virtual nodes can be changed at any time\.
 
 ------

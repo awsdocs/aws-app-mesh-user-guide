@@ -6,7 +6,7 @@ AWS App Mesh is a service mesh that makes it easy to monitor and control service
 
 ## Adding App Mesh to an example application<a name="example-application"></a>
 
-Consider the following simple example application, that doesn’t use App Mesh\. The two services can be running on AWS Fargate, Amazon Elastic Container Service \(Amazon ECS\), Amazon Elastic Kubernetes Service \(Amazon EKS\), Kubernetes on Amazon Elastic Compute Cloud \(Amazon EC2\) instances, or on Amazon EC2 instances with Docker\.
+Consider the following simple example application that doesn’t use App Mesh\. The two services can be running on AWS Fargate, Amazon Elastic Container Service \(Amazon ECS\), Amazon Elastic Kubernetes Service \(Amazon EKS\), Kubernetes on Amazon Elastic Compute Cloud \(Amazon EC2\) instances, or on Amazon EC2 instances with Docker\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/app-mesh/latest/userguide/images/simple-app-diagram.png)
 
@@ -16,7 +16,7 @@ In this illustration, both `serviceA` and `serviceB` are discoverable through th
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/app-mesh/latest/userguide/images/simple-app-with-mesh-diagram.png)
 
-In this configuration, the services no longer communicate with each other directly\. Instead, they communicate with each other through a proxy\. The proxy deployed with the `servicea.apps.local` service reads the App Mesh configuration and sends traffic to `serviceb.apps.local` or `servicebv2.apps.local`, based on the configuration\.
+In this configuration, the services no longer communicate with each other directly\. Instead, they communicate with each other through a proxy\. The proxy deployed with the `servicea.apps.local` service reads the App Mesh configuration and sends traffic to `serviceb.apps.local` or `servicebv2.apps.local` based on the configuration\.
 
 ## Components of App Mesh<a name="app_mesh_components"></a>
 

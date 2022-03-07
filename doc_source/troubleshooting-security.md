@@ -8,7 +8,7 @@ This topic details common issues that you may experience with App Mesh security\
 When adding a TLS client policy to a virtual service backend in a virtual node, connectivity to that backend fails\. When attempting to send traffic to the backend service, the requests fail with an `HTTP 503` response code and the error message: `upstream connect error or disconnect/reset before headers. reset reason: connection failure`\.
 
 **Resolution**  
-In order to determine the root cause of the issue, we recommend using the Envoy proxy process logs to help you diagnose the issue\. For more information, see [Enable Envoy debug logging in pre\-production environments](troubleshooting-best-practices.md#ts-bp-enable-envoy-debug-logging)\. Use the following list to determine the cause of the connection failure:
+In order to determine the root cause of the issue, we recommend using the Envoy proxy process logs to help you diagnose the issue\. For more information, see [Enable Envoy debug logging in pre\-production environmentsMonitor the Envoy Proxy Connectivity with App Mesh control plane](troubleshooting-best-practices.md#ts-bp-enable-envoy-debug-logging)\. Use the following list to determine the cause of the connection failure:
 + Make sure connectivity to the backend is succeeding by ruling out the errors mentioned in [Unable to connect to a virtual service backend](troubleshooting-connectivity.md#ts-connectivity-virtual-service-backend)\.
 + In the Envoy process logs, look for the following errors \(logged at debug level\)\.
 

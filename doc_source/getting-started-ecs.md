@@ -15,7 +15,7 @@ You have the following requirements:
 + You want to be able to easily adjust the traffic weighting so that 100 percent of the traffic goes to `serviceBv2` once it is proven to be reliable\. Once all traffic is being sent to `serviceBv2`, you want to discontinue `serviceB`\.
 + You do not want to have to change any existing application code or service discovery registration for your actual services to meet the previous requirements\. 
 
-To meet your requirements, you have decided to create an App Mesh service mesh with virtual services, virtual nodes, a virtual router, and a route\. After implementing your mesh, you update your services to use the Envoy proxy\. Once updated, your services communicate with each other through the Envoy proxy rather than directly with each other\.
+To meet your requirements, you decide to create an App Mesh service mesh with virtual services, virtual nodes, a virtual router, and a route\. After implementing your mesh, you update your services to use the Envoy proxy\. Once updated, your services communicate with each other through the Envoy proxy rather than directly with each other\.
 
 ## Prerequisites<a name="prerequisites"></a>
 + An existing understanding of App Mesh concepts\. For more information, see [What Is AWS App Mesh?](what-is-app-mesh.md)\.
@@ -119,8 +119,8 @@ Create a virtual node named `serviceB`, since one of the virtual nodes represent
 Virtual routers route traffic for one or more virtual services within your mesh\. For more information, see [Virtual routers](virtual_routers.md) and [Routes](routes.md)\.
 
 Create the following resources:
-+ A virtual router named `serviceB`, since the `serviceB.apps.local` virtual service does not initiate outbound communication with any other service\. Remember that the virtual service that you created previously is an abstraction of your actual `serviceb.apps.local` service\. The virtual service sends traffic to the virtual router\. The virtual router will listen for traffic using the HTTP/2 protocol on port 80\. Other protocols are also supported\. 
-+ A route named `serviceB`\. It will route 100 percent of its traffic to the `serviceB` virtual node\. You will change the weight in a later step once you have added the `serviceBv2` virtual node\. Though not covered in this guide, you can add additional filter criteria for the route and add a retry policy to cause the Envoy proxy to make multiple attempts to send traffic to a virtual node when it experiences a communication problem\.
++ A virtual router named `serviceB`, since the `serviceB.apps.local` virtual service does not initiate outbound communication with any other service\. Remember that the virtual service that you created previously is an abstraction of your actual `serviceb.apps.local` service\. The virtual service sends traffic to the virtual router\. The virtual router listens for traffic using the HTTP/2 protocol on port 80\. Other protocols are also supported\. 
++ A route named `serviceB`\. It routes 100 percent of its traffic to the `serviceB` virtual node\. The weight is in a later step once you add the `serviceBv2` virtual node\. Though not covered in this guide, you can add additional filter criteria for the route and add a retry policy to cause the Envoy proxy to make multiple attempts to send traffic to a virtual node when it experiences a communication problem\.
 
 ------
 #### [ AWS Management Console ]
@@ -254,8 +254,8 @@ aws appmesh describe-route --mesh-name apps \
 ## Step 5: Create additional resources<a name="create-additional-resources"></a>
 
 To complete the scenario, you need to:
-+ Create one virtual node named `serviceBv2` and another named `serviceA`\. Both virtual nodes listen for requests over HTTP/2 port 80\. For the `serviceA` virtual node, configure a backend of `serviceb.apps.local`, since all outbound traffic from the `serviceA` virtual node is sent to the virtual service named `serviceb.apps.local`\. Though not covered in this guide, you can also specify a file path to write access logs to for a virtual node\.
-+ Create one additional virtual service named `servicea.apps.local`, which will send all traffic directly to the `serviceA` virtual node\.
++ Create one virtual node named `serviceBv2` and another named `serviceA`\. Both virtual nodes listen for requests over HTTP/2 port 80\. For the `serviceA` virtual node, configure a backend of `serviceb.apps.local`\. All outbound traffic from the `serviceA` virtual node is sent to the virtual service named `serviceb.apps.local`\. Though not covered in this guide, you can also specify a file path to write access logs to for a virtual node\.
++ Create one additional virtual service named `servicea.apps.local`, which sends all traffic directly to the `serviceA` virtual node\.
 + Update the `serviceB` route that you created in a previous step to send 75 percent of its traffic to the `serviceB` virtual node and 25 percent of its traffic to the `serviceBv2` virtual node\. Over time, you can continue to modify the weights until `serviceBv2` receives 100 percent of the traffic\. Once all traffic is sent to `serviceBv2`, you can shut down and discontinue the `serviceB` virtual node and actual service\. As you change weights, your code does not require any modification, because the `serviceb.apps.local` virtual and actual service names don't change\. Recall that the `serviceb.apps.local` virtual service sends traffic to the virtual router, which routes the traffic to the virtual nodes\. The service discovery names for the virtual nodes can be changed at any time\.
 
 ------
@@ -541,7 +541,7 @@ Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
 
 1. Update your service with the updated task definition\. For more information, see [Updating a service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/update-service.html)\.
 
-The console creates the task definition's json specification\. You can modify some of the settings, but not others\. for more information, expand the following section\.
+The console creates the task definition's json specification\. You can modify some of the settings, but not others\. For more information, expand the following section\.
 
 ### Task definition json<a name="getting-started-ecs-json"></a>
 
@@ -600,7 +600,7 @@ The maximum number of outbound ports that can be ignored is 15\.
 ```
 
 **Application container Envoy dependency**  
-The application containers in your task definitions must wait for the Envoy proxy to bootstrap and start before they can start\. Tomake sure this happens, you set a `dependsOn` section in each application container definition to wait for the Envoy container to report as `HEALTHY`\. The following code shows an application container definition example with this dependency\. All of the properties in the following example are required\. Some of the property values are also required, but some are *replaceable*\.
+The application containers in your task definitions must wait for the Envoy proxy to bootstrap and start before they can start\. To make sure this happens, you set a `dependsOn` section in each application container definition to wait for the Envoy container to report as `HEALTHY`\. The following code shows an application container definition example with this dependency\. All of the properties in the following example are required\. Some of the property values are also required, but some are *replaceable*\.
 
 ```
 {
@@ -982,7 +982,6 @@ X\-Ray allows you to collect data about requests that an application serves and 
 ```
 
 **Example JSON for Amazon ECS task definition with AWS X\-Ray \- EC2 launch type**  
-X\-Ray allows you to collect data about requests that an application serves and provides tools that you can use to visualize traffic flow\. Using the X\-Ray driver for Envoy enables Envoy to report tracing information to X\-Ray\. You can enable X\-Ray tracing using the [Envoy configuration](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy.html)\. Based on the configuration, Envoy sends tracing data to the X\-Ray daemon running as a [sidecar](https://docs.aws.amazon.com/xray/latest/devguide/xray-daemon-ecs.html) container and the daemon forwards the traces to the X\-Ray service\. Once the traces are published to X\-Ray, you can use the X\-Ray console to visualize the service call graph and request trace details\. The following JSON represents a task definition to enable X\-Ray integration\.  
 
 ```
 {
@@ -1090,6 +1089,6 @@ X\-Ray allows you to collect data about requests that an application serves and 
 
 ### Canary deployments using App Mesh<a name="canary-appmesh-ecs"></a>
 
-Canary deployments/releases help you switch traffic between an old version of an application and a newly deployed version\. It also monitors the health of the newly deployed version, so if there are any problems with the new version, the canary deployment can automatically switch traffic back to the old version\. Canary deployments give you the ability to switch traffic between application versions with more control\.
+Canary deployments and releases help you switch traffic between an old version of an application and a newly deployed version\. It also monitors the health of the newly deployed version\. If there are any problems with the new version, the canary deployment can automatically switch traffic back to the old version\. Canary deployments give you the ability to switch traffic between application versions with more control\.
 
 For more information about how to implement canary deployments for Amazon ECS using App Mesh, see [Create a pipeline with canary deployments for Amazon ECS using App Mesh](https://aws.amazon.com/blogs/containers/create-a-pipeline-with-canary-deployments-for-amazon-ecs-using-aws-app-mesh/)

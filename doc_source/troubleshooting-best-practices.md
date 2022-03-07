@@ -39,3 +39,7 @@ When you use Envoy’s default format, you can analyze the process logs with [Cl
 ```
 parse @message "[*][*][*][*] [*] *" as Time, Thread, Level, Name, Source, Message
 ```
+
+## Monitor the Envoy Proxy Connectivity with App Mesh control plane<a name="ts-bp-enable-envoy-control-plane-connected-state"></a>
+
+We recommend you monitor the Envoy metrics `control_plane.connected_state` to make sure that the Envoy proxy communicates with the App Mesh control plane to fetch the dynamic configuration resources\. For more information, see [Management Server](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/mgmt_server.html)\.
