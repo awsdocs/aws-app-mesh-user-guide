@@ -45,8 +45,6 @@ When creating a Virtual Gateway, you must add a namespace selector with a label 
       + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret that Envoy fetches using the Secret Discovery Service\.
       + **Local file hosting** – Specify the path to the **Certificate chain** file, as well as the **Private key**, on the file system where Envoy is deployed\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with local files, see [Configuring TLS with File Provided TLS Certificates](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-tls-file-provided) on GitHub\.
 
-   1. Specify a **Port** and **Protocol** for the **Listener**\. Each virtual gateway can have only one port and protocol specified\. If you need the virtual gateway to route traffic over multiple ports and protocols, then you must create a virtual gateway for each port or prototol\.
-
 1. \(Optional\) To configure logging, selected **Logging**\. Enter the **HTTP access logs path** that you want Envoy to use\. We recommend the `/dev/stdout` path so that you can use Docker log drivers to export your Envoy logs to a service such as Amazon CloudWatch Logs\.
 **Note**  
 Logs must still be ingested by an agent in your application and sent to a destination\. This file path only instructs Envoy where to send the logs\. 
@@ -63,7 +61,6 @@ Logs must still be ingested by an agent in your application and sent to a destin
 **Note**  
 The `connectionPool` and `connectionPool`portMapping protocols must be the same\. If your listener protocol is `grpc` or `http2`, specify `maxRequests` only\. If your listener protocol is `http`, you can specify both `maxConnections` and `maxPendingRequests`\. 
       + For **Maximum connections**, specify the maximum number of outbound connections\.
-      + For **Maximum requests**, specify maximum number of parallel requests that can be established with the Virtual Gateway Envoy\.
       + \(Optional\) For **Maximum pending requests**, specify the number of overflowing requests after **Maximum connections** that an Envoy queues\. The default value is `2147483647`\.
 
    1. \(Optional\) If you want to configure a health check for your listener, then select **Enable health check**\.

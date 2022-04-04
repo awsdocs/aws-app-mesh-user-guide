@@ -179,3 +179,31 @@ If you specify a route timeout that is greater than the default 15 seconds, make
 If you specified a **retry policy**, the duration that you specify for the request timeout should always be greater than or equal to the *retry timeout* multiplied by the *max retries* that you defined in the **retry policy**\. This allows your request with all the retries to complete successfully\. For more information, see [routes](https://docs.aws.amazon.com/app-mesh/latest/userguide/routes.html)\.
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
+
+## Envoy responds with HTTP Bad request\.<a name="ts-http-bad-request"></a>
+
+**Symptoms**  
+Envoy responds with **HTTP 400 Bad request** for all requests sent through the Network Load Balancer \(NLB\)\. When we check the Envoy logs, we see:
++ Debug logs:
+
+  ```
+  dispatch error: http/1.1 protocol error: HPE_INVALID_METHOD
+  ```
++ Access logs:
+
+  ```
+  "- - HTTP/1.1" 400 DPE 0 11 0 - "-" "-" "-" "-" "-"
+  ```
+
+**Resolution**  
+The resolution is to disable the proxy protocol version 2 \(PPv2\) on your NLB's [target group attributes](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/load-balancer-target-groups.html#target-group-attributes)\.
+
+As of today the PPv2 is not supported by virtual gateway and virtual node Envoy that are run using the App Mesh control plane\. If you deploy NLB using AWS load balancer controller on Kubernetes, then disable PPv2 by setting the following attribute to `false`:
+
+```
+service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: proxy_protocol_v2.enabled
+```
+
+See [AWS Load Balancer Controller Annotations](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/service/annotations/#resource-attributestrue) for more details about NLB resource attributes\.
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.

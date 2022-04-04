@@ -43,7 +43,7 @@ Path confusion vulnerabilities occur when parties participating in the request u
        + **Exact match** ‐ The exact parameter disables the partial matching for a route and makes sure that it only returns the route if the path is an **EXACT** match to the current URL\.
        + **Regex match** ‐ Used to describe patterns where multiple URLs may actually identify a single page on the website\.
      + \(Optional\) **Query parameters** ‐ This field allows you to match on the query parameters\.
-     + \(Optional\) **Headers** ‐ Specifies the headers for **http** and **http2**\. It should match the incoming request to route to the target virtual service\.\.
+     + \(Optional\) **Headers** ‐ Specifies the headers for **http** and **http2**\. It should match the incoming request to route to the target virtual service\.
    + 
 
      If **grpc** is the selected type:

@@ -92,3 +92,40 @@ The following example shows a CloudTrail log entry that demonstrates the [https:
     "recipientAccountId": 123456789012"
 }
 ```
+
+App Mesh can also emit CloudTrail events for our App Mesh Envoy Management Service `StreamAggregatedResources` API\. Customers can view the way their Envoys connect and easily debug issues Envoy might be facing in connecting to the App Mesh control plane\.
+
+The following example shows a CloudTrail log entry that demonstrates the `StreamAggregatedResources` action\.
+
+```
+{
+    "eventVersion": "1.08",
+    "userIdentity": {
+        "accountId": "123456789012",
+        "invokedBy": "appmesh.amazonaws.com"
+    },
+    "eventTime": "2021-06-09T23:09:46Z",
+    "eventSource": "appmesh.amazonaws.com",
+    "eventName": "StreamAggregatedResources",
+    "awsRegion": "us-west-2",
+    "sourceIPAddress": "appmesh.amazonaws.com",
+    "userAgent": "appmesh.amazonaws.com",
+    "eventID": "e3c6f4ce-EXAMPLE",
+    "readOnly": false,
+    "eventType": "AwsServiceEvent",
+    "managementEvent": true,
+    "recipientAccountId": "123456789012",
+    "serviceEventDetails": {
+        "connectionId": "e3c6f4ce-EXAMPLE",
+        "nodeArn": "arn:aws:appmesh:us-west-2:123456789012:mesh/CloudTrail-Test/virtualNode/cloudtrail-test-vn",
+        "eventStatus": "ConnectionEstablished",
+        "failureReason": ""
+    },
+    "eventCategory": "Management"
+}
+```
+
+The `eventStatus` field has one of three values depending on how Envoy connects to our App Mesh Envoy Management Service:
++ **ConnectionEstablished** – Envoy successfully connected to App Mesh control plane\.
++ **ConnectionGracefullyTerminated** – Envoy is disconnected from the App Mesh control plane\. This is the expected behavior, since an Envoy connection is terminated around every 30 minutes\.
++ **ConnectionTerminated** – There was an issue connecting Envoy to the App Mesh control plane\. The reason for the failure is populated in the `failureReason` field\.
