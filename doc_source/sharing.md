@@ -37,7 +37,7 @@ For more information about AWS RAM, see the *[AWS RAM User Guide](https://docs.a
 
 ## Sharing a mesh<a name="sharing-share"></a>
 
-Sharing a mesh enables mesh resources created by different accounts to communicate with each other in the same mesh\. You can only share a mesh that you own\. To share a mesh, you must add it to a resource share\. A resource share is an AWS RAM resource that lets you share your resources across AWS accounts\. A resource share specifies the resources to share, and the consumers with whom they are shared\. When you share a mesh using the App Mesh console, you add it to an existing resource share\. To add the mesh to a new resource share, you must first create the resource share using the [AWS RAM console](https://console.aws.amazon.com/ram)\.
+Sharing a mesh enables mesh resources created by different accounts to communicate with each other in the same mesh\. You can only share a mesh that you own\. To share a mesh, you must add it to a resource share\. A resource share is an AWS RAM resource that lets you share your resources across AWS accounts\. A resource share specifies the resources to share, and the consumers with whom they are shared\. When you share a mesh using the Amazon Linux console, you add it to an existing resource share\. To add the mesh to a new resource share, you must first create the resource share using the [AWS RAM console](https://console.aws.amazon.com/ram)\.
 
 If you are part of an organization in AWS Organizations and sharing within your organization is enabled, consumers in your organization can be automatically granted access to the shared mesh\. Otherwise, consumers receive an invitation to join the resource share and are granted access to the shared mesh after accepting the invitation\.
 
@@ -63,9 +63,9 @@ Use the [disassociate\-resource\-share](https://docs.aws.amazon.com/cli/latest/r
 
 ## Identifying a shared mesh<a name="sharing-identify"></a>
 
-Owners and consumers can identify shared meshes and mesh resources using the App Mesh console and AWS CLI
+Owners and consumers can identify shared meshes and mesh resources using the Amazon Linux console and AWS CLI
 
-**To identify a shared mesh using the App Mesh console**
+**To identify a shared mesh using the Amazon Linux console**
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\. 
 

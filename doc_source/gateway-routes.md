@@ -4,7 +4,8 @@ A gateway route is attached to a virtual gateway and routes traffic to an existi
 
 ## Creating a gateway route<a name="create-gateway-route"></a>
 
-To create a gateway route using the AWS CLI version 1\.18\.116 or later, see the examples in the AWS CLI reference for the [create\-gateway\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-gateway-route.html) command\.
+------
+#### [ AWS Management Console ]
 
 **To create a gateway route using the AWS Management Console**
 
@@ -43,7 +44,7 @@ Path confusion vulnerabilities occur when parties participating in the request u
        + **Exact match** ‐ The exact parameter disables the partial matching for a route and makes sure that it only returns the route if the path is an **EXACT** match to the current URL\.
        + **Regex match** ‐ Used to describe patterns where multiple URLs may actually identify a single page on the website\.
      + \(Optional\) **Query parameters** ‐ This field allows you to match on the query parameters\.
-     + \(Optional\) **Headers** ‐ Specifies the headers for **http** and **http2**\. It should match the incoming request to route to the target virtual service\.
+     + \(Optional\) **Headers** ‐ Specifies the headers for **http** and **http2**\. It should match the incoming request to route to the target virtual service\.\.
    + 
 
      If **grpc** is the selected type:
@@ -79,9 +80,90 @@ You can't specify `/aws.app-mesh*` or `aws.appmesh` for the **Service name**\. T
 
 1. Choose **Create gateway route** to finish\.
 
+------
+#### [ AWS CLI ]
+
+**To create a gateway route using the AWS CLI\.**
+
+Create a gateway route using the following command and input JSON \(replace the *red* values with your own\):
+
+1. 
+
+   ```
+   aws appmesh create-virtual-gateway \ 
+   --mesh-name meshName \ 
+   --virtual-gateway-name virtualGatewayName \
+   --gateway-route-name gatewayRouteName \ 
+   --cli-input-json file://create-gateway-route.json
+   ```
+
+1. Contents of **example** create\-gateway\-route\.json:
+
+   ```
+   {
+       "spec": {
+           "httpRoute" : {
+               "match" : {
+                   "prefix" : "/"
+               },
+               "action" : {
+                   "target" : {
+                       "virtualService": {
+                           "virtualServiceName": "serviceA.svc.cluster.local"
+                       }
+                   }
+               }
+           }
+       }
+   }
+   ```
+
+1. Example output:
+
+   ```
+   {
+       "gatewayRoute": {
+           "gatewayRouteName": "gatewayRouteName",
+           "meshName": "meshName",
+           "metadata": {
+               "arn": "arn:aws:appmesh:us-west-2:210987654321:mesh/meshName/virtualGateway/virtualGatewayName/gatewayRoute/gatewayRouteName",
+               "createdAt": "2022-04-06T11:05:32.100000-05:00",
+               "lastUpdatedAt": "2022-04-06T11:05:32.100000-05:00",
+               "meshOwner": "123456789012",
+               "resourceOwner": "210987654321",
+               "uid": "a1b2c3d4-5678-90ab-cdef-11111EXAMPLE",
+               "version": 1
+           },
+           "spec": {
+               "httpRoute": {
+                   "action": {
+                       "target": {
+                           "virtualService": {
+                               "virtualServiceName": "serviceA.svc.cluster.local"
+                           }
+                       }
+                   },
+                   "match": {
+                       "prefix": "/"
+                   }
+               }
+           },
+           "status": {
+               "status": "ACTIVE"
+           },
+           "virtualGatewayName": "gatewayName"
+       }
+   }
+   ```
+
+For more information on creating a gateway route with the AWS CLI for App Mesh, see the [create\-gateway\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-gateway-route.html) command in the AWS CLI reference\.
+
+------
+
 ## Deleting a gateway route<a name="delete-gateway-route"></a>
 
-To delete a route using the AWS CLI version 1\.18\.116 or higher, see the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-gateway-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-gateway-route.html) command\.
+------
+#### [ AWS Management Console ]
 
 **To delete a gateway route using the AWS Management Console**
 
@@ -95,4 +177,60 @@ To delete a route using the AWS CLI version 1\.18\.116 or higher, see the AWS CL
 
 1. In the **Gateway routes** table, choose the gateway route that you want to delete and select **Delete**\. You can only delete a gateway route if your account is listed as **Resource owner**\.
 
-1. In the confirmation box, type **delete** and then select **Delete**\.
+1. In the confirmation box, type **delete** and then click on **Delete**\.
+
+------
+#### [ AWS CLI ]
+
+**To delete a gateway route using the AWS CLI**
+
+1. Use the following command to delete your gateway route \(replace the *red* values with your own\):
+
+   ```
+   aws appmesh delete-gateway-route \
+        --mesh-name meshName \
+        --virtual-gateway-name virtualGatewayName \
+        --gateway-route-name gatewayRouteName
+   ```
+
+1. Example output:
+
+   ```
+   {
+       "gatewayRoute": {
+           "gatewayRouteName": "gatewayRouteName",
+           "meshName": "meshName",
+           "metadata": {
+               "arn": "arn:aws:appmesh:us-west-2:210987654321:mesh/meshName/virtualGateway/virtualGatewayName/gatewayRoute/gatewayRouteName",
+               "createdAt": "2022-04-06T11:05:32.100000-05:00",
+               "lastUpdatedAt": "2022-04-07T10:36:33.191000-05:00",
+               "meshOwner": "123456789012",
+               "resourceOwner": "210987654321",
+               "uid": "a1b2c3d4-5678-90ab-cdef-11111EXAMPLE",
+               "version": 2
+           },
+           "spec": {
+               "httpRoute": {
+                   "action": {
+                       "target": {
+                           "virtualService": {
+                               "virtualServiceName": "serviceA.svc.cluster.local"
+                           }
+                       }
+                   },
+                   "match": {
+                       "prefix": "/"
+                   }
+               }
+           },
+           "status": {
+               "status": "DELETED"
+           },
+           "virtualGatewayName": "virtualGatewayName"
+       }
+   }
+   ```
+
+For more information on deleting a gateway route with the AWS CLI for App Mesh, see the [delete\-gateway\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-gateway-route.html) command in the AWS CLI reference\.
+
+------

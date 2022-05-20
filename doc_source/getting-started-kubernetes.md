@@ -18,6 +18,7 @@ The controller also installs a webhook that injects the following containers int
 + The AWS CLI version 1\.18\.116 or later or 2\.0\.38 or later installed\. To install or upgrade the AWS CLI, see [Installing the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)\. 
 + A `kubectl` client that is configured to communicate with your Kubernetes cluster\. If you're using Amazon Elastic Kubernetes Service, you can use the instructions for installing `[kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)` and configuring a `[kubeconfig](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)` file\.
 + Helm version 3\.0 or later installed\. If you don't have Helm installed, see [Using Helm with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/helm.html) in the *Amazon EKS User Guide*\.
++ Amazon EKS currently only supports `IPv4_ONLY` and `IPv6_ONLY` only IP preferences, because Amazon EKS currently only supports pods that are capable of serving either only `IPv4` traffic or only `IPv6` traffic\. 
 
 The remaining steps assume that the actual services are named `serviceA`, `serviceB`, and `serviceBv2` and that all services are discoverable through a namespace named `apps.local`\.
 
@@ -31,7 +32,7 @@ Install the integration components one time to each cluster that hosts pods that
 
    ```
    curl -o pre_upgrade_check.sh https://raw.githubusercontent.com/aws/eks-charts/master/stable/appmesh-controller/upgrade/pre_upgrade_check.sh
-   ./pre_upgrade_check.sh
+   sh ./pre_upgrade_check.sh
    ```
 
    If the script returns `Your cluster is ready for upgrade. Please proceed to the installation instructions` then you can proceed to the next step\. If a different message is returned, then you'll need to complete the upgrade steps before continuing\. For more information about upgrading a pre\-release version, see [Upgrade](https://github.com/aws/eks-charts/blob/master/stable/appmesh-controller/README.md#upgrade) on GitHub\.
@@ -101,6 +102,8 @@ The command creates an AWS IAM role with an auto\-generated name\. You are not a
        --set serviceAccount.create=false \
        --set serviceAccount.name=appmesh-controller
    ```
+**Note**  
+If your Amazon EKS cluster family is `IPv6`, please set the cluster name when deploying the App Mesh controller by adding the following option to the previous command `--set clusterName=$CLUSTER_NAME`\.
 **Important**  
 If your cluster is in the `me-south-1`, `ap-east-1`, `eu-south-1`, or `af-south-1` Regions, then you need to add the following option to the previous command:  
 
@@ -108,10 +111,10 @@ If your cluster is in the `me-south-1`, `ap-east-1`, `eu-south-1`, or `af-south-
    --set sidecar.image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/aws-appmesh-envoy
    ```
 Replace *account\-id* and *Region\-code* with one of the appropriate sets of values\.  
-772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.21\.1\.1\-prod
-856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.21\.1\.1\-prod
-422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.21\.1\.1\-prod
-924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.21\.1\.1\-prod
+772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.0\.0\-prod
+856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.0\.0\-prod
+422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.0\.0\-prod
+924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.0\.0\-prod
 **Important**  
 Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
 
@@ -893,6 +896,9 @@ The value for the `app` `matchLabels` `selector` in the spec must match the valu
       In the preceding output, you can see that the `proxyinit` and `envoy` containers were added to the pod by the controller\. If you deployed the example service to Fargate, then the `envoy` container was added to the pod by the controller, but the `proxyinit` container was not\.
 
 1. \(Optional\) Install add\-ons such as Prometheus, Grafana, AWS X\-Ray, Jaeger, and Datadog\. For more information, see [App Mesh add\-ons](https://github.com/aws/eks-charts#app-mesh-add-ons) on GitHub and the [Observability](https://docs.aws.amazon.com/app-mesh/latest/userguide/observability.html) section of the App Mesh User Guide\. 
+
+**Note**  
+For more examples and walkthroughs for App Mesh, see the [App Mesh examples repository](https://github.com/aws/aws-app-mesh-examples)\.
 
 ## Step 4: Clean up<a name="remove-integration"></a>
 

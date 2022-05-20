@@ -12,11 +12,13 @@ To complete an end\-to\-end walkthrough, see [Configuring Inbound Gateway](https
 
 ## Creating a virtual gateway<a name="create-virtual-gateway"></a>
 
-**To create a virtual gateway using the AWS Management Console**
 **Note**  
 When creating a Virtual Gateway, you must add a namespace selector with a label to identify the list of namespaces with which to associate Gateway Routes to the created Virtual Gateway\.
 
- To create a virtual gateway using the AWS CLI version 1\.18\.116 or higher, see the AWS CLI reference for the [create\-virtual\-gateway](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-gateway.html) command\.
+------
+#### [ AWS Management Console ]
+
+**To create a virtual gateway using the AWS Management Console**
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\. 
 
@@ -45,6 +47,8 @@ When creating a Virtual Gateway, you must add a namespace selector with a label 
       + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret that Envoy fetches using the Secret Discovery Service\.
       + **Local file hosting** – Specify the path to the **Certificate chain** file, as well as the **Private key**, on the file system where Envoy is deployed\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with local files, see [Configuring TLS with File Provided TLS Certificates](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-tls-file-provided) on GitHub\.
 
+   1. Specify a **Port** and **Protocol** for the **Listener**\. Each virtual gateway can have only one port and protocol specified\. If you need the virtual gateway to route traffic over multiple ports and protocols, then you must create a virtual gateway for each port or prototol\.
+
 1. \(Optional\) To configure logging, selected **Logging**\. Enter the **HTTP access logs path** that you want Envoy to use\. We recommend the `/dev/stdout` path so that you can use Docker log drivers to export your Envoy logs to a service such as Amazon CloudWatch Logs\.
 **Note**  
 Logs must still be ingested by an agent in your application and sent to a destination\. This file path only instructs Envoy where to send the logs\. 
@@ -61,6 +65,7 @@ Logs must still be ingested by an agent in your application and sent to a destin
 **Note**  
 The `connectionPool` and `connectionPool`portMapping protocols must be the same\. If your listener protocol is `grpc` or `http2`, specify `maxRequests` only\. If your listener protocol is `http`, you can specify both `maxConnections` and `maxPendingRequests`\. 
       + For **Maximum connections**, specify the maximum number of outbound connections\.
+      + For **Maximum requests**, specify maximum number of parallel requests that can be established with the Virtual Gateway Envoy\.
       + \(Optional\) For **Maximum pending requests**, specify the number of overflowing requests after **Maximum connections** that an Envoy queues\. The default value is `2147483647`\.
 
    1. \(Optional\) If you want to configure a health check for your listener, then select **Enable health check**\.
@@ -87,6 +92,76 @@ The `connectionPool` and `connectionPool`portMapping protocols must be the same\
 
 1. Choose **Create virtual gateway** to finish\.
 
+------
+#### [ AWS CLI ]
+
+**To create a virtual gateway using the AWS CLI\.**
+
+Create a virtual gateway using the following command and input JSON \(replace the *red* values with your own\):
+
+1. 
+
+   ```
+   aws appmesh create-virtual-gateway \ 
+   --mesh-name meshName \ 
+   --virtual-gateway-name virtualGatewayName \ 
+   --cli-input-json file://create-virtual-gateway.json
+   ```
+
+1. Contents of **example** create\-virtual\-gateway\.json:
+
+   ```
+   {
+       "spec": {
+         "listeners": [
+           {
+             "portMapping": {
+               "port": 9080,
+               "protocol": "http"
+             }
+           }
+         ]
+       }
+   }
+   ```
+
+1. Example output:
+
+   ```
+   {
+       "virtualGateway": {
+           "meshName": "meshName",
+           "metadata": {
+               "arn": "arn:aws:appmesh:us-west-2:123456789012:mesh/meshName/virtualGateway/virtualGatewayName",
+               "createdAt": "2022-04-06T10:42:42.015000-05:00",
+               "lastUpdatedAt": "2022-04-06T10:42:42.015000-05:00",
+               "meshOwner": "123456789012",
+               "resourceOwner": "123456789012",
+               "uid": "a1b2c3d4-5678-90ab-cdef-11111EXAMPLE",
+               "version": 1
+           },
+           "spec": {
+               "listeners": [
+                   {
+                       "portMapping": {
+                           "port": 9080,
+                           "protocol": "http"
+                       }
+                   }
+               ]
+           },
+           "status": {
+               "status": "ACTIVE"
+           },
+           "virtualGatewayName": "virtualGatewayName"
+       }
+   }
+   ```
+
+For more information on creating a virtual gateway with the AWS CLI for App Mesh, see the [create\-virtual\-gateway](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-gateway.html) command in the AWS CLI reference\.
+
+------
+
 ## Deploy virtual gateway<a name="deploy-virtual-gateway"></a>
 
 Deploy an Amazon ECS or Kubernetes service that contains only the [Envoy container](envoy.md)\. You can also deploy the Envoy container on an Amazon EC2 instance\. For more information, see [Getting started with App Mesh and Amazon EC2](https://docs.aws.amazon.com/app-mesh/latest/userguide/getting-started-ec2.html)\. For more information on how to deploy on Amazon ECS see [Getting started with App Mesh and Amazon ECS](https://docs.aws.amazon.com/app-mesh/latest/userguide/getting-started-ecs.html) or [Getting started with AWS App Mesh and Kubernetes](https://docs.aws.amazon.com/app-mesh/latest/userguide/getting-started-kubernetes.html) to deploy to Kubernetes\. You need to set the `APPMESH_RESOURCE_ARN` environment variable to `mesh/mesh-name/virtualGateway/virtual-gateway-name` and you must not specify proxy configuration so that the proxy's traffic doesn't get redirected to itself\. By default, App Mesh uses the name of the resource you specified in `APPMESH_RESOURCE_ARN` when Envoy is referring to itself in metrics and traces\. You can override this behavior by setting the `APPMESH_RESOURCE_CLUSTER `environment variable with your own name\.
@@ -97,7 +172,8 @@ Enable proxy authorization for Envoy\. For more information, see [Envoy Proxy au
 
 ## Deleting a virtual gateway<a name="delete-virtual-gateway"></a>
 
-To delete a virtual gateway using the AWS CLI version 1\.18\.116 or higher, see the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-gateway.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-gateway.html) command\.
+------
+#### [ AWS Management Console ]
 
 **To delete a virtual gateway using the AWS Management Console**
 
@@ -110,3 +186,53 @@ To delete a virtual gateway using the AWS CLI version 1\.18\.116 or higher, see 
 1. Choose the virtual gateway that you want to delete and select **Delete**\. You cannot delete a virtual gateway if it has any associated gateway routes\. You must delete any associated gateway routes first\. You can only delete a virtual gateway where your account is listed as **Resource owner**\.
 
 1. In the confirmation box, type **delete** and then select **Delete**\.
+
+------
+#### [ AWS CLI ]
+
+**To delete a virtual gateway using the AWS CLI**
+
+1. Use the following command to delete your virtual gateway \(replace the *red* values with your own\):
+
+   ```
+   aws appmesh delete-virtual-gateway \
+        --mesh-name meshName \
+        --virtual-gateway-name virtualGatewayName
+   ```
+
+1. Example output:
+
+   ```
+   {
+       "virtualGateway": {
+           "meshName": "meshName",
+           "metadata": {
+               "arn": "arn:aws:appmesh:us-west-2:123456789012:mesh/meshName/virtualGateway/virtualGatewayName",
+               "createdAt": "2022-04-06T10:42:42.015000-05:00",
+               "lastUpdatedAt": "2022-04-07T10:57:22.638000-05:00",
+               "meshOwner": "123456789012",
+               "resourceOwner": "123456789012",
+               "uid": "a1b2c3d4-5678-90ab-cdef-11111EXAMPLE",
+               "version": 2
+           },
+           "spec": {
+               "listeners": [
+                   {
+                       "portMapping": {
+                           "port": 9080,
+                           "protocol": "http"
+                       }
+                   }
+               ]
+           },
+           "status": {
+               "status": "DELETED"
+           },
+           "virtualGatewayName": "virtualGatewayName"
+       }
+   }
+   ```
+
+For more information on deleting a virtual gateway with the AWS CLI for App Mesh, see the [delete\-virtual\-gateway](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-gateway.html) command in the AWS CLI reference\.
+
+------

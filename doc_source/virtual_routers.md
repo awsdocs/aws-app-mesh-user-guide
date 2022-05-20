@@ -8,7 +8,8 @@ Any inbound traffic that your virtual router expects should be specified as a *l
 
 ## Creating a virtual router<a name="create-virtual-router"></a>
 
-To create a virtual router using the AWS CLI version 1\.18\.116 or higher, see the example in the AWS CLI reference for the [create\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-router.html) command\.
+------
+#### [ AWS Management Console ]
 
 **To create a virtual router using the AWS Management Console**
 **Note**  
@@ -28,12 +29,85 @@ When creating a Virtual Router, you must add a namespace selector with a label t
 
 1. Choose **Create virtual router** to finish\.
 
-## Deleting a virtual router<a name="delete-virtual-router"></a>
+------
+#### [ AWS CLI ]
 
-To delete a virtual router using the AWS CLI, use the `aws appmesh delete-virtual-router` command\. For an example of deleting a virtual router using the AWS CLI, see [delete\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-router.html)\.
+**To create a virtual router using the AWS CLI\.**
+
+Create a virtual router using the following command and input JSON \(replace the *red* values with your own\):
+
+1. 
+
+   ```
+   aws appmesh create-virtual-router \
+        --cli-input-json file://create-virtual-router.json
+   ```
+
+1. Contents of **example** create\-virtual\-router\.json
+
+1. 
+
+   ```
+   {
+       "meshName": "meshName",
+       "spec": {
+           "listeners": [
+               {
+                   "portMapping": {
+                       "port": 80,
+                       "protocol": "http"
+                   }
+               }
+           ]
+       },
+       "virtualRouterName": "routerName"
+   }
+   ```
+
+1. Example output:
+
+   ```
+   {
+       "virtualRouter": {
+           "meshName": "meshName",
+           "metadata": {
+               "arn": "arn:aws:appmesh:us-west-2:210987654321:mesh/meshName/virtualRouter/routerName",
+               "createdAt": "2022-04-06T11:49:47.216000-05:00",
+               "lastUpdatedAt": "2022-04-06T11:49:47.216000-05:00",
+               "meshOwner": "123456789012",
+               "resourceOwner": "210987654321",
+               "uid": "a1b2c3d4-5678-90ab-cdef-11111EXAMPLE",
+               "version": 1
+           },
+           "spec": {
+               "listeners": [
+                   {
+                       "portMapping": {
+                           "port": 80,
+                           "protocol": "http"
+                       }
+                   }
+               ]
+           },
+           "status": {
+               "status": "ACTIVE"
+           },
+           "virtualRouterName": "routerName"
+       }
+   }
+   ```
+
+For more information on creating a virtual router with the AWS CLI for App Mesh, see the [create\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-virtual-router.html) command in the AWS CLI reference\.
+
+------
+
+## Deleting a virtual router<a name="delete-virtual-router"></a>
 
 **Note**  
 You cannot delete a virtual router if it has any [routes](routes.md) or if it is specified as a provider for any [virtual service](virtual_services.md)\.
+
+------
+#### [ AWS Management Console ]
 
 **To delete a virtual router using the AWS Management Console**
 
@@ -43,6 +117,56 @@ You cannot delete a virtual router if it has any [routes](routes.md) or if it is
 
 1. Choose **Virtual routers** in the left navigation\.
 
-1. In the **Virtual Routers** table, choose the virtual router that you want to delete and select **Delete**\. To delete a virtual router, your account ID must be listed in either the **Mesh owner** or the **Resource owner** columns of the virtual router\.
+1. In the **Virtual Routers** table, choose the virtual router that you want to delete and select **Delete** in the top right corner\. To delete a virtual router, your account ID must be listed in either the **Mesh owner** or the **Resource owner** columns of the virtual router\.
 
-1. In the confirmation box, type **delete** and then select **Delete**\.
+1. In the confirmation box, type **delete** and then click on **Delete**\.
+
+------
+#### [ AWS CLI ]
+
+**To delete a virtual router using the AWS CLI**
+
+1. Use the following command to delete your virtual router \(replace the *red* values with your own\):
+
+   ```
+   aws appmesh delete-virtual-router \
+        --mesh-name meshName \
+        --virtual-router-name routerName
+   ```
+
+1. Example output:
+
+   ```
+   {
+       "virtualRouter": {
+           "meshName": "meshName",
+           "metadata": {
+               "arn": "arn:aws:appmesh:us-west-2:210987654321:mesh/meshName/virtualRouter/routerName",
+               "createdAt": "2022-04-06T11:49:47.216000-05:00",
+               "lastUpdatedAt": "2022-04-07T10:49:53.402000-05:00",
+               "meshOwner": "123456789012",
+               "resourceOwner": "210987654321",
+               "uid": "a1b2c3d4-5678-90ab-cdef-11111EXAMPLE",
+               "version": 2
+           },
+           "spec": {
+               "listeners": [
+                   {
+                       "portMapping": {
+                           "port": 80,
+                           "protocol": "http"
+                       }
+                   }
+               ]
+           },
+           "status": {
+               "status": "DELETED"
+           },
+           "virtualRouterName": "routerName"
+       }
+   }
+   ```
+
+For more information on deleting a virtual router with the AWS CLI for App Mesh, see the [delete\-virtual\-router](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-virtual-router.html) command in the AWS CLI reference\.
+
+------

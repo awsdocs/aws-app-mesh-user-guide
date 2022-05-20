@@ -4,7 +4,8 @@ A route is associated with a virtual router\. The route is used to match request
 
 ## Creating a route<a name="create-route"></a>
 
-To create a route using the AWS CLI version 1\.18\.116 or later, see the examples in the AWS CLI reference for the [create\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command\.
+------
+#### [ AWS Management Console ]
 
 **To create a route using the AWS Management Console**
 
@@ -53,6 +54,137 @@ Path confusion vulnerabilities occur when parties participating in the request u
 
 1. Select **Create route**\.
 
+------
+#### [ AWS CLI ]
+
+**To create a route using the AWS CLI\.**
+
+Create a gRPC route using the following command and input JSON \(replace the *red* values with your own\):
+
+1. 
+
+   ```
+   aws appmesh create-route \
+        --cli-input-json file://create-route-grpc.json
+   ```
+
+1. Contents of **example** create\-route\-grpc\.json
+
+   ```
+   {
+       "meshName" : "meshName",
+       "routeName" : "routeName",
+       "spec" : {
+          "grpcRoute" : {
+             "action" : {
+                "weightedTargets" : [
+                   {
+                      "virtualNode" : "nodeName",
+                      "weight" : 100
+                   }
+                ]
+             },
+             "match" : {
+                "metadata" : [
+                   {
+                      "invert" : false,
+                      "match" : {
+                         "prefix" : "123"
+                      },
+                      "name" : "myMetadata"
+                   }
+                ],
+                "methodName" : "nameOfmethod",
+                "serviceName" : "serviceA.svc.cluster.local"
+             },
+             "retryPolicy" : {
+                "grpcRetryEvents" : [ "deadline-exceeded" ],
+                "httpRetryEvents" : [ "server-error", "gateway-error" ],
+                "maxRetries" : 3,
+                "perRetryTimeout" : {
+                   "unit" : "s",
+                   "value" : 15
+                },
+                "tcpRetryEvents" : [ "connection-error" ]
+             }
+          },
+          "priority" : 100
+       },
+       "virtualRouterName" : "routerName"
+   }
+   ```
+
+1. Example output:
+
+   ```
+   {
+       "route": {
+           "meshName": "meshName",
+           "metadata": {
+               "arn": "arn:aws:appmesh:us-west-2:210987654321:mesh/meshName/virtualRouter/routerName/route/routeName",
+               "createdAt": "2022-04-06T13:48:20.749000-05:00",
+               "lastUpdatedAt": "2022-04-06T13:48:20.749000-05:00",
+               "meshOwner": "123456789012",
+               "resourceOwner": "210987654321",
+               "uid": "a1b2c3d4-5678-90ab-cdef-11111EXAMPLE",
+               "version": 1
+           },
+           "routeName": "routeName",
+           "spec": {
+               "grpcRoute": {
+                   "action": {
+                       "weightedTargets": [
+                           {
+                               "virtualNode": "nodeName",
+                               "weight": 100
+                           }
+                       ]
+                   },
+                   "match": {
+                       "metadata": [
+                           {
+                               "invert": false,
+                               "match": {
+                                   "prefix": "123"
+                               },
+                               "name": "myMetadata"
+                           }
+                       ],
+                       "methodName": "nameOfMehod",
+                       "serviceName": "serviceA.svc.cluster.local"
+                   },
+                   "retryPolicy": {
+   "grpcRetryEvents": [
+                           "deadline-exceeded"
+                       ],
+                       "httpRetryEvents": [
+                           "server-error",
+                           "gateway-error"
+                       ],
+                       "maxRetries": 3,
+                       "perRetryTimeout": {
+                           "unit": "s",
+                           "value": 15
+                       },
+                       "tcpRetryEvents": [
+                           "connection-error"
+                       ]
+                   }
+               },
+               "priority": 100
+           },
+           "status": {
+               "status": "ACTIVE"
+           },
+           "virtualRouterName": "routerName"
+       }
+   }
+   ```
+
+For more information on creating a route with the AWS CLI for App Mesh, see the [create\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/create-route.html) command in the AWS CLI reference\.
+
+------
+
 ### gRPC<a name="grpc"></a>
 
 ### \(Optional\) **Match**
@@ -67,7 +199,7 @@ Choose **Add metadata**\.
 
 ### \(Optional\) **Retry policy**
 
-A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\. If you don't define a retry policy, then App Mesh may automatically create a default policy for each of your routes\. For more information, see [Default route retry policy](envoy-defaults.md#default-retry-policy)\.
+A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the timeout per retry attempt \(including the initial attempt\)\. If you don't define a retry policy, then App Mesh may automatically create a default policy for each of your routes\. For more information, see [Default route retry policy](envoy-defaults.md#default-retry-policy)\.
 + For **Retry timeout**, enter the number of units for the timeout duration\. A value is required if you select any protocol retry event\.
 + For **Retry timeout unit**, select a unit\. A value is required if you select any protocol retry event\.
 + For **Max retries**, enter the maximum number of retry attempts when the request fails\. A value is required if you select any protocol retry event\. We recommend a value of at least two\.
@@ -93,7 +225,7 @@ A retry policy enables clients to protect themselves from intermittent network f
 
 ### **\(Optional\) Retry policy**
 
-A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the duration of time between retry attempts\. If you don't define a retry policy, then App Mesh may automatically create a default policy for each of your routes\. For more information, see [Default route retry policy](envoy-defaults.md#default-retry-policy)\.
+A retry policy enables clients to protect themselves from intermittent network failures or intermittent server\-side failures\. A retry policy is optional, but recommended\. The retry timeout values define the timeout per retry attempt \(including the initial attempt\)\. If you don't define a retry policy, then App Mesh may automatically create a default policy for each of your routes\. For more information, see [Default route retry policy](envoy-defaults.md#default-retry-policy)\.
 + For **Retry timeout**, enter the number of units for the timeout duration\. A value is required if you select any protocol retry event\.
 + For **Retry timeout unit**, select a unit\. A value is required if you select any protocol retry event\.
 + For **Max retries**, enter the maximum number of retry attempts when the request fails\. A value is required if you select any protocol retry event\. We recommend a value of at least two\.
@@ -116,18 +248,104 @@ A retry policy enables clients to protect themselves from intermittent network f
 
 ## Deleting a route<a name="delete-route"></a>
 
-To delete a route using the AWS CLI version 1\.18\.116 or higher, see the example in the AWS CLI reference for the [https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html) command\.
+------
+#### [ AWS Management Console ]
 
 **To delete a route using the AWS Management Console**
 
 1. Open the App Mesh console at [https://console\.aws\.amazon\.com/appmesh/](https://console.aws.amazon.com/appmesh/)\. 
 
-1. Choose the mesh that you want to delete a route from\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
+1. Choose the mesh from which you want to delete a route\. All of the meshes that you own and that have been [shared](sharing.md) with you are listed\.
 
 1. Choose **Virtual routers** in the left navigation\.
 
-1. Choose the router that you want to delete a route from\.
+1. Choose the router from which you want to delete a route\.
 
-1. In the **Routes** table, choose the route that you want to delete and select **Delete**\.
+1. In the **Routes** table, choose the route that you want to delete and select **Delete** in the top right corner\.
 
-1. In the confirmation box, type **delete** and then select **Delete**\.
+1. In the confirmation box, type **delete** and then click on **Delete**\.
+
+------
+#### [ AWS CLI ]
+
+**To delete a route using the AWS CLI**
+
+1. Use the following command to delete your route \(replace the *red* values with your own\):
+
+   ```
+   aws appmesh delete-route \
+        --mesh-name meshName \
+        --virtual-router-name routerName \
+        --route-name routeName
+   ```
+
+1. Example output:
+
+   ```
+   {
+       "route": {
+           "meshName": "meshName",
+           "metadata": {
+               "arn": "arn:aws:appmesh:us-west-2:210987654321:mesh/meshName/virtualRouter/routerName/route/routeName",
+               "createdAt": "2022-04-06T13:46:54.750000-05:00",
+               "lastUpdatedAt": "2022-04-07T10:43:57.152000-05:00",
+               "meshOwner": "123456789012",
+               "resourceOwner": "210987654321",
+               "uid": "a1b2c3d4-5678-90ab-cdef-11111EXAMPLE",
+               "version": 2
+           },
+           "routeName": "routeName",
+           "spec": {
+               "grpcRoute": {
+                   "action": {
+                       "weightedTargets": [
+                           {
+                               "virtualNode": "nodeName",
+                               "weight": 100
+                           }
+                       ]
+                   },
+                   "match": {
+                       "metadata": [
+                           {
+                               "invert": false,
+                               "match": {
+                                   "prefix": "123"
+                               },
+                               "name": "myMetadata"
+                           }
+                       ],
+                       "methodName": "methodName",
+                       "serviceName": "serviceA.svc.cluster.local"
+                   },
+                   "retryPolicy": {
+                       "grpcRetryEvents": [
+                           "deadline-exceeded"
+                       ],
+                       "httpRetryEvents": [
+                           "server-error",
+                           "gateway-error"
+                       ],
+                       "maxRetries": 3,
+                       "perRetryTimeout": {
+                           "unit": "s",
+                           "value": 15
+                       },
+                       "tcpRetryEvents": [
+                           "connection-error"
+                       ]
+                   }
+               },
+               "priority": 100
+           },
+           "status": {
+               "status": "DELETED"
+           },
+           "virtualRouterName": "routerName"
+       }
+   }
+   ```
+
+For more information on deleting a route with the AWS CLI for App Mesh, see the [delete\-route](https://docs.aws.amazon.com/cli/latest/reference/appmesh/delete-route.html) command in the AWS CLI reference\.
+
+------
