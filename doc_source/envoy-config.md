@@ -40,7 +40,7 @@ Specify a custom admin port for Envoy to listen on\. Default: `9901`\.
 Specify a custom path to write Envoy access logs to\. Default: `/tmp/envoy_admin_access.log`\.
 
 `ENVOY_ADMIN_ACCESS_ENABLE_IPV6`  
-Toggles Envoy’s administration interface to accept `IPv6` traffic, which allows this interface to accept both `IPv4` and `IPv6` traffic\. By default this flag is set to false, and Envoy only listens to `IPv4` traffic\.
+Toggles Envoy’s administration interface to accept `IPv6` traffic, which allows this interface to accept both `IPv4` and `IPv6` traffic\. By default this flag is set to false, and Envoy only listens to `IPv4` traffic\. This variable can only be used with Envoy image version 1\.22\.0 or later\.
 
 ### Agent variables<a name="agent-variables"></a>
 
@@ -150,7 +150,7 @@ By default, App Mesh uses the name of the resource that you specified in `APPMES
 Set the value to `1` to enable the App Mesh metrics extension\. For more information about using the App Mesh metrics extension, see [Metrics extension for App Mesh](metrics.md)\.
 
 `APPMESH_DUALSTACK_ENDPOINT`  
-Set the value to `1` to connect to App Mesh Dual Stack endpoint\. When this flag is set, Envoy uses our dual stack capable domain\. By default this flag is set to false and only connects to our `IPv4` domain\.
+Set the value to `1` to connect to App Mesh Dual Stack endpoint\. When this flag is set, Envoy uses our dual stack capable domain\. By default this flag is set to false and only connects to our `IPv4` domain\. This variable can only be used with Envoy image version 1\.22\.0 or later\.
 
 ### Envoy stats variables<a name="envoy-stats-config"></a>
 

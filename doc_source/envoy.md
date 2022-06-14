@@ -62,9 +62,9 @@ RUN yum -y update && \
     yum clean all && \
     rm -rf /var/cache/yum
 
-COPY —from=envoy /usr/bin/envoy /usr/bin/envoy
-COPY —from=envoy /usr/bin/agent /usr/bin/agent
-COPY —from=envoy /aws_appmesh_aggregate_stats.wasm /aws_appmesh_aggregate_stats.wasm
+COPY --from=envoy /usr/bin/envoy /usr/bin/envoy
+COPY --from=envoy /usr/bin/agent /usr/bin/agent
+COPY --from=envoy /aws_appmesh_aggregate_stats.wasm /aws_appmesh_aggregate_stats.wasm
 
 CMD [ "/usr/bin/agent" ]
 EOF
