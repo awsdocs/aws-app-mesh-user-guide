@@ -116,6 +116,8 @@ Replace *account\-id* and *Region\-code* with one of the appropriate sets of val
 422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.0\.0\-prod
 924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.0\.0\-prod
 
+The older image URIs can be found in the [change log](https://github.com/aws/aws-app-mesh-controller-for-k8s/releases) on GitHub\. The AWS accounts on which the images are present have changed in version v1\.5\.0\. Older version of the images are hosted on AWS accounts mentioned [here](https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html)\.
+
      ```
      --set sidecar.image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/aws-appmesh-envoy
      ```
