@@ -76,6 +76,9 @@ Owners and consumers can identify shared meshes and mesh resources using the Ama
 **To identify a shared mesh using the AWS CLI**  
 Use the `aws appmesh list resource` command, such as `aws appmesh [list\-meshes](https://docs.aws.amazon.com/cli/latest/reference/appmesh/list-meshes.html)`\. The command returns the meshes that you own and the meshes that are shared with you\. The `meshOwner` property shows the AWS account ID of the `meshOwner` and the `resourceOwner` property shows the AWS account ID of the resource owner\. Any command run against any mesh resource returns these properties\.
 
+**Tags of a shared mesh** 
+User-defined tags that you attach to a shared mesh are available only to your AWS account and not to the other accounts that the mesh is shared with. 
+
 ## Billing and metering<a name="sharing-billing"></a>
 
 There are no charges for sharing a mesh\.
