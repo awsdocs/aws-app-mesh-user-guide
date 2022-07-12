@@ -108,29 +108,30 @@ If your Amazon EKS cluster family is `IPv6`, please set the cluster name when de
 If your cluster is in the `me-south-1`, `ap-east-1`, `eu-south-1`, or `af-south-1` Regions, then you need to add the following option to the previous command:  
 Replace *account\-id* and *Region\-code* with one of the appropriate sets of values\.  
 
-     ```
-      --set image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/amazon/appmesh-controller
-     ```
-772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.0\.0\-prod
-856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.0\.0\-prod
-422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.0\.0\-prod
-924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.0\.0\-prod
+       ```
+        --set image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/amazon/appmesh-controller
+       ```
+772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.2\.0\-prod
+856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.2\.0\-prod
+422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.2\.0\-prod
+924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.2\.0\-prod
+The older image URIs can be found in the [change log](https://github.com/aws/aws-app-mesh-controller-for-k8s/releases) on GitHub\. The AWS accounts on which the images are present have changed in version `v1.5.0`\. Older version of the images are hosted on AWS accounts found on the Amazon Elastic Kubernetes Service [Amazon container image registries](https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html)\.
 
-     ```
-     --set sidecar.image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/aws-appmesh-envoy
-     ```
-772975370895\\\.dkr\\\.ecr\\\.me\\\-south\\\-1\\\.amazonaws\\\.com/amazon/appmesh\\\-controller:v1\\\.5\\\.0
-856666278305\\\.dkr\\\.ecr\\\.ap\\\-east\\\-1\\\.amazonaws\\\.com/amazon/appmesh\\\-controller:v1\\\.5\\\.0
-422531588944\\\.dkr\\\.ecr\\\.eu\\\-south\\\-1\\\.amazonaws\\\.com/amazon/appmesh\\\-controller:v1\\\.5\\\.0
-924023996002\\\.dkr\\\.ecr\\\.af\\\-south\\\-1\\\.amazonaws\\\.com/amazon/appmesh\\\-controller:v1\\\.5\\\.0
+       ```
+       --set sidecar.image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/aws-appmesh-envoy
+       ```
+772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/amazon/appmesh\-controller:v1\.5\.0
+856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/amazon/appmesh\-controller:v1\.5\.0
+422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/amazon/appmesh\-controller:v1\.5\.0
+924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/amazon/appmesh\-controller:v1\.5\.0
 
-     ```
-     --set sidecar.image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/aws-appmesh-envoy
-     ```
-772975370895\\\.dkr\\\.ecr\\\.me\\\-south\\\-1\\\.amazonaws\\\.com/aws\\\-appmesh\\\-proxy\\\-route\\\-manager:v5\\\-prod
-856666278305\\\.dkr\\\.ecr\\\.ap\\\-east\\\-1\\\.amazonaws\\\.com/aws\\\-appmesh\\\-proxy\\\-route\\\-manager:v5\\\-prod
-422531588944\\\.dkr\\\.ecr\\\.eu\\\-south\\\-1\\\.amazonaws\\\.com/aws\\\-appmesh\\\-proxy\\\-route\\\-manager:v5\\\-prod
-924023996002\\\.dkr\\\.ecr\\\.af\\\-south\\\-1\\\.amazonaws\\\.com/aws\\\-appmesh\\\-proxy\\\-route\\\-manager:v5\\\-prod
+       ```
+       --set sidecar.image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/aws-appmesh-envoy
+       ```
+772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v5\-prod
+856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v5\-prod
+422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v5\-prod
+924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v5\-prod
 **Important**  
 Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
 

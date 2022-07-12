@@ -79,7 +79,7 @@ The `connectionPool` and `connectionPool`portMapping protocols must be the same\
       + For **Timeout period**, specify the amount of time to wait when receiving a response from the health check in milliseconds\.
       + For **Unhealthy threshold**, specify the number of consecutive failed health checks that must occur before declaring the listener unhealthy\.
 
-   1. \(Optional\) If you want to specify whether virtual nodes communicate with this virtual gateway using TLS, then select **Enable TLS termination**\.
+   1. \(Optional\) If you want to specify whether clients communicate with this virtual gateway using TLS, then select **Enable TLS termination**\.
       + For **Mode**, select the mode that you want TLS to be configured for on the listener\.
       + For **Certificate method**, select one of the following options\. The certificate must meet specific requirements\. For more information, see [Certificate requirements](tls.md#virtual-node-tls-prerequisites)\.
         + **AWS Certificate Manager hosting** – Select an existing **Certificate**\.
