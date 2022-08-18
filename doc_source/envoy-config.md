@@ -3,7 +3,7 @@
 Use the following environment variables to configure the Envoy containers for your App Mesh virtual node task groups\.
 
 **Note**  
-Envoy 1\.17 doesn't supports Envoy’s **v2 xDS** API\. If you're using [Envoy configuration variables](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy-config.html) that accept Envoy config files, they must be updated to the latest** v3 xDS** API\.
+App Mesh Envoy 1\.17 doesn't supports Envoy’s **v2 xDS** API\. If you're using [Envoy configuration variables](https://docs.aws.amazon.com/app-mesh/latest/userguide/envoy-config.html) that accept Envoy config files, they must be updated to the latest** v3 xDS** API\.
 
 ## Required variables<a name="envoy-required-config"></a>
 

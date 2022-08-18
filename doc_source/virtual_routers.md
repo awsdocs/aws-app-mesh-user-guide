@@ -25,7 +25,7 @@ When creating a Virtual Router, you must add a namespace selector with a label t
 
 1. For **Virtual router name**, specify a name for your virtual router\. Up to 255 letters, numbers, hyphens, and underscores are allowed\.
 
-1. \(Optional\) For **Listener** configuration, specify a **Port** and **Protocol** for your virtual router\. The `http` listener permits connection transition to websockets\.
+1. \(Optional\) For **Listener** configuration, specify a **Port** and **Protocol** for your virtual router\. The `http` listener permits connection transition to websockets\. You can click **Add Listener** to add multiple listeners\. The **Remove** button will remove that listener\.
 
 1. Choose **Create virtual router** to finish\.
 

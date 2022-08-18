@@ -27,7 +27,7 @@ A route is associated with a virtual router\. The route is used to match request
 
 1. \(Optional\) Choose **Additional configuration**\. From the protocols down below, choose the protocol that you selected for **Route type** and specify settings in the console as desired\.
 
-1. For **Target configuration**, select the existing App Mesh virtual node to route traffic to and specify a **Weight**\. You can choose **Add target** to add additional targets\. The percentage for all targets must add up to 100\. If no virtual nodes are listed, then you must [create](virtual_nodes.md#vn-create-virtual-node) one first\.
+1. For **Target configuration**, select the existing App Mesh virtual node to route traffic to and specify a **Weight**\. You can choose **Add target** to add additional targets\. The percentage for all targets must add up to 100\. If no virtual nodes are listed, then you must [create](virtual_nodes.md#vn-create-virtual-node) one first\. If the selected virtual node has multiple listeners, **Target port ** is **required**\.
 
 1. For **Match** configuration, specify:
 
@@ -36,6 +36,7 @@ A route is associated with a virtual router\. The route is used to match request
 
      If **http/http2** is the selected type:
      + \(Optional\) **Method** ‐ specifies the method header to be matched in the incoming **http**/**http2** requests\.
+     + \(Optional\) **Port match** ‐ Match the port for incoming traffic\. Port match is **required** if this virtual router has multiple listeners\.
      + \(Optional\) **Prefix/Exact/Regex path** ‐ method of matching the path of the URL\.
        + **Prefix match** ‐ a matched request by a gateway route is rewritten to the target virtual service's name and the matched prefix is rewritten to `/`, by default\. Depending on how you configure your virtual service, it could use a virtual router to route the request to different virtual nodes, based on specific prefixes or headers\. 
 **Note**  

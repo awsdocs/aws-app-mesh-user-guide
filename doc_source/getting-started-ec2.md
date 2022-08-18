@@ -538,7 +538,7 @@ After creating your mesh, you need to complete the following tasks:
 1. Install Docker and the AWS CLI on your instance according to your operating system documentation\.
 
 1. Authenticate to the Envoy Amazon ECR repository in the Region that you want your Docker client to pull the image from\.
-   + All Regions except `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\.
+   + All Regions except `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1`\. You can replace *us\-west\-2* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1`\.
 
      ```
      $aws ecr get-login-password \
@@ -567,23 +567,23 @@ After creating your mesh, you need to complete the following tasks:
      ```
 
 1. Run one of the following commands to start the App Mesh Envoy container on your instance, depending on which Region you want to pull the image from\. The *apps* and *serviceB* values are the mesh and virtual node names defined in the scenario\. This information tells the proxy which virtual node configuration to read from App Mesh\. To complete the scenario, you also need to complete these steps for the Amazon EC2 instances that host the services represented by the `serviceBv2` and `serviceA` virtual nodes\. For your own application, replace these values with your own\.
-   + All Regions except `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1`\. You can replace *Region\-code* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except the `me-south-1` and `ap-east-1`, `eu-south-1`, `af-south-1` Regions\. You can replace `1337` with any value between `0` and `2147483647`\.
+   + All Regions except `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1`\. You can replace *Region\-code* with any [supported Region](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) except the `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1` Regions\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.22.2.0-prod
+     -u 1337 --network host 840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
      ```
    + `me-south-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.22.2.0-prod
+     -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
      ```
    + `ap-east-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.22.2.0-prod
+     -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
      ```
 **Note**  
 The `APPMESH_RESOURCE_ARN` property requires version `1.15.0` or later of the Envoy image\. For more information, see [Envoy image](envoy.md)\.

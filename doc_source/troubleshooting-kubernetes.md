@@ -108,3 +108,15 @@ kubectl get pod pod-name -n namespace -o json | \
 ```
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
+
+## Client Envoys are not able to communicate with App Mesh Envoy Management Service with IMDSv1 disabled<a name="ts-kubernetes-imdsv1-disabled"></a>
+
+**Symptoms**  
+When `IMDSv1` is disabled, client Envoys aren't able to communicate with the App Mesh control plane \(Envoy Management Service\)\. `IMDSv1` support isn't added to Envoy OSS proxy yet\. `IMDSv1` has to be enabled to fetch the credentials\.
+
+**Resolution**  
+To resolve this issue, you can do one of two things\.
++ Re\-enable `IMDSv1` on the Instance where Envoy is running\. For instructions on restoring `IMDSv1`, see [Configure the instance metadata options](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-options.html)\.
++ If your services are running on Amazon EKS, it is recommended to use IAM roles for service accounts \(IRSA\) for fetching credentials\. For instructions to enable IRSA, see [IAM roles for service accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)\.
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.

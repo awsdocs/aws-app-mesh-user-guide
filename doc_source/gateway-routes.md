@@ -25,6 +25,8 @@ A gateway route is attached to a virtual gateway and routes traffic to an existi
 
 1. Select an existing **Virtual service name**\. If none are listed, then you need to create a [virtual service](virtual_services.md#create-virtual-service) first\.
 
+1. Choose the port that corresponds to the target for **Virtual service provider port**\. Virtual service provider port is **required** when the provider \(router or node\) of the selected virtual service has multiple listeners\.
+
 1. \(Optional\) For **Priority**, specify the priority for this gateway route\.
 
 1. For **Match** configuration, specify:
@@ -32,6 +34,7 @@ A gateway route is attached to a virtual gateway and routes traffic to an existi
 
      If **http/http2** is the selected type:
      + \(Optional\) **Method** ‐ Specifies the method header to be matched in the incoming **http**/**http2** requests\.
+     + \(Optional\) **Port match** ‐ Match the port for incoming traffic\. Port match is **required** if this virtual gateway has multiple listeners\.
      + \(Optional\) **Exact/Suffix hostname** ‐ Specifies the hostname that should be matched on the incoming request to route to the target virtual service\.
      + \(Optional\) **Prefix/Exact/Regex path** ‐ The method of matching the path of the URL\.
        + **Prefix match** ‐ A matched request by a gateway route is rewritten to the target virtual service's name and the matched prefix is rewritten to `/`, by default\. Depending on how you configure your virtual service, it could use a virtual router to route the request to different virtual nodes, based on specific prefixes or headers\. 

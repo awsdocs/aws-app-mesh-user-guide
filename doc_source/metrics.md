@@ -1,10 +1,59 @@
 # Exporting metrics<a name="metrics"></a>
 
-Envoy emits many statistics on both its own operation and various dimensions on inbound and outbound traffic\. To learn more about Envoy statistics, see [Statistics](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/observability/statistics) in the Envoy documentation\. These metrics are available through the `/stats` endpoint on the proxy’s administration port, which is typically `9901`\. For more information about the stats endpoint, see [Statistics endpoint](https://www.envoyproxy.io/docs/envoy/latest/operations/admin#get--stats) in the Envoy documentation\. For more information about the administration interface, see [Enable the Envoy proxy administration interface](troubleshooting-best-practices.md#ts-bp-enable-proxy-admin-interface)\.
+Envoy emits many statistics on both its own operation and various dimensions on inbound and outbound traffic\. To learn more about Envoy statistics, see [Statistics](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/observability/statistics) in the Envoy documentation\. These metrics are available through the `/stats` endpoint on the proxy’s administration port, which is typically `9901`\.
+
+The `stat` prefix will be different depending on if you're using single or multiple listeners\. Below are some examples to illustrate the differences\.
+
+**Warning**  
+If you update your single listener to the multiple listener feature, you can face a breaking change due to the updated stat prefix illustrated in the following table\.  
+ We suggest you use Envoy image `1.22.2.1-prod` or later\. This allows you to see similar metric names in your Prometheus endpoint\.
+
+
+| Single Listener \(SL\)/Existing stats with "ingress" listener prefix | Multiple Listeners \(ML\)/New stats with "ingress\.<protocol>\.<port>" listener prefix | 
+| --- | --- | 
+|  `http.*ingress*.rds.rds_ingress_http_5555.version_text`  |  `http.*ingress.http.5555*.rds.rds_ingress_http_5555.version_text` `http.*ingress.http.6666*.rds.rds_ingress_http_6666.version_text`  | 
+|  `listener.0.0.0.0_15000.http.*ingress*.downstream_rq_2xx`  |  `listener.0.0.0.0_15000.http.*ingress.http.5555*.downstream_rq_2xx` `listener.0.0.0.0_15000.http.*ingress.http.6666*.downstream_rq_2xx`  | 
+|  `http.*ingress*.downstream_cx_length_ms`  |  `http.*ingress.http.5555*.downstream_cx_length_ms` `http.*ingress.http.6666*.downstream_cx_length_ms`  | 
+
+For more information about the stats endpoint, see [Statistics endpoint](https://www.envoyproxy.io/docs/envoy/latest/operations/admin#get--stats) in the Envoy documentation\. For more information about the administration interface, see [Enable the Envoy proxy administration interface](troubleshooting-best-practices.md#ts-bp-enable-proxy-admin-interface)\.
 
 ## Prometheus for App Mesh with Amazon EKS<a name="prometheus"></a>
 
 Prometheus is an open\-source monitoring and alerting toolkit\. One of its capabilities is to specify a format for emitting metrics that can be consumed by other systems\. For more information about Prometheus, see [Overview](https://prometheus.io/docs/introduction/overview/) in the Prometheus documentation\. Envoy can emit its metrics via its stats endpoint by passing in the parameter `/stats?format=prometheus`\.
+
+For customers that are using Envoy image build v1\.22\.2\.1\-prod, there are two additional dimensions to indicate ingress listener specific stats:
++ `appmesh.listener_protocol`
++ `appmesh.listener_port`
+
+Below is a comparison between Prometheus existing stats vs new stats\.
++ Existing stats with "ingress" listener prefix
+
+  ```
+  envoy_http_downstream_rq_xx{appmesh_mesh="multiple-listeners-mesh",appmesh_virtual_node="foodteller-vn",envoy_response_code_class="2",envoy_http_conn_manager_prefix="ingress"} 931433
+  ```
++ New stats with "ingress\.<protocol>\.<port>" \+ Appmesh Envoy Image v1\.22\.2\.1\-prod or later
+
+  ```
+  envoy_http_downstream_rq_xx{appmesh_mesh="multiple-listeners-mesh",appmesh_virtual_node="foodteller-vn",envoy_response_code_class="2",appmesh_listener_protocol="http",appmesh_listener_port="5555",envoy_http_conn_manager_prefix="ingress"} 20
+  ```
++ New stats with "ingress\.<protocol>\.<port>" \+ custom Envoy Imagebuild
+
+  ```
+  envoy_http_http_5555_downstream_rq_xx{appmesh_mesh="multiple-listeners-mesh",appmesh_virtual_node="foodteller-vn",envoy_response_code_class="2",envoy_http_conn_manager_prefix="ingress"} 15983
+  ```
+
+For multiple listeners, the `cds_ingress_<mesh name>_<virtual gateway name>_self_redirect_<ingress_listener_port>_<protocol>_<port>` special cluster will be listener specific\.
++ Existing stats with "ingress" listener prefix
+
+  ```
+  envoy_cluster_assignment_stale{appmesh_mesh="multiple-listeners-mesh",appmesh_virtual_gateway="tellergateway-vg",Mesh="multiple-listeners-mesh",VirtualGateway="tellergateway-vg",envoy_cluster_name="cds_ingress_multiple-listeners-mesh_tellergateway-vg_self_redirect_http_15001"} 0
+  ```
++ New stats with "ingress\.<protocol>\.<port>"
+
+  ```
+  envoy_cluster_assignment_stale{appmesh_mesh="multiple-listeners-mesh",appmesh_virtual_gateway="tellergateway-vg",envoy_cluster_name="cds_ingress_multiple-listeners-mesh_tellergateway-vg_self_redirect_1111_http_15001"} 0
+  envoy_cluster_assignment_stale{appmesh_mesh="multiple-listeners-mesh",appmesh_virtual_gateway="tellergateway-vg",envoy_cluster_name="cds_ingress_multiple-listeners-mesh_tellergateway-vg_self_redirect_2222_http_15001"} 0
+  ```
 
 ### Installing Prometheus<a name="installing-prometheus"></a>
 

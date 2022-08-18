@@ -54,7 +54,9 @@ For example, if you have a virtual node named `my-virtual-node` that listens for
 
 App Mesh may also create the following types of additional special clusters\. These other clusters do not necessarily correspond to resources that you explicitly define in your mesh\.
 + Clusters used to reach other AWS services\. This type allows your mesh to reach most AWS services by default: `cds_egress_<mesh name>_amazonaws`\.
-+ Cluster used to perform routing for virtual gateways\. This can generally be safely ignored: `cds_ingress_<mesh name>_<virtual gateway name>_self_redirect_<protocol>_<port>`\.
++ Cluster used to perform routing for virtual gateways\. This can generally be safely ignored: \.
+  + For single listeners: `cds_ingress_<mesh name>_<virtual gateway name>_self_redirect_<protocol>_<port>`
+  + For multiple listeners: `cds_ingress_<mesh name>_<virtual gateway name>_self_redirect_<ingress_listener_port>_<protocol>_<port>`
 + The cluster who’s endpoint you can define, such as TLS, when you retrieve secrets using Envoy’s Secret Discovery Service: `static_cluster_sds_unix_socket`\.
 
 ## Example application metrics<a name="envoy-metrics-examples"></a>

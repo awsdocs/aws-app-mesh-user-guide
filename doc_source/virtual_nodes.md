@@ -106,7 +106,7 @@ Logs must still be ingested by an agent in your application and sent to a destin
 
 1. **Listener configuration**
 
-   1. If your virtual node expects inbound traffic, specify a **Port** and **Protocol** for the **Listener**\. The **http** listener permits connection transition to websockets\.
+   1. If your virtual node expects inbound traffic, specify a **Port** and **Protocol** for the **Listener**\. The **http** listener permits connection transition to websockets\. You can click **Add Listener** to add multiple listeners\. The **Remove** button will remove that listener\.
 
    1. 
 

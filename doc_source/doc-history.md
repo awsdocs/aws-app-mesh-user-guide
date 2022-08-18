@@ -4,6 +4,7 @@ The following table describes the major updates and new features for the *AWS Ap
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [Multiple listeners for App Mesh](https://docs.aws.amazon.com/app-mesh/latest/userguide/metrics.html) | App Mesh now supports multiple listeners\. | August 18, 2022 | 
 | [IPv6 for App Mesh](#doc-history) | App Mesh now supports IPv6\. | May 18, 2022 | 
 | [CloudTrail logging support for App Mesh Envoy Management Service](https://docs.aws.amazon.com/app-mesh/latest/userguide/logging-using-cloudtrail.html) | App Mesh now supports CloudTrail logging support for App Mesh Envoy Management Service\. | March 18, 2022 | 
 | [App Mesh Agent for Envoy](https://docs.aws.amazon.com/app-mesh/latest/userguide/appmesh-agent.html) | App Mesh now supports Agent for Envoy\. | February 25, 2022 | 

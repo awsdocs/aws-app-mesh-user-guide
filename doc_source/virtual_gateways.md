@@ -47,15 +47,13 @@ When creating a Virtual Gateway, you must add a namespace selector with a label 
       + **Envoy Secret Discovery Service \(SDS\)** hosting – Enter the name of the secret that Envoy fetches using the Secret Discovery Service\.
       + **Local file hosting** – Specify the path to the **Certificate chain** file, as well as the **Private key**, on the file system where Envoy is deployed\. For a complete, end\-to\-end walk through of deploying a mesh with a sample application using encryption with local files, see [Configuring TLS with File Provided TLS Certificates](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs/howto-tls-file-provided) on GitHub\.
 
-   1. Specify a **Port** and **Protocol** for the **Listener**\. Each virtual gateway can have only one port and protocol specified\. If you need the virtual gateway to route traffic over multiple ports and protocols, then you must create a virtual gateway for each port or prototol\.
-
 1. \(Optional\) To configure logging, selected **Logging**\. Enter the **HTTP access logs path** that you want Envoy to use\. We recommend the `/dev/stdout` path so that you can use Docker log drivers to export your Envoy logs to a service such as Amazon CloudWatch Logs\.
 **Note**  
 Logs must still be ingested by an agent in your application and sent to a destination\. This file path only instructs Envoy where to send the logs\. 
 
 1. Configure the **Listener**\.
 
-   1. Select a **Protocol** and specify the **Port** on which Envoy listens for traffic\. The **http** listener permits connection transition to websockets\.
+   1. Select a **Protocol** and specify the **Port** on which Envoy listens for traffic\. The **http** listener permits connection transition to websockets\. You can click **Add Listener** to add multiple listeners\. The **Remove** button will remove that listener\.
 
    1. \(Optional\) **Enable connection pool** 
 

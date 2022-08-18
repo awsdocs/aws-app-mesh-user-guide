@@ -1,20 +1,40 @@
 # Logging<a name="envoy-logs"></a>
 
-When you create your virtual nodes, you have the option to configure Envoy access logs\. In the console, this is in the **Advanced configuration** section of the virtual node create or update workflows\.
+When you create your virtual nodes and virtual gateways, you have the option to configure Envoy access logs\. In the console, this is in the **Logging** section of the virtual node and virtual gateway create or edit workflows\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/app-mesh/latest/userguide/images/logging.png)
 
-The preceding image shows a logging path of `/dev/stdout` for Envoy access logs\. The following code block shows the JSON representation that you can use in the AWS CLI\.
+**Important**  
+Envoy access logging is currently not available in the console\.
+
+The preceding image shows a logging path of `/dev/stdout` for Envoy access logs\.
+
+For `format`, specify **one** of two possible formats, `json` *or* `text`, and the pattern\. `json` takes key pairs and transforms them into JSON struct before passing them to Envoy\.
+
+The following code block shows the JSON representation that you can use in the AWS CLI\.
 
 ```
       "logging": { 
          "accessLog": { 
             "file": { 
-               "path": "/dev/stdout"
+               "path": "/dev/stdout",
+                "format" : { 
+                    // Exactly one of json or text should be specified
+                    "json": [ // json will be implemented with key pairs
+                        {
+                            "key": "string",
+                            "value": "string"
+                        }
+                    ]
+                    "text": "string" //e.g. "%LOCAL_REPLY_BODY%:%RESPONSE_CODE%:path=%REQ(:path)%\n"
+                }
             }
          }
       }
 ```
+
+**Important**  
+Make sure to check that your input pattern is valid for Envoy, or Envoy will reject the update and store the latest changes in the `error state`\.
 
 When you send Envoy access logs to `/dev/stdout`, they are mixed in with the Envoy container logs\. You can export them to a log storage and processing service like CloudWatch Logs using standard Docker log drivers such as `awslogs`\. For more information, see [Using the awslogs Log Driver](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html) in the Amazon ECS Developer Guide\. To export only the Envoy access logs \(and ignore the other Envoy container logs\), you can set the `ENVOY_LOG_LEVEL` to `off`\. For more information, see [Access logging](https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/access_log.html) in the Envoy documentation\.
 
