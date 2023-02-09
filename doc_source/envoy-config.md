@@ -29,12 +29,17 @@ Specifies the amount of time Envoy waits for the first configuration response fr
 For more information, see [Configuration sources](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/core/v3/config_source.proto#envoy-v3-api-field-config-core-v3-configsource-initial-fetch-timeout) in Envoy Documentation\. When set to `0`, there is no timeout\.  
 Default: `0`
 
+`ENVOY_CONCURRENCY`  
+Sets the `--concurrency` command line option while starting the Envoy\. This is not set by default\. This option is available from Envoy version `v1.24.0.0-prod` or above\.  
+For more information, see [Command line options](https://www.envoyproxy.io/docs/envoy/latest/operations/cli#cmdoption-concurrency) in Envoy Documentation\.
+
 ### Admin variables<a name="envoy-admin-variables"></a>
 
 Use these environment variables to configure Envoy's administrative interface\.
 
 `ENVOY_ADMIN_ACCESS_PORT`  
-Specify a custom admin port for Envoy to listen on\. Default: `9901`\.
+Specify a custom admin port for Envoy to listen on\. Default: `9901`\.  
+The Envoy admin port should be different from any listener port on the virtual vateway or virtual node
 
 `ENVOY_ADMIN_ACCESS_LOG_FILE`  
 Specify a custom path to write Envoy access logs to\. Default: `/tmp/envoy_admin_access.log`\.
@@ -83,6 +88,9 @@ Specify a sampling rate to override the X\-Ray tracer's default sampling rate of
 `XRAY_SAMPLING_RULE_MANIFEST`  
 Specify a file path in the Envoy container file system to configure the localized custom sampling rules for the X\-Ray tracer\. For more information, see [Sampling rules](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-go-configuration.html#xray-sdk-go-configuration-sampling) in the *AWS X\-Ray Developer Guide*\. This variable is supported with Envoy images of version `v1.19.1.0-prod` and later\.
 
+`XRAY_SEGMENT_NAME`  
+Specify a segment name for traces to override the default X\-Ray segment name\. By default this value will be set as `mesh/resourceName`\. This variable is supported with Envoy image version `v1.23.1.0-prod` or later\.
+
 #### Datadog tracing variables<a name="datadog-tracing"></a>
 
 The following environment variables help you configure App Mesh with the Datadog agent tracer\. For more information, see [Agent Configuration](https://docs.datadoghq.com/tracing/send_traces/) in the Datadog documentation\.
@@ -111,6 +119,9 @@ Specify a port value to override the default Jaeger port: `9411`\.
 
 `JAEGER_TRACER_ADDRESS`  
 Specify an IP address to override the default Jaeger address: `127.0.0.1`\.
+
+`JAEGER_TRACER_VERSION`  
+Specify whether the collector needs traces in `JSON` or `PROTO` encoded format\. By default this value will be set to `PROTO`\. This variable is supported with Envoy image version `v1.23.1.0-prod` or later\.
 
 #### Envoy tracing variable<a name="envoy-tracing"></a>
 

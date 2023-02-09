@@ -571,19 +571,19 @@ After creating your mesh, you need to complete the following tasks:
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
+     -u 1337 --network host 840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
      ```
    + `me-south-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
+     -u 1337 --network host 772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
      ```
    + `ap-east-1` Region\. You can replace `1337` with any value between `0` and `2147483647`\.
 
      ```
      sudo docker run --detach --env APPMESH_RESOURCE_ARN=mesh/apps/virtualNode/serviceB  \
-     -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
+     -u 1337 --network host 856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
      ```
 **Note**  
 The `APPMESH_RESOURCE_ARN` property requires version `1.15.0` or later of the Envoy image\. For more information, see [Envoy image](envoy.md)\.
@@ -610,21 +610,29 @@ Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
    # Enable routing on the application start.
    [ -z "$APPMESH_START_ENABLED" ] && APPMESH_START_ENABLED="0"
    
-   # Outbound traffic from the processess owned by the following UID/GID will be ignored.
+   # Enable IPv6.
+   [ -z "$APPMESH_ENABLE_IPV6" ] && APPMESH_ENABLE_IPV6="0"
+   
+   # Egress traffic from the processess owned by the following UID/GID will be ignored.
    if [ -z "$APPMESH_IGNORE_UID" ] && [ -z "$APPMESH_IGNORE_GID" ]; then
        echo "Variables APPMESH_IGNORE_UID and/or APPMESH_IGNORE_GID must be set."
-       echo "Envoy must run under those IDs to be able to properly route its outbound traffic."
+       echo "Envoy must run under those IDs to be able to properly route it's egress traffic."
        exit 1
    fi
    
    # Port numbers Application and Envoy are listening on.
-   if [ -z "$APPMESH_ENVOY_INGRESS_PORT" ] || [ -z "$APPMESH_ENVOY_EGRESS_PORT" ] || [ -z "$APPMESH_APP_PORTS" ]; then
-       echo "All of APPMESH_ENVOY_INGRESS_PORT, APPMESH_ENVOY_EGRESS_PORT and APPMESH_APP_PORTS variables must be set."
-       echo "If any one of them is not set we will not be able to route either inbound, outbound, or both directions."
+   if [ -z "$APPMESH_ENVOY_EGRESS_PORT" ]; then
+       echo "APPMESH_ENVOY_EGRESS_PORT must be defined to forward traffic from the application to the proxy."
        exit 1
    fi
    
-   # Comma separated list of ports for which outbound traffic will be ignored, we always refuse to route SSH traffic.
+   # If an app port was specified, then we also need to enforce the proxies ingress port so we know where to forward traffic.
+   if [ ! -z "$APPMESH_APP_PORTS" ] && [ -z "$APPMESH_ENVOY_INGRESS_PORT" ]; then
+       echo "APPMESH_ENVOY_INGRESS_PORT must be defined to forward traffic from the APPMESH_APP_PORTS to the proxy."
+       exit 1
+   fi
+   
+   # Comma separated list of ports for which egress traffic will be ignored, we always refuse to route SSH traffic.
    if [ -z "$APPMESH_EGRESS_IGNORED_PORTS" ]; then
        APPMESH_EGRESS_IGNORED_PORTS="22"
    else
@@ -635,17 +643,18 @@ Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
    # End of configurable options
    #
    
-   APPMESH_LOCAL_ROUTE_TABLE_ID="100"
-   APPMESH_PACKET_MARK="0x1e7700ce"
-   
    function initialize() {
        echo "=== Initializing ==="
-       iptables -t mangle -N APPMESH_INGRESS
-       iptables -t nat -N APPMESH_INGRESS
+       if [ ! -z "$APPMESH_APP_PORTS" ]; then
+           iptables -t nat -N APPMESH_INGRESS
+           if [ "$APPMESH_ENABLE_IPV6" == "1" ]; then
+               ip6tables -t nat -N APPMESH_INGRESS
+           fi
+       fi
        iptables -t nat -N APPMESH_EGRESS
-   
-       ip rule add fwmark "$APPMESH_PACKET_MARK" lookup $APPMESH_LOCAL_ROUTE_TABLE_ID
-       ip route add local default dev lo table $APPMESH_LOCAL_ROUTE_TABLE_ID
+       if [ "$APPMESH_ENABLE_IPV6" == "1" ]; then
+           ip6tables -t nat -N APPMESH_EGRESS
+       fi
    }
    
    function enable_egress_routing() {
@@ -661,16 +670,52 @@ Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
            -j RETURN
    
        [ ! -z "$APPMESH_EGRESS_IGNORED_PORTS" ] && \
-           iptables -t nat -A APPMESH_EGRESS \
-           -p tcp \
-           -m multiport --dports "$APPMESH_EGRESS_IGNORED_PORTS" \
-           -j RETURN
+           for IGNORED_PORT in $(echo "$APPMESH_EGRESS_IGNORED_PORTS" | tr "," "\n"); do
+             iptables -t nat -A APPMESH_EGRESS \
+             -p tcp \
+             -m multiport --dports "$IGNORED_PORT" \
+             -j RETURN
+           done
    
+       if [ "$APPMESH_ENABLE_IPV6" == "1" ]; then
+         # Stuff to ignore ipv6
+         [ ! -z "$APPMESH_IGNORE_UID" ] && \
+             ip6tables -t nat -A APPMESH_EGRESS \
+             -m owner --uid-owner $APPMESH_IGNORE_UID \
+             -j RETURN
+   
+         [ ! -z "$APPMESH_IGNORE_GID" ] && \
+             ip6tables -t nat -A APPMESH_EGRESS \
+             -m owner --gid-owner $APPMESH_IGNORE_GID \
+             -j RETURN
+   
+         [ ! -z "$APPMESH_EGRESS_IGNORED_PORTS" ] && \
+           for IGNORED_PORT in $(echo "$APPMESH_EGRESS_IGNORED_PORTS" | tr "," "\n"); do
+             ip6tables -t nat -A APPMESH_EGRESS \
+             -p tcp \
+             -m multiport --dports "$IGNORED_PORT" \
+             -j RETURN
+           done
+       fi
+   
+       # The list can contain both IPv4 and IPv6 addresses. We will loop over this list
+       # to add every IPv4 address into `iptables` and every IPv6 address into `ip6tables`.
        [ ! -z "$APPMESH_EGRESS_IGNORED_IP" ] && \
-           iptables -t nat -A APPMESH_EGRESS \
-           -p tcp \
-           -d "$APPMESH_EGRESS_IGNORED_IP" \
-           -j RETURN
+           for IP_ADDR in $(echo "$APPMESH_EGRESS_IGNORED_IP" | tr "," "\n"); do
+               if [[ $IP_ADDR =~ .*:.* ]]
+               then
+                   [ "$APPMESH_ENABLE_IPV6" == "1" ] && \
+                       ip6tables -t nat -A APPMESH_EGRESS \
+                           -p tcp \
+                           -d "$IP_ADDR" \
+                           -j RETURN
+               else
+                   iptables -t nat -A APPMESH_EGRESS \
+                       -p tcp \
+                       -d "$IP_ADDR" \
+                       -j RETURN
+               fi
+           done
    
        # Redirect everything that is not ignored
        iptables -t nat -A APPMESH_EGRESS \
@@ -682,6 +727,19 @@ Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
            -p tcp \
            -m addrtype ! --dst-type LOCAL \
            -j APPMESH_EGRESS
+   
+       if [ "$APPMESH_ENABLE_IPV6" == "1" ]; then
+           # Redirect everything that is not ignored ipv6
+           ip6tables -t nat -A APPMESH_EGRESS \
+               -p tcp \
+               -j REDIRECT --to $APPMESH_ENVOY_EGRESS_PORT
+           # Apply APPMESH_EGRESS chain to non local traffic ipv6
+           ip6tables -t nat -A OUTPUT \
+               -p tcp \
+               -m addrtype ! --dst-type LOCAL \
+               -j APPMESH_EGRESS
+       fi
+   
    }
    
    function enable_ingress_redirect_routing() {
@@ -691,37 +749,81 @@ Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
            -m multiport --dports "$APPMESH_APP_PORTS" \
            -j REDIRECT --to-port "$APPMESH_ENVOY_INGRESS_PORT"
    
-       # Apply AppMesh inbound chain to everything non-local
+       # Apply AppMesh ingress chain to everything non-local
        iptables -t nat -A PREROUTING \
            -p tcp \
            -m addrtype ! --src-type LOCAL \
            -j APPMESH_INGRESS
+   
+       if [ "$APPMESH_ENABLE_IPV6" == "1" ]; then
+           # Route everything arriving at the application port to Envoy ipv6
+           ip6tables -t nat -A APPMESH_INGRESS \
+               -p tcp \
+               -m multiport --dports "$APPMESH_APP_PORTS" \
+               -j REDIRECT --to-port "$APPMESH_ENVOY_INGRESS_PORT"
+   
+           # Apply AppMesh ingress chain to everything non-local ipv6
+           ip6tables -t nat -A PREROUTING \
+               -p tcp \
+               -m addrtype ! --src-type LOCAL \
+               -j APPMESH_INGRESS
+       fi
    }
    
    function enable_routing() {
        echo "=== Enabling routing ==="
        enable_egress_routing
-       enable_ingress_redirect_routing
+       if [ ! -z "$APPMESH_APP_PORTS" ]; then
+           enable_ingress_redirect_routing
+       fi
    }
    
    function disable_routing() {
        echo "=== Disabling routing ==="
-       iptables -F
-       iptables -F -t nat
-       iptables -F -t mangle
+       iptables -t nat -F APPMESH_INGRESS
+       iptables -t nat -F APPMESH_EGRESS
+   
+       if [ "$APPMESH_ENABLE_IPV6" == "1" ]; then
+           ip6tables -t nat -F APPMESH_INGRESS
+           ip6tables -t nat -F APPMESH_EGRESS
+       fi
    }
    
    function dump_status() {
-       echo "=== Routing rules ==="
-       ip rule
-       echo "=== AppMesh routing table ==="
-       ip route list table $APPMESH_LOCAL_ROUTE_TABLE_ID
        echo "=== iptables FORWARD table ==="
        iptables -L -v -n
        echo "=== iptables NAT table ==="
        iptables -t nat -L -v -n
-       echo "=== iptables MANGLE table ==="
-       iptables -t mangle -L -v -n
+   
+       if [ "$APPMESH_ENABLE_IPV6" == "1" ]; then
+           echo "=== ip6tables FORWARD table ==="
+           ip6tables -L -v -n
+           echo "=== ip6tables NAT table ==="
+           ip6tables -t nat -L -v -n
+       fi
+   }
+   
+   function clean_up() {
+       disable_routing
+       ruleNum=$(iptables -L PREROUTING -t nat --line-numbers | grep APPMESH_INGRESS | cut -d " " -f 1)
+       iptables -t nat -D PREROUTING $ruleNum
+   
+       ruleNum=$(iptables -L OUTPUT -t nat --line-numbers | grep APPMESH_EGRESS | cut -d " " -f 1)
+       iptables -t nat -D OUTPUT $ruleNum
+   
+       iptables -t nat -X APPMESH_INGRESS
+       iptables -t nat -X APPMESH_EGRESS
+   
+       if [ "$APPMESH_ENABLE_IPV6" == "1" ]; then
+           ruleNum=$(ip6tables -L PREROUTING -t nat --line-numbers | grep APPMESH_INGRESS | cut -d " " -f 1)
+           ip6tables -t nat -D PREROUTING $ruleNum
+   
+           ruleNum=$(ip6tables -L OUTPUT -t nat --line-numbers | grep APPMESH_EGRESS | cut -d " " -f 1)
+           ip6tables -t nat -D OUTPUT $ruleNum
+   
+           ip6tables -t nat -X APPMESH_INGRESS
+           ip6tables -t nat -X APPMESH_EGRESS
+       fi
    }
    
    function main_loop() {
@@ -729,6 +831,7 @@ Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
        while read -p '> ' cmd; do
            case "$cmd" in
                "quit")
+                   clean_up
                    break
                    ;;
                "status")

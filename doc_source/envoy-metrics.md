@@ -110,7 +110,11 @@ For the full set of HTTP metrics, see [Statistics](https://www.envoyproxy.io/doc
 
 Envoy also emits metrics related to its connection to the App Mesh control plane, which acts as Envoy’s management server\. We recommend monitoring some of these metrics as a way to notify you when your proxies become desynchronized from the control plane for extended periods of time\. Loss of connectivity to the control plane or failed updates prevent your proxies from receiving new configuration from App Mesh, including mesh changes made via App Mesh APIs\.
 + `control_plane.connected_state`—This metric is set to 1 when the proxy is connected to App Mesh, otherwise it is 0\.
-+ `control_plane.update_rejected`—Total number of configuration updates that are rejected by Envoy\. These are usually due to user misconfiguration\. For example, if you configure App Mesh to read a TLS certificate from a file that cannot be read by Envoy, the update containing the path to that certificate is rejected\.
-+ `control_plane.update_success`—Number of successful configuration updates made by App Mesh to your proxy\. These include the initial configuration payload sent when a new Envoy container is started\.
++ `*.update_rejected`—Total number of configuration updates that are rejected by Envoy\. These are usually due to user misconfiguration\. For example, if you configure App Mesh to read a TLS certificate from a file that cannot be read by Envoy, the update containing the path to that certificate is rejected\.
+  + For Listener updated rejected, the stats will be `listener_manager.lds.update_rejected`\.
+  + For Cluster updated rejected, the stats will be `cluster_manager.cds.update_rejected`\.
++ `*.update_success`—Number of successful configuration updates made by App Mesh to your proxy\. These include the initial configuration payload sent when a new Envoy container is started\.
+  + For Listener updated success, the stats will be `listener_manager.lds.update_success`\.
+  + For Cluster updated success, the stats will be `cluster_manager.cds.update_success`\.
 
 For the set of management server metrics, see [Management Server](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/mgmt_server) in the Envoy documentation\.

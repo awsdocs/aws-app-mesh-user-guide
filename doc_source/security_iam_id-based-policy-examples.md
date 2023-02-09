@@ -1,6 +1,6 @@
 # AWS App Mesh identity\-based policy examples<a name="security_iam_id-based-policy-examples"></a>
 
-By default, IAM users and roles don't have permission to create or modify App Mesh resources\. They also can't perform tasks using the AWS Management Console, AWS CLI, or AWS API\. An IAM administrator must create IAM policies that grant users and roles permission to perform specific API operations on the specified resources they need\. The administrator must then attach those policies to the IAM users or groups that require those permissions\.
+By default, and roles don't have permission to create or modify App Mesh resources\. They also can't perform tasks using the AWS Management Console, AWS CLI, or AWS API\. An IAM administrator must create IAM policies that grant users and roles permission to perform specific API operations on the specified resources they need\. The administrator must then attach those policies to the or groups that require those permissions\.
 
 To learn how to create an IAM identity\-based policy using these example JSON policy documents, see [Creating Policies on the JSON Tab](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_create.html#access_policies_create-json-editor) in the *IAM User Guide*\.
 
@@ -22,7 +22,7 @@ Identity\-based policies are very powerful\. They determine whether someone can 
 
 ## Using the App Mesh console<a name="security_iam_id-based-policy-examples-console"></a>
 
-To access the AWS App Mesh console, you must have a minimum set of permissions\. These permissions must allow you to list and view details about the App Mesh resources in your AWS account\. If you create an identity\-based policy that is more restrictive than the minimum required permissions, the console won't function as intended for entities \(IAM users or roles\) with that policy\. You can attach the `[AWSAppMeshReadOnly](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/AWSAppMeshReadOnly%24jsonEditor)` managed policy to users\. For more information, see [Adding Permissions to a User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_change-permissions.html#users_change_permissions-add-console) in the *IAM User Guide*\.
+To access the AWS App Mesh console, you must have a minimum set of permissions\. These permissions must allow you to list and view details about the App Mesh resources in your AWS account\. If you create an identity\-based policy that is more restrictive than the minimum required permissions, the console won't function as intended for entities \( or roles\) with that policy\. You can attach the `[AWSAppMeshReadOnly](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/AWSAppMeshReadOnly%24jsonEditor)` managed policy to users\. For more information, see [Adding Permissions to a User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_change-permissions.html#users_change_permissions-add-console) in the *IAM User Guide*\.
 
 You don't need to allow minimum console permissions for users that are making calls only to the AWS CLI or the AWS API\. Instead, allow access to only the actions that match the API operation that you're trying to perform\.
 
@@ -104,7 +104,7 @@ This example shows how you can create a policy that allows a user read\-only acc
 
 ## Creating App Mesh meshes with restricted tags<a name="security_iam_id-based-policy-examples-view-widget-tags"></a>
 
-You can use tags in your IAM policies to control what tags can be passed in the IAM request\. You can specify which tag key\-value pairs can be added, changed, or removed from an IAM user or role\. This example shows how you might create a policy that allows creating a mesh, but only if the mesh is created with a tag named *teamName* and a value of *booksTeam*\.
+You can use tags in your IAM policies to control what tags can be passed in the IAM request\. You can specify which tag key\-value pairs can be added, changed, or removed from an or role\. This example shows how you might create a policy that allows creating a mesh, but only if the mesh is created with a tag named *teamName* and a value of *booksTeam*\.
 
 ```
 {
@@ -124,4 +124,4 @@ You can use tags in your IAM policies to control what tags can be passed in the 
 }
 ```
 
-You can attach this policy to the IAM users in your account\. If a user attempts to create a mesh, the mesh must include a tag named `teamName` and a value of `booksTeam`\. If the mesh does not include this tag and value, the attempt to create the mesh fails\. For more information, see [IAM JSON Policy Elements: Condition](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html) in the *IAM User Guide*\.
+You can attach this policy to the in your account\. If a user attempts to create a mesh, the mesh must include a tag named `teamName` and a value of `booksTeam`\. If the mesh does not include this tag and value, the attempt to create the mesh fails\. For more information, see [IAM JSON Policy Elements: Condition](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html) in the *IAM User Guide*\.

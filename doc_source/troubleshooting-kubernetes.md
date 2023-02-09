@@ -112,11 +112,34 @@ If your issue is still not resolved, then consider opening a [GitHub issue](http
 ## Client Envoys are not able to communicate with App Mesh Envoy Management Service with IMDSv1 disabled<a name="ts-kubernetes-imdsv1-disabled"></a>
 
 **Symptoms**  
-When `IMDSv1` is disabled, client Envoys aren't able to communicate with the App Mesh control plane \(Envoy Management Service\)\. `IMDSv1` support isn't added to Envoy OSS proxy yet\. `IMDSv1` has to be enabled to fetch the credentials\.
+When `IMDSv1` is disabled, client Envoys aren't able to communicate with the App Mesh control plane \(Envoy Management Service\)\. `IMDSv2` support is not available on App Mesh Envoy version before `v1.24.0.0-prod`\.
 
 **Resolution**  
-To resolve this issue, you can do one of two things\.
+To resolve this issue, you can do one of these three things\.
++ Upgrade to App Mesh Envoy version `v1.24.0.0-prod` or later, which has `IMDSv2` support\.
 + Re\-enable `IMDSv1` on the Instance where Envoy is running\. For instructions on restoring `IMDSv1`, see [Configure the instance metadata options](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-options.html)\.
 + If your services are running on Amazon EKS, it is recommended to use IAM roles for service accounts \(IRSA\) for fetching credentials\. For instructions to enable IRSA, see [IAM roles for service accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)\.
+
+If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
+
+## IRSA does not work on application container when App Mesh is enabled and Envoy is injected<a name="ts-kubernetes-irsa-not-working"></a>
+
+**Symptoms**  
+When App Mesh is enabled on an Amazon EKS cluster with the help of the App Mesh controller for Amazon EKS, Envoy and `proxyinit` containers are injected into the application pod\. The application is not able to assume `IRSA` and instead assumes the `node role`\. When we describe the pod details, we then see that either the `AWS_WEB_IDENTITY_TOKEN_FILE` or `AWS_ROLE_ARN` environment variable are not included in the application container\.
+
+**Resolution**  
+If either `AWS_WEB_IDENTITY_TOKEN_FILE` or `AWS_ROLE_ARN` environment variables are defined, then the webhook will skip the pod\. Don't provide either of these variables and the webhook will take care of injecting them for you\.
+
+```
+reservedKeys := map[string]string{
+        "AWS_ROLE_ARN":                "",
+        "AWS_WEB_IDENTITY_TOKEN_FILE": "",
+    }
+    ...
+    for _, env := range container.Env {
+        if _, ok := reservedKeys[env.Name]; ok {
+            reservedKeysDefined = true
+        }
+```
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.

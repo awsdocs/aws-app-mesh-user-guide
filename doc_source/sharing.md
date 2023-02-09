@@ -20,6 +20,37 @@ A shared mesh has the following permissions:
 + Owner's resources can only reference other resources in the same account\. For example, a virtual node can only reference AWS Cloud Map or an AWS Certificate Manager certificate that is in the same account as the virtual node's owner\.
 + Owners and consumers can connect an Envoy proxy to App Mesh as a virtual node that the account owns\.
 + Owners can create virtual gateways and virtual gateway routes\.
++ Owners and consumers can list tags and can tag/untag resources in a mesh that the account created\. They can't list tags and tag/untag resources in a mesh that aren't created by the account\.
+
+Shared meshes migrated from support for account\-level allow\-all authorization to policy\-based authorization\. Any meshes shared before this roll\-out use the former strategy, and any meshes shared after this roll\-out use the latter strategy\. 
+
+With policy\-based authorization, a mesh is shared with with a fixed set of permissions\. These permissions are selected to be added to a resource policy, and an optional IAM policy can also be selected based on /role\. The intersection of permissions allowed in these policies, less any explicit permissions denied, determines a principal's access to the mesh\.
+
+The set of permissions added the resource policy is fixed, and determined by AWS Resource Access Manager \(AWS RAM\):
++ `appmesh:CreateVirtualNode`
++ `appmesh:CreateVirtualRouter`
++ `appmesh:CreateRoute`
++ `appmesh:CreateVirtualService`
++ `appmesh:UpdateVirtualNode`
++ `appmesh:UpdateVirtualRouter`
++ `appmesh:UpdateRoute`
++ `appmesh:UpdateVirtualService`
++ `appmesh:ListVirtualNodes`
++ `appmesh:ListVirtualRouters`
++ `appmesh:ListRoutes`
++ `appmesh:ListVirtualServices`
++ `appmesh:DescribeMesh`
++ `appmesh:DescribeVirtualNode`
++ `appmesh:DescribeVirtualRouter`
++ `appmesh:DescribeRoute`
++ `appmesh:DescribeVirtualService`
++ `appmesh:DeleteVirtualNode`
++ `appmesh:DeleteVirtualRouter`
++ `appmesh:DeleteRoute`
++ `appmesh:DeleteVirtualService`
+
+**Note**  
+This set excludes some permissions, such as `appmesh:TagResources`\. If access to `appmesh:TagResources` is required, we can map your account\(s\) to the account\-level allow\-all authorization strategy until we launch support for `appmesh:TagResources`\.
 
 ## Prerequisites for sharing meshes<a name="sharing-prereqs"></a>
 
@@ -31,7 +62,7 @@ To share a mesh, you must meet the following prerequisites\.
 
 ## Related services<a name="sharing-related"></a>
 
-mesh sharing integrates with AWS Resource Access Manager \(AWS RAM\)\. AWS RAM is a service that enables you to share your AWS resources with any AWS account or through AWS Organizations\. With AWS RAM, you share resources that you own by creating a *resource share*\. A resource share specifies the resources to share, and the consumers with whom to share them\. Consumers can be individual AWS accounts, or organizational units or an entire organization in AWS Organizations\.
+Mesh sharing integrates with AWS Resource Access Manager \(AWS RAM\)\. AWS RAM is a service that enables you to share your AWS resources with any AWS account or through AWS Organizations\. With AWS RAM, you share resources that you own by creating a *resource share*\. A resource share specifies the resources to share, and the consumers with whom to share them\. Consumers can be individual AWS accounts, or organizational units or an entire organization in AWS Organizations\.
 
 For more information about AWS RAM, see the *[AWS RAM User Guide](https://docs.aws.amazon.com/ram/latest/userguide/)*\.
 

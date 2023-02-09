@@ -50,8 +50,7 @@ App Mesh supports V2 SDS protocol using gRPC\.
 **Integrating with SPIFFE Runtime Environment \(SPIRE\)**  
 You can use any sidecar implementation of the SDS API, including existing toolchains like [SPIFFE Runtime Environment \(SPIRE\)](https://github.com/spiffe/spire)\. SPIRE is designed to enable the deployment of mutual TLS authentication between multiple workloads in distributed systems\. It attests the identity of workloads at runtime\. SPIRE also delivers workload\-specific, short\-lived, and automatically rotating keys and certificates directly to workloads\.  
 You should configure the SPIRE Agent as an SDS provider for Envoy\. Allow it to directly supply Envoy with the key material that it needs to provide mutual TLS authentication\. Run SPIRE Agents in sidecars next to Envoy proxies\. The Agent takes care of re\-generating the short\-lived keys and certificates as required\. The Agent attests Envoy and determines which service identities and CA certificates that it should make available to Envoy when Envoy connects to the SDS server exposed by the SPIRE Agent\.  
-During this process, service identities and CA certificates are rotated, and updates are streamed back to Envoy\. Envoy immediately applies them to new connections without any interruptions or downtime and without the private keys ever touching the file system\.  
-+ AWS Certificate Manager– AWS Certificate Manager Private Certificate Authority \(ACM PCA\) can be used along side SPIRE to serve as an upstream Certificate Authority\. By using a Private Certificate Authority \(PCA\), private keys for the CAs are hardware based and not stored in the memory or on the disk\. This adds an additional layer of security\. For more information, see the [SPIRE documentation](https://github.com/spiffe/spire/blob/main/doc/plugin_server_upstreamauthority_aws_pca.md)\.
+During this process, service identities and CA certificates are rotated, and updates are streamed back to Envoy\. Envoy immediately applies them to new connections without any interruptions or downtime and without the private keys ever touching the file system\.
 
 ## How App Mesh configures Envoys to negotiate TLS<a name="envoy-configuration-tls"></a>
 
@@ -69,7 +68,7 @@ If the client has not configured a client policy, or the client policy does not 
 You can optionally specify a list of Subject Alternative Names \(SANs\) to trust\. SANs must be in the FQDN or URI format\. If SANs are provided, Envoy verifies that the Subject Alternative Name of the presented certificate matches one of the names on this list\.  
 If you don't specify SANs on the terminating mesh endpoint, the Envoy proxy for that node doesn't verify the SAN on a peer client certificate\. If you don't specify SANs on the originating mesh endpoint, the SAN on the certificate provided by the terminating endpoint must match the mesh endpoint service discovery configuration\.  
 For more information, see App Mesh [TLS: Certificate requirements](https://docs.aws.amazon.com/app-mesh/latest/userguide/tls.html#virtual-node-tls-prerequisites)\.  
-App Mesh doesn't support wildcard DNS SANs\. You need to provide exact names of the endpoints\.
+You can only use wildcard SANs if the client policy for TLS is set to `not enforced`\. If the client policy for the client virtual node or virtual gateway is configured to enforce TLS, then it can't accept a wildcard SAN\.
 
 ## Verify encryption<a name="verify-encryption"></a>
 

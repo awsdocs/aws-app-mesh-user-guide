@@ -4,9 +4,6 @@ When you create your virtual nodes and virtual gateways, you have the option to 
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/app-mesh/latest/userguide/images/logging.png)
 
-**Important**  
-Envoy access logging is currently not available in the console\.
-
 The preceding image shows a logging path of `/dev/stdout` for Envoy access logs\.
 
 For `format`, specify **one** of two possible formats, `json` *or* `text`, and the pattern\. `json` takes key pairs and transforms them into JSON struct before passing them to Envoy\.

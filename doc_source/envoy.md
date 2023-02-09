@@ -15,37 +15,37 @@ For `IPv6` support, Envoy version `1.13` or later is required\.
 + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1`\. You can replace *Region\-code* with any Region other than `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1`\. 
 
   ```
-  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
+  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
   ```
 + `me-south-1` Region:
 
   ```
-  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
+  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
   ```
 + `ap-east-1` Region:
 
   ```
-  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
+  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
   ```
 + `ap-southeast-3` Region:
 
   ```
-  909464085924.dkr.ecr.ap-southeast-3.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
+  909464085924.dkr.ecr.ap-southeast-3.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
   ```
 + `eu-south-1` Region:
 
   ```
-  422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
+  422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
   ```
 + `af-south-1` Region:
 
   ```
-  924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.22.2.1-prod
+  924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
   ```
 + `Public repository`
 
   ```
-  public.ecr.aws/appmesh/aws-appmesh-envoy:v1.22.2.1-prod
+  public.ecr.aws/appmesh/aws-appmesh-envoy:v1.24.0.0-prod
   ```
 
 **Important**  

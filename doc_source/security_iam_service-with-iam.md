@@ -81,7 +81,7 @@ Some App Mesh actions, such as those for creating resources, cannot be performed
 "Resource": "*"
 ```
 
-Many App Mesh API actions involve multiple resources\. For example, `CreateRoute` creates a route with a virtual node target, so an IAM user must have permissions to use the route and the virtual node\. To specify multiple resources in a single statement, separate the ARNs with commas\. 
+Many App Mesh API actions involve multiple resources\. For example, `CreateRoute` creates a route with a virtual node target, so an must have permissions to use the route and the virtual node\. To specify multiple resources in a single statement, separate the ARNs with commas\. 
 
 ```
 "Resource": [

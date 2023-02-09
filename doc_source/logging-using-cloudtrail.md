@@ -101,7 +101,11 @@ The following example shows a CloudTrail log entry that demonstrates the `Stream
 {
     "eventVersion": "1.08",
     "userIdentity": {
+        "type": "AssumedRole",
+        "principalId": "AKIAIOSFODNN7EXAMPLE:d060be4ac3244e05aca4e067bfe241f8",
+        "arn": "arn:aws:sts::123456789012:assumed-role/Application-TaskIamRole-C20GBLBRLBXE/d060be4ac3244e05aca4e067bfe241f8",
         "accountId": "123456789012",
+        "accessKeyId": "AKIAIOSFODNN7EXAMPLE",
         "invokedBy": "appmesh.amazonaws.com"
     },
     "eventTime": "2021-06-09T23:09:46Z",

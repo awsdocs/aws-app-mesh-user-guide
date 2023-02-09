@@ -19,6 +19,8 @@ When creating a Mesh, you must add a namespace selector\. If the namespace selec
 1. For **Mesh name**, specify a name for your service mesh\.
 
 1. \(Optional\) Choose **Allow external traffic**\. By default, proxies in the mesh only forward traffic between each other\. If you allow external traffic, the proxies in the mesh also forward TCP traffic directly to services that aren't deployed with a proxy that is defined in the mesh\.
+**Note**  
+If you specify any backends on a virtual node when using `ALLOW_ALL`, you must specifiy all egress for that virtual node as backends\. Otherwise, `ALLOW_ALL` will no longer work for that virtual node\.
 
 1. 
 

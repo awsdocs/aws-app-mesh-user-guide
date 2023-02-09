@@ -147,49 +147,49 @@ For more information about Envoy configuration variables, see [Envoy configurati
 
 You will see different dimensions on your outbound metrics based on if they come from a virtual node or a virtual gateway\.
 + `TargetProcessedBytes`
-  + `envoy.appmesh.TargetProcessedBytes` — Total TCP bytes sent to and received from upstream targets\.
+  + `envoy.appmesh.TargetProcessedBytes` — Total TCP bytes sent to and received from targets upstream of Envoy\.
   + 
 
     *Dimensions*:
     + Virtual node dimensions — Mesh, VirtualNode, TargetVirtualService, TargetVirtualNode
     + Virtual gateway dimensions — Mesh, VirtualGateway, TargetVirtualService, TargetVirtualNode
 + **`HTTPCode_Target_2XX_Count`**
-  + `envoy.appmesh.HTTPCode_Target_2XX_Count` — The number of HTTP requests to an upstream target that resulted in a 2xx HTTP response\.
+  + `envoy.appmesh.HTTPCode_Target_2XX_Count` — The number of HTTP requests to a target upstream of Envoy that resulted in a 2xx HTTP response\.
   + 
 
     *Dimensions*:
     + Virtual node dimensions — Mesh, VirtualNode, TargetVirtualService, TargetVirtualNode
     + Virtual gateway dimensions — Mesh, VirtualGateway, TargetVirtualService, TargetVirtualNode
 + **`HTTPCode_Target_3XX_Count`**
-  + `envoy.appmesh.HTTPCode_Target_3XX_Count` — The number of HTTP requests to an upstream target that resulted in a 3xx HTTP response\.
+  + `envoy.appmesh.HTTPCode_Target_3XX_Count` — The number of HTTP requests to a target upstream of Envoy that resulted in a 3xx HTTP response\.
   + 
 
     *Dimensions*:
     + Virtual node dimensions — Mesh, VirtualNode, TargetVirtualService, TargetVirtualNode
     + Virtual gateway dimensions — Mesh, VirtualGateway, TargetVirtualService, TargetVirtualNode
 + **`HTTPCode_Target_4XX_Count`**
-  + `envoy.appmesh.HTTPCode_Target_4XX_Count` — The number of HTTP requests to an upstream target that resulted in a 4xx HTTP response\.
+  + `envoy.appmesh.HTTPCode_Target_4XX_Count` — The number of HTTP requests to a target upstream of Envoy that resulted in a 4xx HTTP response\.
   + 
 
     *Dimensions*:
     + Virtual node dimensions — Mesh, VirtualNode, TargetVirtualService, TargetVirtualNode
     + Virtual gateway dimensions — Mesh, VirtualGateway, TargetVirtualService, TargetVirtualNode
 + **`HTTPCode_Target_5XX_Count`**
-  + `envoy.appmesh.HTTPCode_Target_5XX_Count` — The number of HTTP requests to an upstream target that resulted in a 5xx HTTP response\.
+  + `envoy.appmesh.HTTPCode_Target_5XX_Count` — The number of HTTP requests to a target upstream of Envoy that resulted in a 5xx HTTP response\.
   + 
 
     *Dimensions*:
     + Virtual node dimensions — Mesh, VirtualNode, TargetVirtualService, TargetVirtualNode
     + Virtual gateway dimensions — Mesh, VirtualGateway, TargetVirtualService, TargetVirtualNode
 + **`RequestCountPerTarget`**
-  + `envoy.appmesh.RequestCountPerTarget` — The number of requests sent to an upstream target\.
+  + `envoy.appmesh.RequestCountPerTarget` — The number of requests sent to a target upstream of Envoy\.
   + 
 
     *Dimensions*:
     + Virtual node dimensions — Mesh, VirtualNode, TargetVirtualService, TargetVirtualNode
     + Virtual gateway dimensions — Mesh, VirtualGateway, TargetVirtualService, TargetVirtualNode
 + **`TargetResponseTime`**
-  + `envoy.appmesh.TargetResponseTime` — The time elapsed from when a request is made to an upstream target to when the full response is received\.
+  + `envoy.appmesh.TargetResponseTime` — The time elapsed from when a request is made to a target upstream of Envoy to when the full response is received\.
   + 
 
     *Dimensions*:

@@ -8,6 +8,9 @@ The controller also installs a webhook that injects the following containers int
 + **App Mesh Envoy proxy** – Envoy uses the configuration defined in the App Mesh control plane to determine where to send your application traffic\. 
 + **App Mesh proxy route manager **– Updates `iptables` rules in a pod's network namespace that route inbound and outbound traffic through Envoy\. This container runs as a Kubernetes init container inside of the pod\.
 
+**Note**  
+The App Mesh controller is not available for Amazon EKS private clusters\.
+
 ## Prerequisites<a name="mesh-k8s-integration-prerequisites"></a>
 + An existing understanding of App Mesh concepts\. For more information, see [What Is AWS App Mesh?](what-is-app-mesh.md)\.
 + An existing understanding of Kubernetes concepts\. For more information, see [What is Kubernetes](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/) in the Kubernetes documentation\.
@@ -105,17 +108,17 @@ The command creates an AWS IAM role with an auto\-generated name\. You are not a
 **Note**  
 If your Amazon EKS cluster family is `IPv6`, please set the cluster name when deploying the App Mesh controller by adding the following option to the previous command `--set clusterName=$CLUSTER_NAME`\.
 **Important**  
-If your cluster is in the `me-south-1`, `ap-east-1`, `eu-south-1`, or `af-south-1` Regions, then you need to add the following option to the previous command:  
+If your cluster is in the `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, or `af-south-1` Regions, then you need to add the following option to the previous command:  
 Replace *account\-id* and *Region\-code* with one of the appropriate sets of values\.  
 
        ```
         --set image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/amazon/appmesh-controller
        ```
-772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.2\.1\-prod
-856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.2\.1\-prod
-909464085924\.dkr\.ecr\.ap\-southeast\-3\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.2\.1\-prod
-422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.2\.1\-prod
-924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.22\.2\.1\-prod
+772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.24\.0\.0\-prod
+856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.24\.0\.0\-prod
+909464085924\.dkr\.ecr\.ap\-southeast\-3\.amazonaws\.com/aws\-appmesh\-envoy:v1\.24\.0\.0\-prod
+422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.24\.0\.0\-prod
+924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.24\.0\.0\-prod
 The older image URIs can be found in the [change log](https://github.com/aws/aws-app-mesh-controller-for-k8s/releases) on GitHub\. The AWS accounts on which the images are present have changed in version `v1.5.0`\. Older version of the images are hosted on AWS accounts found on the Amazon Elastic Kubernetes Service [Amazon container image registries](https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html)\.
 
        ```
