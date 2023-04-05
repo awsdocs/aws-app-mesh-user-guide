@@ -9,47 +9,46 @@ You must add an Envoy proxy to the Amazon ECS task, Kubernetes pod, or Amazon EC
 You can choose either a Regional image from the list below or an image from our [public repository](https://gallery.ecr.aws/appmesh/aws-appmesh-envoy) named `aws-appmesh-envoy`\.
 
 **Important**  
+Starting from June 30, 2023, only envoy image `v1.17.2.0-prod` or later is compatible for use with App Mesh\. For current customers using Envoy image before v1\.17\.2\.0, although existing envoys will continue to be compatible, we strongly recommend migrating to the latest version\.
+As a best practice, upgrading the Envoy version to the latest version on a regular basis is highly recommended\. Only the latest envoy version is officially supported with security patches, feature release, performance improvements, etc\.
 Version `1.17` was a significant update to Envoy\. See [Updating/migrating to Envoy 1\.17](https://docs.aws.amazon.com/app-mesh/latest/userguide/1.17-migration.html) for more details\.
 Version `1.20.0.1` or later is `ARM64` compatible\.
 For `IPv6` support, Envoy version `1.13` or later is required\.
 + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1`\. You can replace *Region\-code* with any Region other than `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1`\. 
 
   ```
-  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `me-south-1` Region:
 
   ```
-  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `ap-east-1` Region:
 
   ```
-  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `ap-southeast-3` Region:
 
   ```
-  909464085924.dkr.ecr.ap-southeast-3.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  909464085924.dkr.ecr.ap-southeast-3.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `eu-south-1` Region:
 
   ```
-  422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `af-south-1` Region:
 
   ```
-  924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `Public repository`
 
   ```
-  public.ecr.aws/appmesh/aws-appmesh-envoy:v1.24.0.0-prod
+  public.ecr.aws/appmesh/aws-appmesh-envoy:v1.25.3.0-prod
   ```
-
-**Important**  
-Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
 
 **Note**  
 We recommend allocating 512 CPU units and at least 64 MiB of memory to the Envoy container\. On Fargate the lowest amount of memory that you can set is 1024 MiB of memory\.

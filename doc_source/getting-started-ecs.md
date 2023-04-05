@@ -495,37 +495,37 @@ The following steps only show updating the `taskB` task for the scenario\. You a
          + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1`\. You can replace *Region\-code* with any Region other than `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1`\. 
 
            ```
-           840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+           840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
            ```
          + `me-south-1` Region:
 
            ```
-           772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+           772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
            ```
          + `ap-east-1` Region:
 
            ```
-           856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+           856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
            ```
          + `ap-southeast-3` Region:
 
            ```
-           909464085924.dkr.ecr.ap-southeast-3.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+           909464085924.dkr.ecr.ap-southeast-3.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
            ```
          + `eu-south-1` Region:
 
            ```
-           422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+           422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
            ```
          + `af-south-1` Region:
 
            ```
-           924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+           924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
            ```
          + `Public repository`
 
            ```
-           public.ecr.aws/appmesh/aws-appmesh-envoy:v1.24.0.0-prod
+           public.ecr.aws/appmesh/aws-appmesh-envoy:v1.25.3.0-prod
            ```
 **Important**  
 Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
@@ -630,37 +630,37 @@ Your Amazon ECS task definitions must contain an App Mesh Envoy container image\
 + All [supported](https://docs.aws.amazon.com/general/latest/gr/appmesh.html) Regions other than `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1`\. You can replace *Region\-code* with any Region other than `me-south-1`, `ap-east-1`, `ap-southeast-3`, `eu-south-1`, and `af-south-1`\. 
 
   ```
-  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  840364872350.dkr.ecr.region-code.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `me-south-1` Region:
 
   ```
-  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  772975370895.dkr.ecr.me-south-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `ap-east-1` Region:
 
   ```
-  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  856666278305.dkr.ecr.ap-east-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `ap-southeast-3` Region:
 
   ```
-  909464085924.dkr.ecr.ap-southeast-3.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  909464085924.dkr.ecr.ap-southeast-3.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `eu-south-1` Region:
 
   ```
-  422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  422531588944.dkr.ecr.eu-south-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `af-south-1` Region:
 
   ```
-  924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod
+  924023996002.dkr.ecr.af-south-1.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 + `Public repository`
 
   ```
-  public.ecr.aws/appmesh/aws-appmesh-envoy:v1.24.0.0-prod
+  public.ecr.aws/appmesh/aws-appmesh-envoy:v1.25.3.0-prod
   ```
 
 **Important**  
@@ -683,7 +683,7 @@ The following code shows an Envoy container definition example\.
 ```
 {
 	"name": "envoy",
-	"image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod",
+	"image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod",
 	"essential": true,
 	"environment": [{
 		"name": "APPMESH_RESOURCE_ARN",
@@ -769,7 +769,7 @@ Fargate must use a port value greater than 1024\.
       },
       {         
          "name" : "envoy",
-         "image" : "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod",
+         "image" : "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod",
          "essential" : true,
          "environment" : [
             {
@@ -859,7 +859,7 @@ X\-Ray allows you to collect data about requests that an application serves and 
       {
          
          "name" : "envoy",
-         "image" : "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod",
+         "image" : "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod",
          "essential" : true,
          "environment" : [
             {
@@ -963,7 +963,7 @@ X\-Ray allows you to collect data about requests that an application serves and 
     },
     {
       "name": "envoy",
-      "image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod",
+      "image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod",
       "essential": true,
       "environment": [
         {
@@ -1049,7 +1049,7 @@ X\-Ray allows you to collect data about requests that an application serves and 
     },
     {
       "name": "envoy",
-      "image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.24.0.0-prod",
+      "image": "840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy:v1.25.3.0-prod",
       "essential": true,
       "environment": [
         {

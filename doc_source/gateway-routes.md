@@ -21,7 +21,7 @@ A gateway route is attached to a virtual gateway and routes traffic to an existi
 
 1. For **Gateway route name**, specify the name to use for your gateway route\.
 
-1. For **Gateway route type** choose either **http**, **http2**, or **grcp**\.
+1. For **Gateway route type** choose either **http**, **http2**, or **grpc**\.
 
 1. Select an existing **Virtual service name**\. If none are listed, then you need to create a [virtual service](virtual_services.md#create-virtual-service) first\.
 

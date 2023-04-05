@@ -17,7 +17,7 @@ For an ongoing record of events in your AWS account, including events for App Me
 All App Mesh actions are logged by CloudTrail and are documented in [API Actions](https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_Operations.html)\. For example, calls to the [https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_CreateMesh.html](https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_CreateMesh.html), [https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_DescribeMesh.html](https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_DescribeMesh.html), and [https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_DeleteMesh.html](https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_DeleteMesh.html) actions generate entries in the CloudTrail log files\. Actions that App Mesh takes on your behalf, such as creating a service\-linked role when you create a mesh, are also logged\.
 
 Every event or log entry contains information about who generated the request\. The identity information helps you determine the following: 
-+ Whether the request was made with root or AWS Identity and Access Management \(IAM\) user credentials
++ Whether the request was made with root user or AWS Identity and Access Management \(IAM\) user credentials
 + Whether the request was made with temporary security credentials for a role or federated user
 + Whether the request was made by another AWS service
 

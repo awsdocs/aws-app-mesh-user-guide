@@ -68,6 +68,18 @@ Default: `20`
 Minimum: `5`  
 Maximum: `110`
 
+`APPNET_AGENT_ADMIN_MODE`  
+Starts Agent's management interface server and binds it to either a tcp address or a unix socket\.  
+Valid values: `tcp`, `uds`
+
+`APPNET_AGENT_HTTP_PORT`  
+Specify a port to be used for binding Agent's management interface in `tcp` mode\. Ensure port value is > `1024` if `uid` \!= `0`\. Ensure port is less than `65535`\.  
+Default: `9902`
+
+`APPNET_AGENT_ADMIN_UDS_PATH`  
+Specify unix domain socket path for Agent's management interface in `uds` mode\.  
+Default: `/var/run/ecs/appnet_admin.sock`
+
 ### Tracing variables<a name="tracing-variables"></a>
 
 You can configure none or one of the following tracing drivers\.

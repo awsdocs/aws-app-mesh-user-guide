@@ -114,11 +114,11 @@ Replace *account\-id* and *Region\-code* with one of the appropriate sets of val
        ```
         --set image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/amazon/appmesh-controller
        ```
-772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.24\.0\.0\-prod
-856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.24\.0\.0\-prod
-909464085924\.dkr\.ecr\.ap\-southeast\-3\.amazonaws\.com/aws\-appmesh\-envoy:v1\.24\.0\.0\-prod
-422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.24\.0\.0\-prod
-924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.24\.0\.0\-prod
+772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.25\.3\.0\-prod
+856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.25\.3\.0\-prod
+909464085924\.dkr\.ecr\.ap\-southeast\-3\.amazonaws\.com/aws\-appmesh\-envoy:v1\.25\.3\.0\-prod
+422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.25\.3\.0\-prod
+924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-envoy:v1\.25\.3\.0\-prod
 The older image URIs can be found in the [change log](https://github.com/aws/aws-app-mesh-controller-for-k8s/releases) on GitHub\. The AWS accounts on which the images are present have changed in version `v1.5.0`\. Older version of the images are hosted on AWS accounts found on the Amazon Elastic Kubernetes Service [Amazon container image registries](https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html)\.
 
        ```
@@ -133,11 +133,11 @@ The older image URIs can be found in the [change log](https://github.com/aws/aws
        ```
        --set sidecar.image.repository=account-id.dkr.ecr.Region-code.amazonaws.com/aws-appmesh-envoy
        ```
-772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v6\-prod
-856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v6\-prod
-909464085924\.dkr\.ecr\.ap\-southeast\-3\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v6\-prod
-422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v6\-prod
-924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v6\-prod
+772975370895\.dkr\.ecr\.me\-south\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v7\-prod
+856666278305\.dkr\.ecr\.ap\-east\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v7\-prod
+909464085924\.dkr\.ecr\.ap\-southeast\-3\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v7\-prod
+422531588944\.dkr\.ecr\.eu\-south\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v7\-prod
+924023996002\.dkr\.ecr\.af\-south\-1\.amazonaws\.com/aws\-appmesh\-proxy\-route\-manager:v7\-prod
 **Important**  
 Only version v1\.9\.0\.0\-prod or later is supported for use with App Mesh\.
 

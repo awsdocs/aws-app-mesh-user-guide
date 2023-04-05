@@ -27,7 +27,7 @@ App Mesh supports multiple sources for certificates when using TLS authenticatio
 
 **ACM PCA**  
 The certificate must be stored in ACM in the same Region and AWS account as the mesh endpoint that will use the certificate\. The CA's certificate does not need to be in the same AWS account, but it does still need to be in the same Region as the mesh endpoint\. If you don't have an ACM Private CA, then you must [create one](https://docs.aws.amazon.com/acm-pca/latest/userguide/PcaCreateCa.html) before you can request a certificate from it\. For more information about requesting a certificate from an existing ACM PCA using ACM, see [Request a Private Certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-private.html)\. The certificate cannot be a public certificate\.  
-The private CAs that you use for TLS client policies must be root CAs\.  
+The private CAs that you use for TLS client policies must be root user CAs\.  
 To configure a virtual node with certificates and CAs from ACM PCA, the principal \(such as a user or role\) that you use to call App Mesh must have the following IAM permissions:   
 + For any certificates that you add to a listener's TLS configuration, the principal must have the `acm:DescribeCertificate` permission\.
 + For any CAs configured on a TLS client policy, the principal must have the `acm-pca:DescribeCertificateAuthority` permission\.
@@ -61,7 +61,7 @@ When a client policy is enforcing the use of TLS, and one of the ports in the cl
 
 **Without client policies**  
 If the client has not configured a client policy, or the client policy does not match the port of the server, App Mesh will use the server to determine whether or not to negotiate TLS from the client, and how\. For example, if a virtual gateway has not specified a client policy, and a virtual node has not configured TLS termination, TLS will not be negotiated between the proxies\. If a client has not specified a matching client policy, and a server has been configured with TLS modes `STRICT` or `PERMISSIVE`, the proxies will be configured to negotiate TLS\. Depending on how the certificates have been provided for TLS termination, the following additional behavior applies\.  
-+ **ACM\-managed TLS certificates** – When a server has configured TLS termination using an ACM\-managed certificate, App Mesh automatically configures clients to negotiate TLS and validate the certificate against the root CA that the certificate chains up to\.
++ **ACM\-managed TLS certificates** – When a server has configured TLS termination using an ACM\-managed certificate, App Mesh automatically configures clients to negotiate TLS and validate the certificate against the root user CA that the certificate chains up to\.
 + **File\-based TLS certificates** – When a server has configured TLS termination using a certificate from the proxy's local file system, App Mesh automatically configures a client to negotiate TLS, but the certificate of the server is not validated\.
 
 **Subject alternative names**  

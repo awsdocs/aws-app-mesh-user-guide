@@ -30,15 +30,18 @@ If the application fails to connect at all \(no `HTTP 503` response code returne
 
   If the Envoy was able to establish the connection initially, but later was disconnected and never reconnected, see [Envoy disconnected from App Mesh Envoy management service with error text](https://docs.aws.amazon.com/app-mesh/latest/userguide/troubleshooting-setup.html#ts-setup-grpc-error-codes) to troubleshoot why it was disconnected\.
 
-  If the application connects but the request fails with an `HTTP 503` response code, try the following:
-  + Make sure that the virtual service you're connecting to exists in the mesh\.
-  + Make sure that the virtual service has a provider \(a virtual router or virtual node\)\.
-  + Inspect the Envoy proxy logs for any of the following error messages:
-    + `No healthy upstream` – The virtual node that the Envoy proxy is attempting to route to does not have any resolved endpoints, or it does not have any healthy endpoints\. Make sure that the target virtual node has the correct service discovery and health check settings\.
+If the application connects but the request fails with an `HTTP 503` response code, try the following:
++ Make sure that the virtual service you're connecting to exists in the mesh\.
++ Make sure that the virtual service has a provider \(a virtual router or virtual node\)\.
++ When using Envoy as an HTTP Proxy, if you're seeing egress traffic coming into `cluster.cds_egress_*_mesh-allow-all` instead of the correct destination through Envoy stats, most likely Envoy isn't routing requests properly through `filter_chains`\. This can be a result of using an unqualified virtual service name\. We recommend that you use the service discovery name of the actual service as the virtual service name, because Envoy proxy communicates with other virtual services through their names\.
 
-      If requests to the service are failing during a deployment or scaling of the backend virtual service, follow the guidance in [Some requests fail with HTTP status code `503` when a virtual service has a virtual node provider](#ts-connectivity-virtual-node-provider)\.
-    + `No cluster match for URL` – This is most likely caused when a request is sent to a virtual service that does not match the criteria defined by any of the routes defined under a virtual router provider\. Make sure that the requests from the application are sent to a supported route by ensuring the path and HTTP request headers are correct\.
-    + `No matching filter chain found` – This is most likely caused when a request is sent to a virtual service on an invalid port\. Make sure that the requests from the application are using the same port specified on the virtual router\.
+  For more information, see [virtual services](https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_services.html)\.
++ Inspect the Envoy proxy logs for any of the following error messages:
+  + `No healthy upstream` – The virtual node that the Envoy proxy is attempting to route to does not have any resolved endpoints, or it does not have any healthy endpoints\. Make sure that the target virtual node has the correct service discovery and health check settings\.
+
+    If requests to the service are failing during a deployment or scaling of the backend virtual service, follow the guidance in [Some requests fail with HTTP status code `503` when a virtual service has a virtual node provider](#ts-connectivity-virtual-node-provider)\.
+  + `No cluster match for URL` – This is most likely caused when a request is sent to a virtual service that does not match the criteria defined by any of the routes defined under a virtual router provider\. Make sure that the requests from the application are sent to a supported route by ensuring the path and HTTP request headers are correct\.
+  + `No matching filter chain found` – This is most likely caused when a request is sent to a virtual service on an invalid port\. Make sure that the requests from the application are using the same port specified on the virtual router\.
 
 If your issue is still not resolved, then consider opening a [GitHub issue](https://github.com/aws/aws-app-mesh-roadmap/issues/new?assignees=&labels=Bug&template=issue--bug-report.md&title=Bug%3A+describe+bug+here) or contact [AWS Support](http://aws.amazon.com/premiumsupport/)\.
 
